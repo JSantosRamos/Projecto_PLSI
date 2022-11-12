@@ -42,7 +42,6 @@ $this->params['breadcrumbs'][] = $this->title;
             //'verification_token',
             //'nif',
             //'number',
-            //'roleId',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, User $model, $key, $index, $column) {
@@ -56,6 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <br>
 
 <?php if($searchModelAssignment != null && $dataProviderAssignment != null) : ?>
+
     <div class="user-index">
 
         <h2>Gerir Permissões de Utilizadores</h2>
@@ -67,11 +67,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
                 'user_id',
                 'item_name',
+                'name',
                 [
                     'class' => ActionColumn::className(),
                     'template' => '{view}',
                     'urlCreator' => function ($action, AuthAssignment $modelAuth, $key, $index, $column) {
-                       // return Url::toRoute([$action, 'item_name' => $modelAuth->item_name, 'user_id' => $modelAuth->user_id]);
                         return Yii::$app->urlManager->createUrl(['assignment/view', 'item_name' => $modelAuth->item_name, 'user_id' => $modelAuth->user_id]);
                     }
                 ],

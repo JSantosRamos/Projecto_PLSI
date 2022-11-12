@@ -23,6 +23,7 @@ use Yii;
  * @property float $price
  * @property string $image
  * @property int $isActive
+ * @property string $title
  */
 class Vehicle extends \yii\db\ActiveRecord
 {
@@ -40,11 +41,11 @@ class Vehicle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['brand', 'model', 'serie', 'type', 'fuel', 'mileage', 'engine', 'color', 'description', 'year', 'doorNumber', 'transmission', 'price', 'image', 'isActive'], 'required'],
+            [['brand', 'model', 'serie', 'type', 'fuel', 'mileage', 'engine', 'color', 'description', 'year', 'doorNumber', 'transmission', 'price', 'image', 'isActive', 'title'], 'required'],
             [['engine', 'year', 'doorNumber', 'isActive'], 'integer'],
             [['price'], 'number'],
             [['image'], 'string'],
-            [['brand', 'model', 'serie', 'type', 'fuel', 'mileage'], 'string', 'max' => 50],
+            [['brand', 'model', 'serie', 'type', 'fuel', 'mileage', 'title'], 'string', 'max' => 50],
             [['color', 'transmission'], 'string', 'max' => 20],
             [['description'], 'string', 'max' => 100],
         ];
@@ -72,6 +73,7 @@ class Vehicle extends \yii\db\ActiveRecord
             'price' => 'Price',
             'image' => 'Image',
             'isActive' => 'Is Active',
+            'title' => 'Title',
         ];
     }
 }

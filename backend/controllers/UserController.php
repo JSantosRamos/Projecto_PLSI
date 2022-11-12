@@ -111,7 +111,12 @@ class UserController extends Controller
                 $model->generateAuthKey();
                 $model->generateEmailVerificationToken();
                 $model->setPassword($model->password_hash);
-                $model->save();
+
+                if($model->save()){
+                    $auth = \Yii::$app->authManager;
+                    $authorRole = $auth->getRole('customer');
+                    $auth->assign($authorRole, $model->getId());
+                }
 
                 return $this->redirect(['view', 'id' => $model->id]);
             }

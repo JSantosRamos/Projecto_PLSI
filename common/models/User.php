@@ -56,7 +56,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['username', 'password_hash', 'name', 'email'], 'required'],
-            [['status', 'created_at', 'updated_at', 'nif', 'number', 'roleId'], 'integer'],
+            [['status', 'created_at', 'updated_at', 'nif', 'number'], 'integer'],
             [['username', 'password_hash', 'password_reset_token', 'email', 'verification_token'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['name'], 'string', 'max' => 50],
@@ -77,7 +77,7 @@ class User extends ActiveRecord implements IdentityInterface
             'id' => 'ID',
             'username' => 'Username',
             'auth_key' => 'Auth Key',
-            'password_hash' => 'Password Hash',
+            'password_hash' => 'Password',
             'password_reset_token' => 'Password Reset Token',
             'email' => 'Email',
             'status' => 'Status',
@@ -87,7 +87,6 @@ class User extends ActiveRecord implements IdentityInterface
             'name' => 'Name',
             'nif' => 'Nif',
             'number' => 'Number',
-            'roleId' => 'Role',
         ];
     }
     /**
@@ -245,18 +244,24 @@ class User extends ActiveRecord implements IdentityInterface
 
 
     /**
-     * Validates role
+     * Validates roleAdmin
      *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
+     * @param int $id id to validate
+     * @return bool if id provided user role is Admin
      */
-    public static function isAdmin($id)
+    public static function isAdmin($id): bool
     {
         $roles = Yii::$app->authManager->getRolesByUser($id);
         return (array_key_exists('admin', $roles));
     }
 
-    public static function isManager($id)
+    /**
+     * Validates roleManager
+     *
+     * @param int $id id to validate
+     * @return bool if id provided user role is Manager
+     */
+    public static function isManager($id): bool
     {
         $roles = Yii::$app->authManager->getRolesByUser($id);
         return (array_key_exists('manager', $roles));
