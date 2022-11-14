@@ -27,30 +27,31 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
             'id',
-            'image:ntext',
-            'brand',
-            'plate',
-            'price',
-            //'model',
-            //'serie',
-            //'type',
-            //'fuel',
-            //'mileage',
-            //'engine',
-            //'color',
-            //'description:ntext',
-            //'year',
-            //'doorNumber',
-            //'transmission',
-            'isActive',
+            [
+                'attribute' => 'image',
+                'content' => function ($model) {
+                    return Html::img($model->getImageUrl(), ['style' => 'width: 100px']);
+                }
+            ],
             'title',
+            'plate',
+            'brand',
+            'model',
+            'price:currency',
+            [
+                'attribute' => 'isActive',
+                'content' => function ($model) {
+                    return Html::tag('span', $model->isActive ? 'Publicado' : 'Não Publicado',[
+                            'class' => $model->isActive ? 'badge bg-success' : 'badge bg-danger'
+                    ]);
+                }
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Vehicle $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                }
             ],
         ],
     ]); ?>

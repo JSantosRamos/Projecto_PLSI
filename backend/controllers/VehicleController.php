@@ -8,6 +8,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * VehicleController implements the CRUD actions for Vehicle model.
@@ -79,6 +80,7 @@ class VehicleController extends Controller
     public function actionCreate()
     {
         $model = new Vehicle();
+        $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {

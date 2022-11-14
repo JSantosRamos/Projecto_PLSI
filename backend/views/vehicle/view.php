@@ -30,6 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
+            'title',
+            'description:ntext',
+            'plate',
             'brand',
             'model',
             'serie',
@@ -38,15 +41,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'mileage',
             'engine',
             'color',
-            'description:ntext',
             'year',
             'doorNumber',
             'transmission',
             'price',
-            'image:ntext',
+            'image',
             'isActive',
-            'title',
-            'plate',
         ],
     ]) ?>
 

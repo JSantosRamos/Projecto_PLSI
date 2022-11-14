@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\FileHelper;
 
 /**
  * This is the model class for table "vehicle".
@@ -10,7 +11,7 @@ use Yii;
  * @property int $id
  * @property string $brand
  * @property string $model
- * @property string $serie
+ * @property string|null $serie
  * @property string $type
  * @property string $fuel
  * @property string $mileage
@@ -21,7 +22,7 @@ use Yii;
  * @property int $doorNumber
  * @property string $transmission
  * @property float $price
- * @property string $image
+ * @property string|null $image
  * @property int $isActive
  * @property string $title
  * @property string $plate
@@ -44,14 +45,15 @@ class Vehicle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['brand', 'model', 'serie', 'type', 'fuel', 'mileage', 'engine', 'color', 'description', 'year', 'doorNumber', 'transmission', 'price', 'image', 'isActive', 'title', 'plate'], 'required'],
-            [['type', 'fuel', 'color', 'description', 'transmission', 'image'], 'string'],
+            [['brand', 'model', 'type', 'fuel', 'mileage', 'engine', 'color', 'description', 'year', 'doorNumber', 'transmission', 'price', 'isActive', 'title', 'plate', 'imageFile'], 'required'],
+            [['imageFile'], 'image', 'extensions' => 'png, jpg, jpeg, webp', 'maxSize' => 10 * 1024 * 1024],
+            [['type', 'fuel', 'color', 'description', 'transmission'], 'string'],
             [['engine', 'year', 'doorNumber', 'isActive'], 'integer'],
             [['price'], 'number'],
             [['brand', 'model', 'serie', 'mileage', 'title'], 'string', 'max' => 50],
+            [['image'], 'string', 'max' => 2000],
             [['plate'], 'string', 'max' => 8],
             [['plate'], 'unique'],
-            [['imageFile'], ['image'], ]
         ];
     }
 
@@ -62,24 +64,53 @@ class Vehicle extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'brand' => 'Brand',
-            'model' => 'Model',
+            'brand' => 'Marca',
+            'model' => 'Modelo',
             'serie' => 'Serie',
-            'type' => 'Type',
-            'fuel' => 'Fuel',
-            'mileage' => 'Mileage',
-            'engine' => 'Engine',
+            'type' => 'Tipologia',
+            'fuel' => 'Combustível',
+            'mileage' => 'Km',
+            'engine' => 'CC',
             'color' => 'Color',
-            'description' => 'Description',
-            'year' => 'Year',
-            'doorNumber' => 'Door Number',
-            'transmission' => 'Transmission',
-            'price' => 'Price',
+            'description' => 'Descrição',
+            'year' => 'Ano',
+            'doorNumber' => 'Nº de Portas',
+            'transmission' => 'Tipo de Caixa',
+            'price' => 'Preço',
             'image' => 'Image',
-            'isActive' => 'Is Active',
-            'title' => 'Title',
-            'plate' => 'Plate',
-            'imageFile' => 'Inserir Imagem',
+            'isActive' => 'Publicar',
+            'title' => 'Titulo',
+            'plate' => 'Matrícula',
+            'imageFile' => 'Escolher Imagem'
         ];
+    }
+
+    public function save($runValidation = true, $attributeNames = null)
+    {
+        if ($this->imageFile) {
+            $this->image = '/vehicles/' . Yii::$app->security->generateRandomString() . '/' . $this->imageFile->name;
+        }
+
+        $transaction = Yii::$app->db->beginTransaction();
+        $result = parent::save($runValidation, $attributeNames);
+
+        if ($result && $this->imageFile) {
+            $path = Yii::getAlias('@frontend/web/storage' . $this->image);
+            $dir = dirname($path);
+            if (!FileHelper::createDirectory($dir) | !$this->imageFile->saveAs($path)) {
+                $transaction->rollBack();
+
+                return false;
+            }
+        }
+
+        $transaction->commit();
+
+        return $result;
+    }
+
+    public function getImageUrl()
+    {
+        return Yii::$app->params['frontendUrl'] . '/storage'. $this->image;
     }
 }
