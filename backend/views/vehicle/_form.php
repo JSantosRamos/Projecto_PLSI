@@ -1,5 +1,6 @@
 <?php
 
+use dosamigos\ckeditor\CKEditor;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -18,29 +19,42 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'serie')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'type')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'type')->dropDownList(['Cabrio' => 'Cabrio', 'Carrinha' => 'Carrinha', 'Desportivo' => 'Desportivo', 'SUV' => 'SUV', 'Utilitário' => 'Utilitário',], ['prompt' => '']) ?>
 
-    <?= $form->field($model, 'fuel')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'fuel')->dropDownList(['Diesel' => 'Diesel', 'Gasolina' => 'Gasolina', 'Elétrico' => 'Elétrico', 'GPL' => 'GPL', 'Híbrido' => 'Híbrido',], ['prompt' => '']) ?>
 
     <?= $form->field($model, 'mileage')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'engine')->textInput() ?>
 
-    <?= $form->field($model, 'color')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'color')->dropDownList(['Branco' => 'Branco', 'Preto' => 'Preto', 'Cinzento' => 'Cinzento', 'Vermelho' => 'Vermelho', 'Laranja' => 'Laranja', 'Amarelo' => 'Amarelo', 'Verde' => 'Verde', 'Azul' => 'Azul', 'Castanho' => 'Castanho',], ['prompt' => '']) ?>
 
-    <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'description')->widget(CKEditor::className(),
+        [
+            'options' => ['rows' => 6],
+            'preset' => 'basic'
+        ]) ?>
 
     <?= $form->field($model, 'year')->textInput() ?>
 
     <?= $form->field($model, 'doorNumber')->textInput() ?>
 
-    <?= $form->field($model, 'transmission')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'transmission')->dropDownList(['Manual' => 'Manual', 'Automático' => 'Automático',], ['prompt' => '']) ?>
 
     <?= $form->field($model, 'price')->textInput() ?>
 
-    <?= $form->field($model, 'image')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'imageFile',
+        [
+            'template' => '<div class="custom-file"> {input} {label} {error}</div>',
+            'labelOptions' => ['class' => 'custom-file-label'],
+            'inputOptions' => ['class' => 'custom-file-input']
+        ])->textInput(['type' => 'file']) ?>
 
-    <?= $form->field($model, 'isActive')->textInput() ?>
+    <?= $form->field($model, 'isActive')->checkbox() ?>
+
+    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'plate')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

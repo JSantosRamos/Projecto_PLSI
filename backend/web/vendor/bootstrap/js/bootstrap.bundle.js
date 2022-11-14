@@ -3050,7 +3050,7 @@
    *
    * @static
    * @type {Array}
-   * @enum {String}
+   * @enums {String}
    * @readonly
    * @method placements
    * @memberof Popper

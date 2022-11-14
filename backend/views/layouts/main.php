@@ -42,21 +42,21 @@ AppAsset::register($this);
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="<?php echo \yii\helpers\Url::toRoute(['/site/index'])?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+                <a class="nav-link" href="<?php echo \yii\helpers\Url::toRoute(['/vehicle/index'])?>">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Veículos</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="<?php echo \yii\helpers\Url::toRoute(['/user/index'])?>">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Utilizadores</span></a>
             </li>
@@ -143,7 +143,9 @@ AppAsset::register($this);
                 </nav>
                 <!-- End of Topbar -->
 
-                <?php echo $content ?>
+                <div class="p-4">
+                    <?php echo $content ?>
+                </div>
 
             </div>
             <!-- End of Main Content -->

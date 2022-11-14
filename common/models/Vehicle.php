@@ -24,9 +24,12 @@ use Yii;
  * @property string $image
  * @property int $isActive
  * @property string $title
+ * @property string $plate
  */
 class Vehicle extends \yii\db\ActiveRecord
 {
+    public $imageFile;
+
     /**
      * {@inheritdoc}
      */
@@ -41,13 +44,14 @@ class Vehicle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['brand', 'model', 'serie', 'type', 'fuel', 'mileage', 'engine', 'color', 'description', 'year', 'doorNumber', 'transmission', 'price', 'image', 'isActive', 'title'], 'required'],
+            [['brand', 'model', 'serie', 'type', 'fuel', 'mileage', 'engine', 'color', 'description', 'year', 'doorNumber', 'transmission', 'price', 'image', 'isActive', 'title', 'plate'], 'required'],
+            [['type', 'fuel', 'color', 'description', 'transmission', 'image'], 'string'],
             [['engine', 'year', 'doorNumber', 'isActive'], 'integer'],
             [['price'], 'number'],
-            [['image'], 'string'],
-            [['brand', 'model', 'serie', 'type', 'fuel', 'mileage', 'title'], 'string', 'max' => 50],
-            [['color', 'transmission'], 'string', 'max' => 20],
-            [['description'], 'string', 'max' => 100],
+            [['brand', 'model', 'serie', 'mileage', 'title'], 'string', 'max' => 50],
+            [['plate'], 'string', 'max' => 8],
+            [['plate'], 'unique'],
+            [['imageFile'], ['image'], ]
         ];
     }
 
@@ -74,6 +78,8 @@ class Vehicle extends \yii\db\ActiveRecord
             'image' => 'Image',
             'isActive' => 'Is Active',
             'title' => 'Title',
+            'plate' => 'Plate',
+            'imageFile' => 'Inserir Imagem',
         ];
     }
 }
