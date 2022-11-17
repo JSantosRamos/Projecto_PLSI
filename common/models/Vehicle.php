@@ -45,7 +45,7 @@ class Vehicle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['brand', 'model', 'type', 'fuel', 'mileage', 'engine', 'color', 'description', 'year', 'doorNumber', 'transmission', 'price', 'isActive', 'title', 'plate', 'imageFile'], 'required'],
+            [['brand', 'model', 'type', 'fuel', 'mileage', 'engine', 'color', 'description', 'year', 'doorNumber', 'transmission', 'price', 'isActive', 'title', 'plate'], 'required'],
             [['imageFile'], 'image', 'extensions' => 'png, jpg, jpeg, webp', 'maxSize' => 10 * 1024 * 1024],
             [['type', 'fuel', 'color', 'description', 'transmission'], 'string'],
             [['engine', 'year', 'doorNumber', 'isActive'], 'integer'],

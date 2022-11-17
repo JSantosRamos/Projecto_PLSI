@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'title',
-            'description:ntext',
+            'description:html',
             'plate',
             'brand',
             'model',
@@ -44,9 +44,23 @@ $this->params['breadcrumbs'][] = $this->title;
             'year',
             'doorNumber',
             'transmission',
-            'price',
-            'image',
-            'isActive',
+            'price:currency',
+            [
+                'attribute' => 'image',
+                'format' => ['html'],
+                'value' => function ($model) {
+                    return Html::img($model->getImageUrl(), ['style' => 'width: 100px']);
+                }
+            ],
+            [
+                'attribute' => 'isActive',
+                'format' =>['html'],
+                'value' => function ($model) {
+                    return Html::tag('span', $model->isActive ? 'Publicado' : 'Não Publicado',[
+                        'class' => $model->isActive ? 'badge bg-success' : 'badge bg-danger'
+                    ]);
+                }
+            ],
         ],
     ]) ?>
 

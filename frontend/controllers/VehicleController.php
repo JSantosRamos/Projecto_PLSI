@@ -40,10 +40,15 @@ class VehicleController extends Controller
     {
         $searchModel = new VehicleSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        $model = new Vehicle();
+
+        $vehicles = Vehicle::find()->where(['isActive' => 1])->all();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'vehicles' => $vehicles,
+            'model' => $model,
         ]);
     }
 

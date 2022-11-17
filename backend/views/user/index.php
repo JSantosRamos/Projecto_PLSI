@@ -36,6 +36,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'username',
             'email:email',
+            [
+                'attribute' => 'status',
+                'format' =>['html'],
+                'value' => function ($model) {
+                    return Html::tag('span', $model->status == 10 ? 'Ativo' : 'Desativo',[
+                        'class' => $model->status == 10 ? 'badge bg-success' : 'badge bg-danger'
+                    ]);
+                }
+            ],
             //'status',
             //'created_at',
             //'updated_at',

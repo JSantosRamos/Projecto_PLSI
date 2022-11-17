@@ -5,7 +5,9 @@ namespace backend\controllers;
 use backend\models\AuthAssignment;
 use backend\models\AuthAssignmentSearch;
 use backend\models\AuthItem;
+use common\models\User;
 use Yii;
+use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -24,6 +26,21 @@ class AssignmentController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'actions' => ['index', 'update', 'view'],
+                            'allow' => true,
+                            'roles' => ['manager'],
+                        ],
+                        [
+                            'actions' => ['create','delete'],
+                            'allow' => true,
+                            'roles' => ['admin'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -71,7 +88,16 @@ class AssignmentController extends Controller
      */
     public function actionCreate()
     {
+        $roles = [];
         $model = new AuthAssignment();
+
+        $sessionUserId = Yii::$app->user->getId();
+
+        if (Yii::$app->authManager->checkAccess($sessionUserId, 'canCreateAllUsers')) {
+            $roles = ArrayHelper::map(AuthItem::find()
+                ->where(['type' => 1])
+                ->all(), 'name', 'name');
+        }
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -83,6 +109,7 @@ class AssignmentController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'roles' => $roles
         ]);
     }
 
@@ -96,16 +123,37 @@ class AssignmentController extends Controller
      */
     public function actionUpdate($item_name, $user_id)
     {
+        $sessionUserId = Yii::$app->user->getId();
+
+        if(!User::isAdmin($sessionUserId)){
+
+            $tryUpdateAdmin = User::isAdmin($user_id);
+            if($tryUpdateAdmin){
+                return $this->render('view', [
+                    'model' => $this->findModel($item_name, $user_id),
+                ]);
+            }
+        }
 
         $roles = [];
         $model = $this->findModel($item_name, $user_id);
-
-        $sessionUserId = Yii::$app->user->getId();
 
         if (Yii::$app->authManager->checkAccess($sessionUserId, 'canCreateAllUsers')) {
             $roles = ArrayHelper::map(AuthItem::find()
                 ->where(['type' => 1])
                 ->all(), 'name', 'name');
+
+        } elseif (Yii::$app->authManager->checkAccess($sessionUserId, 'canCreateEmployee')) {
+            $roles = ArrayHelper::map(AuthItem::find()
+                ->where(['type' => 1])
+                ->all(), 'name', 'name');
+
+            if (($key = array_search("admin", $roles)) !== false) {
+                unset($roles[$key]);
+            }
+            if (($key2 = array_search("manager", $roles)) !== false) {
+                unset($roles[$key2]);
+            }
         }
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {

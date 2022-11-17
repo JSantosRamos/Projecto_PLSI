@@ -10,7 +10,7 @@ use yii\grid\GridView;
 /** @var backend\models\AuthAssignmentSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Auth Assignments';
+$this->title = 'Permissões';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="auth-assignment-index">
@@ -31,7 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'item_name',
             'user_id',
-            'created_at',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, AuthAssignment $model, $key, $index, $column) {

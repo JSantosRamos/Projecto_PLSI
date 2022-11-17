@@ -59,7 +59,7 @@ class UserController extends Controller
         $dataProviderAssignment = null;
 
         $sessionUserId = Yii::$app->user->getId();
-        if (Yii::$app->authManager->checkAccess($sessionUserId, 'canCreateAllUsers')) {
+        if (Yii::$app->authManager->checkAccess($sessionUserId, 'canCreateAllUsers') || Yii::$app->authManager->checkAccess($sessionUserId, 'canCreateEmployee') ) {
 
             $searchModelAssignment = new AuthAssignmentSearch();
             $dataProviderAssignment = $searchModelAssignment->search($this->request->queryParams);
@@ -108,17 +108,19 @@ class UserController extends Controller
 
             if ($model->load($this->request->post())) {
 
-                $model->generateAuthKey();
-                $model->generateEmailVerificationToken();
-                $model->setPassword($model->password_hash);
+                if(!empty($model->password_hash)){
+                    $model->generateAuthKey();
+                    $model->generateEmailVerificationToken();
+                    $model->setPassword($model->password_hash);
+                }
 
                 if($model->save()){
                     $auth = \Yii::$app->authManager;
                     $authorRole = $auth->getRole('customer');
                     $auth->assign($authorRole, $model->getId());
-                }
 
-                return $this->redirect(['view', 'id' => $model->id]);
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
             }
 
         } else {
@@ -140,8 +142,13 @@ class UserController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPost && $model->load($this->request->post())) {
+
+            $model->setPassword($model->password_hash);
+
+            if($model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [

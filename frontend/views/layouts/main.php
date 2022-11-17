@@ -9,6 +9,7 @@ use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
+use yii\helpers\Url;
 
 AppAsset::register($this);
 ?>
@@ -36,8 +37,8 @@ AppAsset::register($this);
     ]);
 
     $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'Viaturas', 'url' => ['/vehicle/index']],
+        ['label' => 'Veículos', 'url' => ['/vehicle/index']],
+        ['label' => 'Artigos e Dicas', 'url' => ['/blog/index']],
     ];
 
     if (Yii::$app->user->isGuest) {
@@ -46,7 +47,7 @@ AppAsset::register($this);
 
     if (!Yii::$app->user->isGuest){
         $menuItems[] = ['label' => 'Contactar', 'url' => ['/site/contact']];
-        $menuItems[] = ['label' => 'Agendamentos', 'url' => ['/site/contact']];
+        $menuItems[] = ['label' => 'Mais', 'items' => [['label' => 'Mensagens', 'url' => ['/site/mensagem']], ['label' => 'Perfil', 'url' => Url::toRoute(['/user/update', 'id' => Yii::$app->user->id])]]];
     }
 
     echo Nav::widget([

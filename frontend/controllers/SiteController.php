@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use common\models\TestdriveSearch;
+use common\models\VendauserSearch;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -37,7 +39,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'mensagem'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -217,8 +219,8 @@ class SiteController extends Controller
      * Verify email address
      *
      * @param string $token
-     * @throws BadRequestHttpException
      * @return yii\web\Response
+     * @throws BadRequestHttpException
      */
     public function actionVerifyEmail($token)
     {
@@ -254,6 +256,33 @@ class SiteController extends Controller
 
         return $this->render('resendVerificationEmail', [
             'model' => $model
+        ]);
+    }
+
+
+    /**
+     * Show all Vendausermodel and Testdrivemodel created by the login user
+     *
+     * @return
+     */
+    public function actionMensagem()
+    {
+
+        if (Yii::$app->user->isGuest) {
+            return $this->actionLogin();
+        }
+        $searchModelVendauser = new VendauserSearch();
+        $dataProviderVendauser = $searchModelVendauser->search($this->request->queryParams,false);
+
+        $searchModelTestdrive = new TestdriveSearch();
+        $dataProviderTestdrive = $searchModelTestdrive->search($this->request->queryParams, false);
+
+
+        return $this->render('mensagem', [
+            'searchModelTestdrive' => $searchModelTestdrive,
+            'dataProviderTestdrive' => $dataProviderTestdrive,
+            'searchModelVendauser' => $searchModelVendauser,
+            'dataProviderVendauser' => $dataProviderVendauser,
         ]);
     }
 }

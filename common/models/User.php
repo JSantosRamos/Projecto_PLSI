@@ -80,13 +80,13 @@ class User extends ActiveRecord implements IdentityInterface
             'password_hash' => 'Password',
             'password_reset_token' => 'Password Reset Token',
             'email' => 'Email',
-            'status' => 'Status',
+            'status' => 'Estado da Conta',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'verification_token' => 'Verification Token',
-            'name' => 'Name',
+            'name' => 'Nome',
             'nif' => 'Nif',
-            'number' => 'Number',
+            'number' => 'Número',
         ];
     }
     /**

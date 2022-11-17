@@ -32,16 +32,18 @@ $this->params['breadcrumbs'][] = $this->title;
             //'id',
             'name',
             'username',
-           // 'auth_key',
-           // 'password_hash',
-           // 'password_reset_token',
             'email:email',
-            'status',
-          //  'created_at',
-          //  'updated_at',
-          //  'verification_token',
             'nif',
             'number',
+            [
+                'attribute' => 'status',
+                'format' =>['html'],
+                'value' => function ($model) {
+                    return Html::tag('span', $model->status == 10 ? 'Ativo' : 'Desativo',[
+                        'class' => $model->status == 10 ? 'badge bg-success' : 'badge bg-danger'
+                    ]);
+                }
+            ],
         ],
     ]) ?>
 

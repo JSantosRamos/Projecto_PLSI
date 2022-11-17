@@ -1,6 +1,6 @@
 <?php
 
-/** @var \yii\web\View $this */
+/** @var View $this */
 
 /** @var string $content */
 
@@ -10,6 +10,8 @@ use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
+use yii\helpers\Url;
+use yii\web\View;
 
 AppAsset::register($this);
 ?>
@@ -33,32 +35,59 @@ AppAsset::register($this);
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="http://backend.test/index.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?php echo Url::toRoute(['/site/index'])?>">
                 <div class="sidebar-brand-text mx-3">Auto Shop</div>
             </a>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="<?php echo \yii\helpers\Url::toRoute(['/site/index'])?>">
+                <a class="nav-link" href="<?php echo Url::toRoute(['/site/index'])?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
 
-            <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo \yii\helpers\Url::toRoute(['/vehicle/index'])?>">
-                    <i class="fas fa-fw fa-chart-area"></i>
+                <a class="nav-link" href="<?php echo Url::toRoute(['/user/index'])?>">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Utilizadores</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo Url::toRoute(['/vehicle/index'])?>">
+                    <i class="fas fa-fw fa-table"></i>
                     <span>Veículos</span></a>
             </li>
 
-            <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo \yii\helpers\Url::toRoute(['/user/index'])?>">
+                <a class="nav-link" href="<?php echo Url::toRoute(['/vendauser/index'])?>">
                     <i class="fas fa-fw fa-table"></i>
-                    <span>Utilizadores</span></a>
+                    <span>Proposta de compra</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo Url::toRoute(['/testdrive/index'])?>">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Teste-Drives</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo Url::toRoute(['/blog/index'])?>">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Noticias</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Tarefas</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Vendas</span></a>
             </li>
 
             <!-- Divider -->
@@ -186,7 +215,7 @@ AppAsset::register($this);
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                     <a data-method = 'post' class="btn btn-primary"
-                       href="<?php echo \yii\helpers\Url::to(['/site/logout'])?>">Logout</a>
+                       href="<?php echo Url::to(['/site/logout'])?>">Logout</a>
                 </div>
             </div>
         </div>

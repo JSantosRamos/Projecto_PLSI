@@ -15,6 +15,7 @@ class SignupForm extends Model
     public $email;
     public $password;
     public $name;
+    public $number;
 
     /**
      * {@inheritdoc}
@@ -57,6 +58,7 @@ class SignupForm extends Model
         $user->username = $this->username;
         $user->email = $this->email;
         $user->name = $this->name;
+        $user->number = $this->number;
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
@@ -86,5 +88,12 @@ class SignupForm extends Model
             ->setTo($this->email)
             ->setSubject('Account registration at ' . Yii::$app->name)
             ->send();
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'name' => 'Nome',
+        ];
     }
 }

@@ -8,12 +8,19 @@ $params = array_merge(
 
 return [
     'id' => 'app-frontend',
+    'name' =>'Auto Shop',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
+        ],
+        'formatter' => [
+            'class' => 'yii\i18n\formatter',
+            'thousandSeparator' => ',',
+            'decimalSeparator' => '.',
+            'currencyCode' => '€'
         ],
         'user' => [
             'identityClass' => 'common\models\User',
