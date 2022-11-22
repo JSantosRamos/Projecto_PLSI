@@ -39,7 +39,7 @@ class VehicleController extends Controller
     public function actionIndex()
     {
         $searchModel = new VehicleSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = $searchModel->search($this->request->queryParams, true);
         $model = new Vehicle();
 
         $vehicles = Vehicle::find()->where(['isActive' => 1])->all();

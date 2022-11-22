@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Vehicle $model */
 
-$this->title = $model->id;
+$this->title = $model->title;
 //$this->params['breadcrumbs'][] = ['label' => 'Vehicles', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -136,8 +136,6 @@ $this->title = $model->id;
 </section>
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="js/scripts.js"></script>
 </body>
 
 <!-- Modal Test-Drive -->

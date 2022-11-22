@@ -39,9 +39,13 @@ class VehicleSearch extends Vehicle
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $frontendview = false)
     {
-        $query = Vehicle::find();
+        if($frontendview){
+            $query = Vehicle::find()->where(['isActive' => 1]);
+        }else{
+            $query = Vehicle::find();
+        }
 
         // add conditions that should always apply here
 
