@@ -19,10 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
         'columns' => [
             'plate',
-            //'date',
             'brand',
             'model',
             'price:currency',
@@ -37,6 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => ActionColumn::className(),
+                'template' => '{view}',
                 'urlCreator' => function ($action, Vendauser $model, $key, $index, $column) {
                     return Url::toRoute(['vendauser/view', 'id' => $model->id]);
                 }

@@ -79,15 +79,20 @@ AppAsset::register($this);
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="">
+                <a class="nav-link" href="<?php echo Url::toRoute(['/task/index'])?>">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Tarefas</span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="">
+                <a class="nav-link" href="<?php echo Url::toRoute(['/venda/index'])?>">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Vendas</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo Url::toRoute(['/cost/index'])?>">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Despesas</span></a>
             </li>
 
             <!-- Divider -->

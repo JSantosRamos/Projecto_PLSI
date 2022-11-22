@@ -32,8 +32,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'username',
             'email:email',
             'name',
-            'nif',
-            'number',
+            [
+                'attribute' => 'nif',
+                'value' => $model->nif == null ? 'Não existe' : $model->nif,
+            ],
+            [
+                'attribute' => 'number',
+                'value' => $model->number == null ? 'Não existe' : $model->number,
+            ],
         ],
     ]) ?>
     <p><?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?></p>

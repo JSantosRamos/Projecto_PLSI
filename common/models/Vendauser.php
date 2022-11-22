@@ -10,16 +10,15 @@ use Yii;
  * @property int $id
  * @property int $idUser
  * @property float $price
- * @property string $reason
  * @property string $date
  * @property string $plate
  * @property int $mileage
  * @property string $fuel
- * @property int $year
+ * @property string $year
  * @property string $brand
  * @property string $model
  * @property string|null $serie
- * @property int|null $description
+ * @property string|null $description
  * @property string $status
  *
  * @property User $idUser0
@@ -28,8 +27,8 @@ class Vendauser extends \yii\db\ActiveRecord
 {
     const POR_VER = 'Por ver';
     const ACEITE = 'Aceite';
-    const EM_ANALISE = 'Em Análise';
     const RECUSADO = 'Recusado';
+    const EM_ANALISE = 'Em Análise';
 
     /**
      * {@inheritdoc}
@@ -46,14 +45,16 @@ class Vendauser extends \yii\db\ActiveRecord
     {
         return [
             [['idUser', 'price', 'plate', 'mileage', 'fuel', 'year', 'brand', 'model'], 'required'],
-            [['idUser', 'mileage', 'year'], 'integer'],
+            [['idUser', 'mileage'], 'integer'],
             [['price'], 'number'],
-            ['status', 'default', 'value' => self::POR_VER],
             [['date'], 'safe'],
-            [['fuel', 'status', 'model', 'serie', 'description'], 'string'],
-            [['reason'], 'string', 'max' => 50],
+            [['fuel', 'status'], 'string'],
             [['plate'], 'string', 'max' => 8],
-            [['brand'], 'string', 'max' => 10],
+            [['year'], 'string', 'max' => 10],
+            [['brand', 'model'], 'string', 'max' => 20],
+            [['serie'], 'string', 'max' => 50],
+            [['description'], 'string', 'max' => 500],
+            ['status', 'default', 'value' => self::POR_VER],
             [['idUser'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['idUser' => 'id']],
         ];
     }
@@ -65,18 +66,18 @@ class Vendauser extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'idUser' => 'Id User',
+            'idUser' => 'Utilizador',
             'price' => 'Valor pretendido',
             'date' => 'Date',
-            'plate' => 'Matrícula',
-            'mileage' => 'Quilômetros ',
+            'plate' => 'Matricula',
+            'mileage' => 'Quilómetro',
             'fuel' => 'Combústivel',
             'year' => 'Ano',
             'brand' => 'Marca',
             'model' => 'Modelo',
             'serie' => 'Serie',
             'description' => 'Extras',
-            'status' => 'Estado da proposta',
+            'status' => 'Status',
         ];
     }
 

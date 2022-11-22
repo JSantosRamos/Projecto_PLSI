@@ -21,11 +21,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'price') ?>
 
-    <?= $form->field($model, 'reason') ?>
-
     <?= $form->field($model, 'date') ?>
 
-    <?php // echo $form->field($model, 'plate') ?>
+    <?= $form->field($model, 'plate') ?>
 
     <?php // echo $form->field($model, 'mileage') ?>
 

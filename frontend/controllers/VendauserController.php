@@ -2,8 +2,11 @@
 
 namespace frontend\controllers;
 
+use common\models\Permission;
 use common\models\Vendauser;
 use common\models\VendauserSearch;
+use yii\helpers\Url;
+use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -43,19 +46,20 @@ class VendauserController extends Controller
     }
 
     /**
-     * Lists all Vendauser models.
      *
-     * @return string
+     * @return \yii\web\Response
      */
     public function actionIndex()
     {
-        $searchModel = new VendauserSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+       return $this->redirect(Url::toRoute('site/mensagem'));
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        /*  $searchModel = new VendauserSearch();
+          $dataProvider = $searchModel->search($this->request->queryParams);
+
+          return $this->render('index', [
+              'searchModel' => $searchModel,
+              'dataProvider' => $dataProvider,
+          ]);*/
     }
 
     /**
@@ -66,8 +70,14 @@ class VendauserController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+
+        if (!Permission::allowedAction($model->idUser)) {
+            $this->redirect('site/index');
+        }
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 
@@ -82,6 +92,7 @@ class VendauserController extends Controller
         $model = new Vendauser();
 
         if ($this->request->isPost) {
+
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -91,7 +102,7 @@ class VendauserController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'userId' => $sessionUserId,
+            'idUser' => $sessionUserId,
         ]);
     }
 
@@ -105,6 +116,15 @@ class VendauserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $idUser = $model->idUser;
+
+        if (!Permission::allowedAction($model->idUser)) {
+            $this->redirect('site/index');
+        }
+
+        if ($model->status != Vendauser::POR_VER) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -112,6 +132,7 @@ class VendauserController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'idUser' => $idUser,
         ]);
     }
 
@@ -124,8 +145,13 @@ class VendauserController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
 
+        if (!Permission::allowedAction($model->idUser)) {
+            $this->redirect('site/index');
+        }
+
+        $model->delete();
         return $this->redirect(['index']);
     }
 

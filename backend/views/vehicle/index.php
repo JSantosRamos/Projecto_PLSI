@@ -10,7 +10,7 @@ use yii\grid\GridView;
 /** @var common\models\VehicleSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Vehicles';
+$this->title = 'Veículos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="vehicle-index">
@@ -18,14 +18,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Vehicle', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Adcionar', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
         'columns' => [
             [
                 'attribute' => 'image',
@@ -41,8 +40,8 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'isActive',
                 'content' => function ($model) {
-                    return Html::tag('span', $model->isActive ? 'Publicado' : 'Não Publicado',[
-                            'class' => $model->isActive ? 'badge bg-success' : 'badge bg-danger'
+                    return Html::tag('span', $model->isActive ? 'Publicado' : 'Não Publicado', [
+                        'class' => $model->isActive ? 'badge bg-success' : 'badge bg-danger'
                     ]);
                 }
             ],

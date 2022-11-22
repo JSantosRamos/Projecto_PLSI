@@ -15,24 +15,10 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'date') ?>
-
-    <?= $form->field($model, 'time') ?>
-
-    <?= $form->field($model, 'description') ?>
-
-    <?= $form->field($model, 'idUser') ?>
-
-    <?php // echo $form->field($model, 'idVehicle') ?>
-
-    <?php // echo $form->field($model, 'status') ?>
-
-    <?php // echo $form->field($model, 'reason') ?>
+    <?php  echo $form->field($model, 'idVehicle') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('Procurar', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
     </div>
 

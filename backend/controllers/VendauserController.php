@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\models\Vendauser;
 use common\models\VendauserSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -21,6 +22,26 @@ class VendauserController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'actions' => ['index', 'view'],
+                            'allow' => true,
+                            'roles' => ['employee'],
+                        ],
+                        [
+                            'actions' => ['index', 'update', 'view'],
+                            'allow' => true,
+                            'roles' => ['manager'],
+                        ],
+                        [
+                            'actions' => ['index', 'create', 'update', 'delete', 'view'],
+                            'allow' => true,
+                            'roles' => ['admin'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [

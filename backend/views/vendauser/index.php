@@ -10,44 +10,38 @@ use yii\grid\GridView;
 /** @var common\models\VendauserSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Vendausers';
+$this->title = 'Propostas de Venda';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="vendauser-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create Vendauser', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'idUser',
-            'price',
-            'reason',
-            'date',
-            //'plate',
-            //'mileage',
-            //'fuel',
-            //'year',
-            //'brand',
-            //'model',
-            //'serie',
-            //'description',
-            //'status',
+            'brand',
+            'model',
+            'serie',
+            'year',
+            'mileage',
+            'price:currency',
+            [
+                'attribute' => 'status',
+                'format' =>['html'],
+                'value' => function ($model) {
+                    return Html::tag('span', $model->status ,[
+                        'class' => $model->status == Vendauser::POR_VER ? 'badge bg-secondary' : ($model->status == Vendauser::ACEITE ? 'badge bg-success' : ($model->status == Vendauser::RECUSADO ? 'badge bg-danger' : 'badge bg-primary'))
+                    ]);
+                }
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Vendauser $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                }
             ],
         ],
     ]); ?>

@@ -15,36 +15,41 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="testdrive-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Testdrive', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <h3><?= Html::encode($this->title) ?></h3>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
+            //['class' => 'yii\grid\SerialColumn'],
+            [
+                'attribute' => 'idVehicle',
+                'format' =>['html'],
+                'value' => function ($model) {
+                    return Html::a($model->idVehicle, Url::toRoute(['vehicle/view', 'id' => $model->idVehicle]) ,[
+                    ]);
+                }
+            ],
             'date',
             'time',
             'description',
-            'idUser',
-            //'idVehicle',
-            //'status',
-            //'reason',
+            [
+                'attribute' => 'status',
+                'format' =>['html'],
+                'value' => function ($model) {
+                    return Html::tag('span', $model->status ,[
+                        'class' => $model->status == 'Por ver' ? 'badge bg-secondary' : ($model->status == 'Aceite' ? 'badge bg-success' : 'badge bg-danger')
+                    ]);
+                }
+            ],
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Testdrive $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                'template' => '{view}',
+                'urlCreator' => function ($action, $model, $key, $index, $column) {
+
+                    return Url::toRoute(['testdrive/view', 'id' => $model->id]);
+                }
             ],
+
         ],
     ]); ?>
-
-
 </div>

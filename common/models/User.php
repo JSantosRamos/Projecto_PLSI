@@ -22,14 +22,17 @@ use yii\web\IdentityInterface;
  * @property int|null $updated_at
  * @property string|null $verification_token
  * @property string|null $name
- * @property int|null $nif
- * @property int|null $number
+ * @property string|null $nif
+ * @property string|null $number
+ * @property int $isEmployee
  */
 class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
+
+    public $password;
 
     /**
      * {@inheritdoc}
@@ -55,8 +58,8 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'password_hash', 'name', 'email'], 'required'],
-            [['status', 'created_at', 'updated_at', 'nif', 'number'], 'integer'],
+            [['username', 'password_hash', 'name', 'email', 'isEmployee'], 'required'],
+            [['status', 'created_at', 'updated_at', 'isEmployee'], 'integer'],
             [['username', 'password_hash', 'password_reset_token', 'email', 'verification_token'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['name'], 'string', 'max' => 50],
@@ -65,6 +68,8 @@ class User extends ActiveRecord implements IdentityInterface
             [['password_reset_token'], 'unique'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            ['password','string', 'min' =>8],
+            [['number', 'nif'], 'string', 'min' =>9, 'max' =>9],
         ];
     }
 
@@ -87,8 +92,80 @@ class User extends ActiveRecord implements IdentityInterface
             'name' => 'Nome',
             'nif' => 'Nif',
             'number' => 'Número',
+            'isEmployee' => 'Conta de Funcionário'
         ];
     }
+
+    /**
+     * Gets query for [[Notes]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getNotes()
+    {
+        return $this->hasMany(Note::class, ['idUser' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Tasks]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTasks()
+    {
+        return $this->hasMany(Task::class, ['idAssigned_to' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Tasks0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTasks0()
+    {
+        return $this->hasMany(Task::class, ['idCreated_by' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Testdrives]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTestdrives()
+    {
+        return $this->hasMany(Testdrive::class, ['idUser' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Vendas]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVendas()
+    {
+        return $this->hasMany(Venda::class, ['idUser_buyer' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Vendas0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVendas0()
+    {
+        return $this->hasMany(Venda::class, ['idUser_seller' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Vendausers]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVendausers()
+    {
+        return $this->hasMany(Vendauser::class, ['idUser' => 'id']);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -265,5 +342,21 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $roles = Yii::$app->authManager->getRolesByUser($id);
         return (array_key_exists('manager', $roles));
+    }
+
+    public static function getName($id){
+        $user = User::find()
+            ->where(['id' => $id])
+            ->one();
+
+        return $user->name;
+    }
+
+    public function afterValidate()
+    {
+        parent::afterValidate();
+        if ($this->password){
+            $this->password_hash = YII::$app->security->generatePasswordHash($this->password);
+        }
     }
 }

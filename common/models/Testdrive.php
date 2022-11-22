@@ -57,11 +57,11 @@ class Testdrive extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id' => 'Nº',
             'date' => 'Dia',
             'time' => 'Hora',
             'description' => 'Diga-nos porque escolheu este veículo:',
-            'idUser' => '',
+            'idUser' => 'Utilizador',
             'idVehicle' => 'Refêrencia do Veículo',
             'status' => 'Estado do Pedido',
             'reason' => 'Reason',

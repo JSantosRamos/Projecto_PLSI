@@ -24,11 +24,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Adicionar', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -45,12 +44,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]);
                 }
             ],
-            //'status',
-            //'created_at',
-            //'updated_at',
-            //'verification_token',
-            //'nif',
-            //'number',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, User $model, $key, $index, $column) {
@@ -71,7 +64,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= GridView::widget([
             'dataProvider' => $dataProviderAssignment,
-            'filterModel' => $searchModelAssignment,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
                 'user_id',

@@ -6,7 +6,7 @@ use yii\bootstrap5\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var common\models\Vendauser $model */
-/** @var yii\bootstrap5\ActiveForm $form */
+/** @var yii\widgets\ActiveForm $form */
 ?>
 
 <div class="vendauser-form">
@@ -37,7 +37,7 @@ use yii\bootstrap5\ActiveForm;
 
     <?= $form->field($model, 'description')->textarea(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'idUser')->textInput(['value' => $userId]) ?>
+    <?= $form->field($model, 'idUser')->textInput(['value' => $idUser]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Enviar', ['class' => 'btn btn-success']) ?>

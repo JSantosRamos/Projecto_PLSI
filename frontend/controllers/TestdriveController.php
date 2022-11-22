@@ -7,6 +7,8 @@ use common\models\Testdrive;
 use common\models\TestdriveSearch;
 use Yii;
 use yii\db\Exception;
+use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -24,6 +26,16 @@ class TestdriveController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'actions' => ['index', 'create', 'update', 'delete', 'view'],
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -37,17 +49,18 @@ class TestdriveController extends Controller
     /**
      * Lists all Testdrive models.
      *
-     * @return string
+     * @return \yii\web\Response
      */
     public function actionIndex()
     {
-        $searchModel = new TestdriveSearch();
+        return $this->redirect(Url::toRoute('site/mensagem'));
+       /* $searchModel = new TestdriveSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
+        ]);*/
     }
 
     /**
@@ -65,7 +78,7 @@ class TestdriveController extends Controller
         }
 
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 
@@ -131,15 +144,15 @@ class TestdriveController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $sessionUserId = Yii::$app->user->getId();
+        $idUser = $model->idUser;
         $idVeiculo = $model->idVehicle;
 
         if (!Permission::allowedAction($model->idUser)) {
             $this->redirect('site/index');
         }
 
-        if($model->status != 'Por ver'){
-            return $this->redirect('site/index');
+        if($model->status != Testdrive::POR_VER){
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         if ($this->request->isPost && $model->load($this->request->post())) {
@@ -149,7 +162,7 @@ class TestdriveController extends Controller
 
                 return $this->render('update', [
                     'model' => $model,
-                    'idUser' => $sessionUserId,
+                    'idUser' => $idUser,
                     'idVeiculo' => $idVeiculo,
                     'dateInvalidMessage' => 'Data inválida'
                 ]);
@@ -162,7 +175,7 @@ class TestdriveController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'idUser' => $sessionUserId,
+            'idUser' => $idUser,
             'idVeiculo' => $idVeiculo,
             'dateInvalidMessage' => ''
         ]);

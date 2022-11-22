@@ -17,9 +17,9 @@ class VendauserSearch extends Vendauser
     public function rules()
     {
         return [
-            [['id', 'idUser', 'mileage', 'year', 'model', 'serie', 'description'], 'integer'],
+            [['id', 'idUser', 'mileage', 'year'], 'integer'],
             [['price'], 'number'],
-            [['reason', 'date', 'plate', 'fuel', 'brand', 'status'], 'safe'],
+            [['date', 'plate', 'fuel', 'brand', 'model', 'serie', 'description', 'status'], 'safe'],
         ];
     }
 
@@ -39,15 +39,9 @@ class VendauserSearch extends Vendauser
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $originalQuery = true)
+    public function search($params)
     {
-        if($originalQuery){
-            $query = Vendauser::find();
-        }
-        else{
-            $query = Vendauser::find()->where(['iduser' => \Yii::$app->user->id]);
-        }
-
+        $query = Vendauser::find();
 
         // add conditions that should always apply here
 
@@ -71,15 +65,14 @@ class VendauserSearch extends Vendauser
             'date' => $this->date,
             'mileage' => $this->mileage,
             'year' => $this->year,
-            'model' => $this->model,
-            'serie' => $this->serie,
-            'description' => $this->description,
         ]);
 
-        $query->andFilterWhere(['like', 'reason', $this->reason])
-            ->andFilterWhere(['like', 'plate', $this->plate])
+        $query->andFilterWhere(['like', 'plate', $this->plate])
             ->andFilterWhere(['like', 'fuel', $this->fuel])
             ->andFilterWhere(['like', 'brand', $this->brand])
+            ->andFilterWhere(['like', 'model', $this->model])
+            ->andFilterWhere(['like', 'serie', $this->serie])
+            ->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'status', $this->status]);
 
         return $dataProvider;

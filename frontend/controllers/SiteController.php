@@ -2,7 +2,9 @@
 
 namespace frontend\controllers;
 
+use common\models\Contactuser;
 use common\models\TestdriveSearch;
+use common\models\User;
 use common\models\VendauserSearch;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
@@ -122,19 +124,48 @@ class SiteController extends Controller
      */
     public function actionContact()
     {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
-            } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending your message.');
-            }
+        /* $model = new ContactForm();
+         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+             if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
+                 Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
+             } else {
+                 Yii::$app->session->setFlash('error', 'There was an error sending your message.');
+             }
 
-            return $this->refresh();
+             return $this->refresh();
+         }
+
+         return $this->render('contact', [
+             'model' => $model,
+         ]);*/
+
+        $model = new Contactuser();
+
+        $email = '';
+        $name = '';
+
+        if (!Yii::$app->user->isGuest) {
+
+            $user = Yii::$app->user->identity;
+
+            $email = $user->email;
+            $name  = $user->name;
+        }
+
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->save()) {
+
+                Yii::$app->session->setFlash('success', 'Obrigado pelo seu contacto, iremos responder o mais rápido possível para ' . $model->email);
+                return $this->redirect('index');
+            }
+        } else {
+            $model->loadDefaultValues();
         }
 
         return $this->render('contact', [
             'model' => $model,
+            'email' => $email,
+            'name' => $name,
         ]);
     }
 
@@ -272,7 +303,7 @@ class SiteController extends Controller
             return $this->actionLogin();
         }
         $searchModelVendauser = new VendauserSearch();
-        $dataProviderVendauser = $searchModelVendauser->search($this->request->queryParams,false);
+        $dataProviderVendauser = $searchModelVendauser->search($this->request->queryParams, false);
 
         $searchModelTestdrive = new TestdriveSearch();
         $dataProviderTestdrive = $searchModelTestdrive->search($this->request->queryParams, false);

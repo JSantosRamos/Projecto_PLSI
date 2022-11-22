@@ -17,8 +17,8 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id', 'status', 'created_at', 'updated_at', 'nif', 'number'], 'integer'],
-            [['username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'verification_token', 'name'], 'safe'],
+            [['id', 'status', 'created_at', 'updated_at', 'isEmployee'], 'integer'],
+            [['username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'verification_token', 'name', 'nif', 'number'], 'safe'],
         ];
     }
 
@@ -62,8 +62,7 @@ class UserSearch extends User
             'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'nif' => $this->nif,
-            'number' => $this->number,
+            'isEmployee' => $this->isEmployee,
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])
@@ -72,8 +71,11 @@ class UserSearch extends User
             ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'verification_token', $this->verification_token])
-            ->andFilterWhere(['like', 'name', $this->name]);
+            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'nif', $this->nif])
+            ->andFilterWhere(['like', 'number', $this->number]);
 
         return $dataProvider;
     }
 }
+

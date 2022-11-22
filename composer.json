@@ -21,7 +21,8 @@
         "2amigos/yii2-ckeditor-widget": "2.1.0",
         "kartik-v/yii2-widget-datetimepicker": "*",
         "kartik-v/yii2-widget-datepicker": "dev-master",
-        "et-soft/yii2-widget-select-year": "*"
+        "et-soft/yii2-widget-select-year": "*",
+        "twbs/bootstrap": "5.0.2"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

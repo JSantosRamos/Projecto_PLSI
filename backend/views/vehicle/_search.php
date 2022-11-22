@@ -15,15 +15,22 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <h5>Procurar por:</h5>
+    <div class="row">
+        <div class="col-md-2"><?php echo $form->field($model, 'id')->textInput(['placeholder' => 'Referência'])->label(false) ?></div>
+        <div class="col-md-2"> <?php echo $form->field($model, 'brand')->textInput(['placeholder' => 'Marca'])->label(false) ?></div>
+        <div class="col-md-2"><?php echo $form->field($model, 'plate')->textInput(['placeholder' => 'Matrícula'])->label(false) ?></div>
+    </div>
+    <div class="form-group">
+        <?= Html::submitButton('Procurar', ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Reset', ['index'], ['class' => 'btn btn-outline-secondary']) ?>
+    </div>
 
-    <?= $form->field($model, 'brand') ?>
+    <?php //$form->field($model, 'model') ?>
 
-    <?= $form->field($model, 'model') ?>
+    <?php // $form->field($model, 'serie') ?>
 
-    <?= $form->field($model, 'serie') ?>
-
-    <?= $form->field($model, 'type') ?>
+    <?php //$form->field($model, 'type') ?>
 
     <?php // echo $form->field($model, 'fuel') ?>
 
@@ -48,13 +55,6 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'isActive') ?>
 
     <?php // echo $form->field($model, 'title') ?>
-
-    <?php // echo $form->field($model, 'plate') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
-    </div>
 
     <?php ActiveForm::end(); ?>
 
