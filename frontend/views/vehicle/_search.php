@@ -20,9 +20,14 @@ use yii\widgets\Pjax;
 
     <h5>Procurar por:</h5>
     <div class="row">
-        <div class="col-md-4"><?php echo $form->field($model, 'title')->textInput(['placeholder' => 'Pesquisar...'])->label(false) ?></div>
-        <div class="col-md-2"> <?php echo $form->field($model, 'brand')->textInput(['placeholder' => 'Marca'])->label(false) ?></div>
-        <div class="col-md-2"><?php echo $form->field($model, 'price')->textInput(['placeholder' => 'Preço'])->label(false) ?></div>
+        <div class="col-md-2"> <?php echo $form->field($model, 'brand')->textInput() ?></div>
+        <div class="col-md-2"><?php echo $form->field($model, 'model')->textInput() ?></div>
+        <div class="col-md-2"><?php echo $form->field($model, 'serie')->textInput() ?></div>
+        <div class="col-md-2"><?php echo $form->field($model, 'price')->dropDownList(['1' => '0-15000 EUR', '2' => '15000-30000 EUR', '3' => '30000-45000 EUR', '4' => '45000-60000 EUR', '5' => '60000-75000 EUR', '6' => '75000-90000 EUR', '7' => '90000+ EUR'], ['prompt' => '',]) ?></div>
+        <div class="col-md-2"><?php echo $form->field($model, 'fuel')->dropDownList(['Diesel' => 'Diesel', 'Gasolina' => 'Gasolina', 'Elétrico' => 'Elétrico', 'GPL' => 'GPL', 'Híbrido' => 'Híbrido',], ['prompt' => '',]) ?></div>
+        <div class="col-md-2"><?php echo $form->field($model, 'mileage')->dropDownList(['1' => '0-25000 km', '2' => '25000-50000 km', '3' => '50000-75000 km', '4' => '75000-100000 km', '5' => '100000-125000 km', '6' => '125000-150000 km', '7' => '150000+ km'], ['prompt' => '',]) ?></div>
+        <div class="col-md-2"><?php //echo $form->field($model, 'year')->dropDownList(range(2010, 2023), ['prompt' => '',]) ?></div>
+        <div class="col-md-2"><?php //echo $form->field($model, 'price_order_by')->dropDownList(['1' => 'Preço Descendente', '2'=>'Preço Ascendente',], ['prompt' =>'']) ?></div>
     </div>
     <br>
     <div class="form-group">

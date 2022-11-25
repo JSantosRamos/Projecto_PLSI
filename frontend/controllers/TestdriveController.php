@@ -92,7 +92,6 @@ class TestdriveController extends Controller
         if (!isset($_GET['veiculo_id']) && !isset($_GET['veiculo_info'])) {
             return $this->redirect(['/vehicle/index']);
         }
-
         $idVeiculo = $_GET['veiculo_id'];
         $veiculoInfo = $_GET['veiculo_info'];
         $sessionUserId = Yii::$app->user->getId();

@@ -44,7 +44,7 @@ $this->title = 'Auto Shop';
                     </svg>
                 </h2>
                 <p>Veja todas a nossas viaturas aos melhores preços, encontre o melhor negócio para si.</p>
-                <a class="text-decoration-none" href="<?php echo Url::toRoute(['/vehicle/index'])?>">
+                <a class="text-decoration-none" href="<?php echo Url::toRoute(['/vehicle/index']) ?>">
                     Ver mais
                 </a>
             </div>
@@ -58,7 +58,7 @@ $this->title = 'Auto Shop';
                 </h2>
                 <p>Tem um automóvel para vender? Nós temos a proposta ideal para si.
                     Tratamos de todo o processo de forma rápida e simples!</p>
-                <a class="text-decoration-none" href="<?php echo Url::toRoute(['/vendauser/create'])?>">
+                <a class="text-decoration-none" href="<?php echo Url::toRoute(['/vendauser/create']) ?>">
                     Ver mais
                 </a>
             </div>
@@ -71,7 +71,7 @@ $this->title = 'Auto Shop';
                     </svg>
                 </h2>
                 <p>Veja os melhores artigos e dicas sobre o mundo automóvel!</p>
-                <a class="text-decoration-none" href="<?php echo Url::toRoute(['/blog/index'])?>">
+                <a class="text-decoration-none" href="<?php echo Url::toRoute(['/blog/index']) ?>">
                     Ver mais
                 </a>
             </div>
