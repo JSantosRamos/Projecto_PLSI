@@ -37,7 +37,7 @@ use yii\bootstrap5\ActiveForm;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 3]) ?>
 
-    <?= $form->field($model, 'idUser')->hiddenInput(['value' => $idUser])->label(false) ?>
+    <?= $form->field($model, 'idUser')->hiddenInput()->label(false) ?>
 
     <?= $form->field($model, 'idVehicle')->hiddenInput(['value' => $idVeiculo])->label(false) ?>
 

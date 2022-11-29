@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\models\Permission;
 use common\models\Testdrive;
 use common\models\TestdriveSearch;
+use common\models\Vehicle;
 use Yii;
 use yii\db\Exception;
 use yii\filters\AccessControl;
@@ -89,14 +90,14 @@ class TestdriveController extends Controller
      */
     public function actionCreate()
     {
-        if (!isset($_GET['veiculo_id']) && !isset($_GET['veiculo_info'])) {
+        if (!isset($_GET['veiculo_id'])) {
             return $this->redirect(['/vehicle/index']);
         }
         $idVeiculo = $_GET['veiculo_id'];
-        $veiculoInfo = $_GET['veiculo_info'];
-        $sessionUserId = Yii::$app->user->getId();
+        $veiculoInfo = Vehicle::findOne($idVeiculo);
 
         $model = new Testdrive();
+        $model->idUser = Yii::$app->user->id;
 
         if ($this->request->isPost) {
 
@@ -108,7 +109,6 @@ class TestdriveController extends Controller
 
                     return $this->render('create', [
                         'model' => $model,
-                        'idUser' => $sessionUserId,
                         'idVeiculo' => $idVeiculo,
                         'veiculoInfo' => $veiculoInfo,
                         'dateInvalidMessage' => 'Data inválida'
@@ -126,7 +126,6 @@ class TestdriveController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'idUser' => $sessionUserId,
             'idVeiculo' => $idVeiculo,
             'veiculoInfo' => $veiculoInfo,
             'dateInvalidMessage' => ''
@@ -161,7 +160,6 @@ class TestdriveController extends Controller
 
                 return $this->render('update', [
                     'model' => $model,
-                    'idUser' => $idUser,
                     'idVeiculo' => $idVeiculo,
                     'dateInvalidMessage' => 'Data inválida'
                 ]);
@@ -174,7 +172,6 @@ class TestdriveController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'idUser' => $idUser,
             'idVeiculo' => $idVeiculo,
             'dateInvalidMessage' => ''
         ]);

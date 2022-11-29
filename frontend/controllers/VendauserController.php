@@ -88,8 +88,8 @@ class VendauserController extends Controller
      */
     public function actionCreate()
     {
-        $sessionUserId = \Yii::$app->user->getId();
         $model = new Vendauser();
+        $model->idUser = \Yii::$app->user->id;
 
         if ($this->request->isPost) {
 
@@ -102,7 +102,6 @@ class VendauserController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'idUser' => $sessionUserId,
         ]);
     }
 
@@ -116,7 +115,6 @@ class VendauserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $idUser = $model->idUser;
 
         if (!Permission::allowedAction($model->idUser)) {
             $this->redirect('site/index');
@@ -132,7 +130,6 @@ class VendauserController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'idUser' => $idUser,
         ]);
     }
 

@@ -26,10 +26,14 @@ use yii\helpers\FileHelper;
  * @property int $isActive
  * @property string $title
  * @property string $plate
+ * @property string $status
  */
 class Vehicle extends \yii\db\ActiveRecord
 {
     public $imageFile;
+    const STATUS_SOLD = 'Vendido';
+    const STATUS_RESERVED = 'Reservado';
+    const STATUS_AVAILABLE= 'Disponível';
 
     /**
      * {@inheritdoc}
@@ -54,6 +58,7 @@ class Vehicle extends \yii\db\ActiveRecord
             [['image'], 'string', 'max' => 2000],
             [['plate'], 'string', 'max' => 8],
             [['plate'], 'unique'],
+            ['status', 'default', 'value' => self::STATUS_AVAILABLE],
         ];
     }
 
@@ -81,7 +86,8 @@ class Vehicle extends \yii\db\ActiveRecord
             'isActive' => 'Publicar',
             'title' => 'Titulo',
             'plate' => 'Matrícula',
-            'imageFile' => 'Escolher Imagem'
+            'imageFile' => 'Escolher Imagem',
+            'status' => 'Estado'
         ];
     }
 

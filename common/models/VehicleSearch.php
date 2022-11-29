@@ -27,7 +27,7 @@ class VehicleSearch extends Vehicle
     {
         return [
             [['id', 'engine', 'year', 'doorNumber', 'isActive'], 'integer'],
-            [['brand', 'model', 'serie', 'type', 'fuel', 'mileage', 'color', 'description', 'transmission', 'image', 'title', 'plate'], 'safe'],
+            [['brand', 'model', 'serie', 'type', 'fuel', 'mileage', 'color', 'description', 'transmission', 'image', 'title', 'plate', 'status'], 'safe'],
             [['price'], 'number'],
         ];
     }
@@ -101,6 +101,7 @@ class VehicleSearch extends Vehicle
             ->andFilterWhere(['like', 'transmission', $this->transmission])
             ->andFilterWhere(['like', 'image', $this->image])
             ->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'status', $this->status])
             ->andFilterWhere(['like', 'plate', $this->plate]);
 
         return $dataProvider;

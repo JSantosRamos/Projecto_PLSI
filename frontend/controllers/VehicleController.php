@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use common\models\Vehicle;
 use common\models\VehicleSearch;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -60,8 +61,19 @@ class VehicleController extends Controller
      */
     public function actionView($id)
     {
+        $vehicle = Vehicle::find()
+            ->where(['id' => $id])
+            ->one();
+
+        $brand = $vehicle->brand;
+
+        $items = Vehicle::find()->where(['isActive' => 1])->andWhere(['brand'=>$brand])->all();
+
+        $items = array_slice($items, 0, 3);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'items' => $items
         ]);
     }
 
