@@ -126,9 +126,7 @@ class AssignmentController extends Controller
         $sessionUserId = Yii::$app->user->getId();
 
         if(!User::isAdmin($sessionUserId)){
-
-            $tryUpdateAdmin = User::isAdmin($user_id);
-            if($tryUpdateAdmin){
+            if(User::isAdmin($user_id) || User::isManager($user_id)){
                 return $this->render('view', [
                     'model' => $this->findModel($item_name, $user_id),
                 ]);

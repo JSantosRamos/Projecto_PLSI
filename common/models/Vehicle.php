@@ -31,9 +31,13 @@ use yii\helpers\FileHelper;
 class Vehicle extends \yii\db\ActiveRecord
 {
     public $imageFile;
+
     const STATUS_SOLD = 'Vendido';
     const STATUS_RESERVED = 'Reservado';
-    const STATUS_AVAILABLE= 'Disponível';
+    const STATUS_AVAILABLE = 'Disponível';
+
+    const ACTIVE = 1;
+    const INACTIVE = 0;
 
     /**
      * {@inheritdoc}

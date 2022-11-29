@@ -344,11 +344,20 @@ class User extends ActiveRecord implements IdentityInterface
         return (array_key_exists('manager', $roles));
     }
 
-    public static function getName($id){
-        $user = User::find()
-            ->where(['id' => $id])
-            ->one();
+    /**
+     * Validates roleEmployee
+     *
+     * @param int $id id to validate
+     * @return bool if id provided user role is Employee
+     */
+    public static function isEmployee($id): bool
+    {
+        $roles = Yii::$app->authManager->getRolesByUser($id);
+        return (array_key_exists('employee', $roles));
+    }
 
+    public static function getName($id){
+        $user = User::findOne($id);
         return $user->name;
     }
 

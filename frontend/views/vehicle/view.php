@@ -2,15 +2,15 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
 /** @var common\models\Vehicle $model */
 
 $this->title = $model->title;
-//$this->params['breadcrumbs'][] = ['label' => 'Vehicles', 'url' => ['index']];
-//$this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+
+YiiAsset::register($this);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -87,7 +87,7 @@ $this->title = $model->title;
                 <div class="d-flex">
                     <div class="text-center">
                         <a class="btn btn-outline-dark mt-auto"
-                           href="<?php echo Url::toRoute(['/testdrive/create', 'veiculo_id' => $model->id, 'veiculo_info' => $model->brand . ', ' . $model->model]) ?>">
+                           href="<?php echo Url::toRoute(['/testdrive/create', 'veiculo_id' => $model->id]) ?>">
                             Teste-Drive
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                  class="bi bi-car-front-fill" viewBox="0 0 16 16">
@@ -140,8 +140,7 @@ $this->title = $model->title;
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <div class="text-center"><a class="btn btn-outline-dark mt-auto"
-                                                        href="<?= Yii::$app->urlManager->createUrl(['vehicle/view', 'id' => $item->id]) ?>">Ver
-                                    mais</a></div>
+                                                        href="<?= Yii::$app->urlManager->createUrl(['vehicle/view', 'id' => $item->id]) ?>">Ver mais</a></div>
                         </div>
                     </div>
                 </div>

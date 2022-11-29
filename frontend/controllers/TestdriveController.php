@@ -55,13 +55,13 @@ class TestdriveController extends Controller
     public function actionIndex()
     {
         return $this->redirect(Url::toRoute('site/mensagem'));
-       /* $searchModel = new TestdriveSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        /* $searchModel = new TestdriveSearch();
+         $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);*/
+         return $this->render('index', [
+             'searchModel' => $searchModel,
+             'dataProvider' => $dataProvider,
+         ]);*/
     }
 
     /**
@@ -93,11 +93,21 @@ class TestdriveController extends Controller
         if (!isset($_GET['veiculo_id'])) {
             return $this->redirect(['/vehicle/index']);
         }
+
         $idVeiculo = $_GET['veiculo_id'];
-        $veiculoInfo = Vehicle::findOne($idVeiculo);
+        $vehicle = Vehicle::findOne($idVeiculo);
+
+        if ($vehicle == null) {
+            return $this->redirect('/vehicle/index');
+        }
+
+        if ($vehicle->isActive == Vehicle::INACTIVE) {
+            return $this->redirect('/vehicle/index');
+        }
 
         $model = new Testdrive();
         $model->idUser = Yii::$app->user->id;
+        $message = '';
 
         if ($this->request->isPost) {
 
@@ -106,19 +116,11 @@ class TestdriveController extends Controller
                 $todayDate = date('d-M-Y');
 
                 if ($model->date < $todayDate) {
-
-                    return $this->render('create', [
-                        'model' => $model,
-                        'idVeiculo' => $idVeiculo,
-                        'veiculoInfo' => $veiculoInfo,
-                        'dateInvalidMessage' => 'Data inválida'
-                    ]);
+                    $message = 'Data inválida';
+                } else {
+                    $model->save();
+                    return $this->redirect(['/vehicle/index']);
                 }
-
-              if($model->save()){
-                  return $this->redirect(['/vehicle/index']);
-              }
-
             }
         } else {
             $model->loadDefaultValues();
@@ -127,8 +129,8 @@ class TestdriveController extends Controller
         return $this->render('create', [
             'model' => $model,
             'idVeiculo' => $idVeiculo,
-            'veiculoInfo' => $veiculoInfo,
-            'dateInvalidMessage' => ''
+            'veiculoInfo' => $vehicle,
+            'dateInvalidMessage' => $message,
         ]);
     }
 
@@ -149,7 +151,7 @@ class TestdriveController extends Controller
             $this->redirect('site/index');
         }
 
-        if($model->status != Testdrive::POR_VER){
+        if ($model->status != Testdrive::POR_VER) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -165,7 +167,7 @@ class TestdriveController extends Controller
                 ]);
             }
 
-            if($model->save()){
+            if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }

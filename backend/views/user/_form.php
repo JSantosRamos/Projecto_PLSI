@@ -10,24 +10,24 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="user-form">
-
-
     <?php $form = ActiveForm::begin();
     ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <div class="row mt-3">
+        <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'password_hash')->passwordInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'password_hash')->passwordInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'email')->Input('email') ?>
+        <?= $form->field($model, 'email')->Input('email') ?>
 
-    <?= $form->field($model, 'nif')->Input('number') ?>
+        <div class="col-md-4"><?= $form->field($model, 'nif')->Input('number') ?></div>
 
-    <?= $form->field($model, 'number')->Input('number') ?>
+        <div class="col-md-4"><?= $form->field($model, 'number')->Input('number') ?></div>
 
-    <?= $form->field($model, 'status')->dropDownList(['10' => 'Ativo', '9' => 'Desativa']) ?>
+        <div class="col-md-4"><?= $form->field($model, 'status')->dropDownList(['10' => 'Ativo', '9' => 'Desativa']) ?></div>
+    </div>
 
     <?= $form->field($model, 'isEmployee')->checkbox() ?>
 

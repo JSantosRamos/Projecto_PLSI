@@ -46,6 +46,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
+                'attribute' => 'status',
+                'format' =>['html'],
+                'value' => function ($model) {
+                    return Html::tag('span', $model->status ,[
+                        'class' => $model->status == Vehicle::STATUS_AVAILABLE ? 'badge bg-primary' : ($model->status == Vehicle::STATUS_RESERVED ? 'badge bg-warning' : 'badge bg-success')
+                    ]);
+                }
+            ],
+            [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Vehicle $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);

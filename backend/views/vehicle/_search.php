@@ -20,6 +20,8 @@ use yii\widgets\ActiveForm;
         <div class="col-md-2"><?php echo $form->field($model, 'id')->textInput(['placeholder' => 'Referência'])->label(false) ?></div>
         <div class="col-md-2"> <?php echo $form->field($model, 'brand')->textInput(['placeholder' => 'Marca'])->label(false) ?></div>
         <div class="col-md-2"><?php echo $form->field($model, 'plate')->textInput(['placeholder' => 'Matrícula'])->label(false) ?></div>
+        <div class="col-md-2"><?php echo $form->field($model, 'isActive')->dropDownList(['1' =>'Publicado', '0' =>'Não Publicado'], ['prompt' => 'Todos'])->label(false) ?></div>
+        <div class="col-md-2"><?php echo $form->field($model, 'status')->dropDownList(['Vendido' => 'Vendidos', 'Reservado' => 'Reservados', 'Disponível' => 'Disponíveis'], ['prompt' => '  Todos',])->label(false) ?></div>
     </div>
     <div class="form-group">
         <?= Html::submitButton('Procurar', ['class' => 'btn btn-primary']) ?>
@@ -51,8 +53,6 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'price') ?>
 
     <?php // echo $form->field($model, 'image') ?>
-
-    <?php // echo $form->field($model, 'isActive') ?>
 
     <?php // echo $form->field($model, 'title') ?>
 

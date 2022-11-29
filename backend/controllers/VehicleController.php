@@ -27,9 +27,14 @@ class VehicleController extends Controller
                     'class' => AccessControl::class,
                     'rules' => [
                         [
-                            'actions' => ['index', 'create', 'update', 'delete', 'view'],
+                            'actions' => ['index', 'create', 'update', 'view'],
                             'allow' => true,
                             'roles' => ['employee'],
+                        ],
+                        [
+                            'actions' => ['delete'],
+                            'allow' => true,
+                            'roles' => ['admin'],
                         ],
                     ],
                 ],
@@ -67,6 +72,7 @@ class VehicleController extends Controller
      */
     public function actionView($id)
     {
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);

@@ -56,19 +56,19 @@ class VehicleController extends Controller
     /**
      * Displays a single Vehicle model.
      * @param int $id ID
-     * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        $vehicle = Vehicle::find()
-            ->where(['id' => $id])
-            ->one();
+        $vehicle = Vehicle::findOne($id);
+
+        if($vehicle->isActive == Vehicle::INACTIVE){
+            return $this->redirect('index');
+        }
 
         $brand = $vehicle->brand;
 
         $items = Vehicle::find()->where(['isActive' => 1])->andWhere(['brand'=>$brand])->all();
-
         $items = array_slice($items, 0, 3);
 
         return $this->render('view', [

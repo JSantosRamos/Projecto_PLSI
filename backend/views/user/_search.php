@@ -15,7 +15,11 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?php  echo $form->field($model, 'email') ?>
+    <div class="row">
+        <div class="col-md-4"> <?php echo $form->field($model, 'id')->textInput(['placeholder' => 'Número do Utilizador'])->label(false) ?></div>
+        <div class="col-md-4"><?php echo $form->field($model, 'email')->textInput(['placeholder' => 'Email'])->label(false) ?></div>
+        <div class="col-md-4"><?php echo $form->field($model, 'isEmployee')->dropDownList(['0' =>'Clientes', '1' =>'Funcionários'], ['prompt' => 'Todos'])->label(false) ?></div>
+    </div>
 
     <?php // echo $form->field($model, 'status') ?>
 
@@ -33,7 +37,7 @@ use yii\widgets\ActiveForm;
 
     <div class="form-group">
         <?= Html::submitButton('Procurar', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
+        <?= Html::a('Reset', ['index'], ['class' => 'btn btn-outline-secondary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

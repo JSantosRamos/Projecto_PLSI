@@ -32,9 +32,14 @@ class UserController extends Controller
                     'class' => AccessControl::class,
                     'rules' => [
                         [
-                            'actions' => ['index', 'create', 'update', 'delete', 'view'],
+                            'actions' => ['index', 'view', 'create', 'update'],
                             'allow' => true,
                             'roles' => ['employee'],
+                        ],
+                        [
+                            'actions' => ['delete'],
+                            'allow' => true,
+                            'roles' => ['admin'],
                         ],
                     ],
                 ],
@@ -59,7 +64,7 @@ class UserController extends Controller
         $dataProviderAssignment = null;
 
         $sessionUserId = Yii::$app->user->getId();
-        if (Yii::$app->authManager->checkAccess($sessionUserId, 'canCreateAllUsers') || Yii::$app->authManager->checkAccess($sessionUserId, 'canCreateEmployee') ) {
+        if (Yii::$app->authManager->checkAccess($sessionUserId, 'canCreateAllUsers') || Yii::$app->authManager->checkAccess($sessionUserId, 'canCreateEmployee')) {
 
             $searchModelAssignment = new AuthAssignmentSearch();
             $dataProviderAssignment = $searchModelAssignment->search($this->request->queryParams);
@@ -108,13 +113,13 @@ class UserController extends Controller
 
             if ($model->load($this->request->post())) {
 
-                if(!empty($model->password_hash)){
+                if (!empty($model->password_hash)) {
                     $model->generateAuthKey();
                     $model->generateEmailVerificationToken();
                     $model->setPassword($model->password_hash);
                 }
 
-                if($model->save()){
+                if ($model->save()) {
                     $auth = \Yii::$app->authManager;
                     $authorRole = $auth->getRole('customer');
                     $auth->assign($authorRole, $model->getId());
@@ -140,13 +145,40 @@ class UserController extends Controller
     public
     function actionUpdate($id)
     {
+        $updateValido = true;
+        $sessionUserID = Yii::$app->user->getId();
+
+        if ($sessionUserID != $id) {
+            $role = User::isAdmin($sessionUserID) ? 'admin' : (User::isManager($sessionUserID) ? 'manager' : 'employee');
+            $roleUserUpdate = User::isAdmin($id) ? 'admin' : (User::isManager($id) ? 'manager' : 'employee');
+
+            switch ($role) {
+                case 'admin':
+                    break;
+                case 'manager':
+                    if ($roleUserUpdate == 'admin' || $roleUserUpdate == 'manager') {
+                        $updateValido = false;
+                    }
+                    break;
+                case 'employee':
+                    if ($roleUserUpdate == 'admin' || $roleUserUpdate == 'manager' || $roleUserUpdate == 'employee') {
+                        $updateValido = false;
+                    }
+                    break;
+            }
+        }
+
+        if (!$updateValido) {
+            return $this->redirect(['index']);
+        }
+
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post())) {
 
             $model->setPassword($model->password_hash);
 
-            if($model->save()){
+            if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
