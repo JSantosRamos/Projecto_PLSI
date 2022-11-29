@@ -1,4 +1,3 @@
-<?php //foreach ($vehicles as $vehicle): ?>
 
     <div class="card h-100">
         <!-- Vehicle image-->
@@ -23,5 +22,3 @@
                     mais</a></div>
         </div>
     </div>
-
-<?php //endforeach; ?>

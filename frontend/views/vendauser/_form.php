@@ -37,7 +37,7 @@ use yii\bootstrap5\ActiveForm;
 
     <?= $form->field($model, 'description')->textarea(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'idUser')->textInput(['value' => $idUser]) ?>
+    <?= $form->field($model, 'idUser')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Enviar', ['class' => 'btn btn-success']) ?>

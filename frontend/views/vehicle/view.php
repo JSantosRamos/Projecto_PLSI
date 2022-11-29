@@ -46,10 +46,37 @@ $this->title = $model->title;
 <body>
 
 <!-- Product section-->
-<section class="py-5 bg-light" >
+<section class="py-5 bg-light">
     <div class="container px-4 px-lg-5 my-5">
         <div class="row gx-4 gx-lg-5 align-items-center">
-            <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="http://frontendstand.test/storage/<?= $model->image ?>" alt="..."/></div>
+            <div class="col-md-6">
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                                class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                                aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                                aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="http://frontendstand.test/storage/<?= $model->image ?>" class="d-block w-100"
+                                 alt="...">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
             <div class="col-md-6">
                 <div class="small mb-1">Refêrencia: <?= $model->id ?></div>
                 <h4 class="display-5 fw-bolder"><?= $model->brand ?>, <span><?= $model->model ?></span></h4>
@@ -59,9 +86,11 @@ $this->title = $model->title;
                 <p class="lead"><?= $model->description ?></p>
                 <div class="d-flex">
                     <div class="text-center">
-                        <a class="btn btn-outline-dark mt-auto" href="<?php echo Url::toRoute(['/testdrive/create', 'veiculo_id' =>$model->id, 'veiculo_info' =>$model->brand . ', ' . $model->model])?>">
+                        <a class="btn btn-outline-dark mt-auto"
+                           href="<?php echo Url::toRoute(['/testdrive/create', 'veiculo_id' => $model->id, 'veiculo_info' => $model->brand . ', ' . $model->model]) ?>">
                             Teste-Drive
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-car-front-fill" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-car-front-fill" viewBox="0 0 16 16">
                                 <path d="M2.52 3.515A2.5 2.5 0 0 1 4.82 2h6.362c1 0 1.904.596 2.298 1.515l.792 1.848c.075.175.21.319.38.404.5.25.855.715.965 1.262l.335 1.679c.033.161.049.325.049.49v.413c0 .814-.39 1.543-1 1.997V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.338c-1.292.048-2.745.088-4 .088s-2.708-.04-4-.088V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.892c-.61-.454-1-1.183-1-1.997v-.413a2.5 2.5 0 0 1 .049-.49l.335-1.68c.11-.546.465-1.012.964-1.261a.807.807 0 0 0 .381-.404l.792-1.848ZM3 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm10 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM6 8a1 1 0 0 0 0 2h4a1 1 0 1 0 0-2H6ZM2.906 5.189a.51.51 0 0 0 .497.731c.91-.073 3.35-.17 4.597-.17 1.247 0 3.688.097 4.597.17a.51.51 0 0 0 .497-.731l-.956-1.913A.5.5 0 0 0 11.691 3H4.309a.5.5 0 0 0-.447.276L2.906 5.19Z"/>
                             </svg>
                         </a>
@@ -90,80 +119,38 @@ $this->title = $model->title;
     <div class="container px-4 px-lg-5 mt-5">
         <h2 class="fw-bolder mb-4">Pode ser do seu Interesse.</h2>
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <!-- Product image-->
-                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..."/>
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder">Titulo</h5>
-                            <!-- Product price-->
-                            0€
+            <?php foreach ($items as $item): ?>
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <!-- Vehicle image-->
+                        <img class="card-img-top" src="http://frontendstand.test/storage/<?= $item->image ?>"
+                             alt=""/>
+                        <!-- Vehicle details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <h5 class="fw-bolder"><?= $item->brand ?>, <span><?= $item->model ?></span></h5>
+                                <div class="text-secondary"><?= $item->year ?> | <?= $item->fuel ?>
+                                    | <?= $item->mileage ?> km
+                                </div>
+                                <!-- Product price-->
+                                <div class="text-secondary"> Preço:
+                                    <span><?= Yii::$app->formatter->asCurrency($item->price) ?></span></div>
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto"
+                                                        href="<?= Yii::$app->urlManager->createUrl(['vehicle/view', 'id' => $item->id]) ?>">Ver
+                                    mais</a></div>
                         </div>
                     </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
-                    </div>
                 </div>
-            </div>
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <!-- Sale badge-->
-                    <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Elétrico
-                    </div>
-                    <!-- Product image-->
-                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..."/>
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder">Titulo</h5>
-                            <!-- Product price-->
-                            00.00
-                        </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                    </div>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-<!-- Modal Test-Drive -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Recipient:</label>
-                        <input type="text" class="form-control" id="recipient-name">
-                    </div>
-                    <div class="mb-3">
-                        <label for="message-text" class="col-form-label">Message:</label>
-                        <textarea class="form-control" id="message-text"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Send message</button>
-            </div>
-        </div>
-    </div>
-</div>
 </html>
 
