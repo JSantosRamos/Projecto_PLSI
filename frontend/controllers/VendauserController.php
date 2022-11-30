@@ -29,7 +29,7 @@ class VendauserController extends Controller
                     'class' => AccessControl::class,
                     'rules' => [
                         [
-                            'actions' => ['index', 'create', 'update', 'delete', 'view'],
+                            'actions' => ['index', 'create', 'update', 'delete', 'view', 'confirm'],
                             'allow' => true,
                             'roles' => ['@'],
                         ],
@@ -150,6 +150,29 @@ class VendauserController extends Controller
 
         $model->delete();
         return $this->redirect(['index']);
+    }
+
+    public function actionConfirm($id, $value)
+    {
+        $model = $this->findModel($id);
+
+        if (!Permission::allowedAction($model->idUser)) {
+            $this->redirect('site/index');
+        }
+
+        if ($model->status != Vendauser::AGUARDANDO_RESPOSTA) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        if($value == 'yes'){
+            $model->status = Vendauser::ACEITE;
+        }else{
+            $model->status = Vendauser::RECUSADO;
+        }
+
+        $model->save();
+
+        return $this->redirect(['view', 'id' => $model->id]);
     }
 
     /**

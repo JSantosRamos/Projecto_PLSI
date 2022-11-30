@@ -31,7 +31,7 @@ class TestdriveController extends Controller
                     'class' => AccessControl::class,
                     'rules' => [
                         [
-                            'actions' => ['index', 'create', 'update', 'delete', 'view'],
+                            'actions' => ['index', 'create', 'update', 'delete', 'view', 'confirm'],
                             'allow' => true,
                             'roles' => ['@'],
                         ],
@@ -119,6 +119,7 @@ class TestdriveController extends Controller
                     $message = 'Data inválida';
                 } else {
                     $model->save();
+                    Yii::$app->session->setFlash('success', 'O seu Test-dive foi registado, pode acompanhar o processo do mesmo na sua Área Pessoal.');
                     return $this->redirect(['/vehicle/index']);
                 }
             }
@@ -144,7 +145,6 @@ class TestdriveController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $idUser = $model->idUser;
         $idVeiculo = $model->idVehicle;
 
         if (!Permission::allowedAction($model->idUser)) {
@@ -196,6 +196,29 @@ class TestdriveController extends Controller
 
         $model->delete();
         return $this->redirect(['index']);
+    }
+
+    public function actionConfirm($id, $value)
+    {
+        $model = $this->findModel($id);
+
+        if (!Permission::allowedAction($model->idUser)) {
+            $this->redirect('site/index');
+        }
+
+        if ($model->status != Testdrive::AGUARDANDO_RESPOSTA) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        if($value == 'yes'){
+            $model->status = Testdrive::ACEITE;
+        }else{
+            $model->status = Testdrive::RECUSADO;
+        }
+
+        $model->save();
+
+        return $this->redirect(['view', 'id' => $model->id]);
     }
 
     /**

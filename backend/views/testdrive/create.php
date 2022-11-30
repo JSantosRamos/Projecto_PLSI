@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\Testdrive $model */
 
-$this->title = 'Create Testdrive';
+$this->title = 'Novo';
 $this->params['breadcrumbs'][] = ['label' => 'Testdrives', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'dateInvalidMessage' => $dateInvalidMessage,
     ]) ?>
 
 </div>

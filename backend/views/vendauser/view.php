@@ -1,9 +1,11 @@
 <?php
 
+use common\models\User;
 use common\models\Vendauser;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
+use yii\widgets\ListView;
 
 /** @var yii\web\View $this */
 /** @var common\models\Vendauser $model */
@@ -17,25 +19,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Apagar', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             [
-                'attribute' => 'Utilizador',
-                'format' =>['html'],
+                'attribute' => 'idUser',
+                'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::a($model->idUser, Url::toRoute(['user/view', 'id' => $model->idUser]) ,[
+                    return Html::a(\common\models\User::getName($model->idUser), Url::toRoute(['user/view', 'id' => $model->idUser]), [
                     ]);
                 }
             ],
@@ -60,10 +51,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'date',
             [
                 'attribute' => 'status',
-                'format' =>['html'],
+                'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::tag('span', $model->status ,[
-                        'class' => $model->status == Vendauser::POR_VER ? 'badge bg-secondary' : ($model->status == Vendauser::ACEITE ? 'badge bg-success' : ($model->status == Vendauser::RECUSADO ? 'badge bg-danger' : 'badge bg-primary'))
+                    return Html::tag('span', $model->status, [
+                        'class' => $model->status == Vendauser::POR_VER ? 'badge bg-secondary' : ($model->status == Vendauser::ACEITE ? 'badge bg-success' : ($model->status == Vendauser::RECUSADO ? 'badge bg-danger' :
+                            ($model->status == Vendauser::EM_ANALISE ? 'badge bg-primary' : 'badge bg-info')))
                     ]);
                 }
             ],
@@ -71,3 +63,29 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
 </div>
+<p>
+    <?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+    <?php
+    if (User::isAdmin(Yii::$app->user->id)) {
+        Html::a('Apagar', ['delete', 'id' => $model->id], [
+            'class' => 'btn btn-danger',
+            'data' => [
+                'confirm' => 'Are you sure you want to delete this item?',
+                'method' => 'post',
+            ],
+        ]);
+    }
+    ?>
+    <?= Html::a('Adicionar Nota', Url::toRoute(['note/create', 'idVenda' => $model->id]), ['class' => 'btn btn-success']) ?>
+</p>
+<br>
+<div class="notes">
+    <h2>Notas:</h2>
+    <hr style="border: 1px solid blue">
+    <?= ListView::widget([
+        'dataProvider' => $dataProviderNote,
+        'layout' => '{items}',
+        'itemView' => '/note/_item',
+    ]) ?>
+</div>
+

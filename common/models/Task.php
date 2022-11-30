@@ -40,7 +40,6 @@ class Task extends \yii\db\ActiveRecord
     {
         return [
             [['type', 'date', 'description', 'status', 'idCreated_by', 'idAssigned_to'], 'required'],
-            [['date', 'created_at'], 'safe'],
             [['status'], 'string'],
             [['idCreated_by', 'idAssigned_to'], 'integer'],
             [['type'], 'string', 'max' => 20],

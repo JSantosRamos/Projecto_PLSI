@@ -1,6 +1,7 @@
 <?php
 
 use common\models\Testdrive;
+use common\models\User;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -18,28 +19,30 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Testdrive', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Criar novo', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'summary' => 'Total de Test-Drives: {totalCount}',
+        'emptyText' => 'Não foram encontrados resultados.',
         'columns' => [
             'id',
             [
                 'attribute' => 'idVehicle',
-                'format' =>['html'],
+                'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::a($model->idVehicle, Url::toRoute(['vehicle/view', 'id' => $model->idVehicle]) ,[
+                    return Html::a($model->idVehicle, Url::toRoute(['vehicle/view', 'id' => $model->idVehicle]), [
                     ]);
                 }
             ],
             [
                 'attribute' => 'idUser',
-                'format' =>['html'],
+                'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::a($model->idUser, Url::toRoute(['user/view', 'id' => $model->idUser]) ,[
+                    return Html::a($model->idUser, Url::toRoute(['user/view', 'id' => $model->idUser]), [
                     ]);
                 }
             ],
@@ -48,18 +51,18 @@ $this->params['breadcrumbs'][] = $this->title;
             'description',
             [
                 'attribute' => 'status',
-                'format' =>['html'],
+                'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::tag('span', $model->status ,[
-                        'class' => $model->status == Testdrive::POR_VER ? 'badge bg-secondary' : ($model->status == Testdrive::ACEITE ? 'badge bg-success' : ($model->status == Testdrive::RECUSADO ? 'badge bg-danger' : 'badge bg-primary'))
+                    return Html::tag('span', $model->status, [
+                        'class' => $model->status == Testdrive::POR_VER ? 'badge bg-secondary' : ($model->status == Testdrive::ACEITE ? 'badge bg-success' : ($model->status == Testdrive::RECUSADO ? 'badge bg-danger' : 'badge bg-info'))
                     ]);
                 }
             ],
             [
-                'class' => ActionColumn::className(),
+                'class' => 'yii\grid\ActionColumn', 'template' => User::isAdmin(\Yii::$app->user->id) ? '{view} {update} {delete}' : '{view} {update}' ,
                 'urlCreator' => function ($action, Testdrive $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                }
             ],
         ],
     ]); ?>

@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Html;
+use common\models\Testdrive;use yii\helpers\Html;
 use yii\helpers\Url;
 
 ?>
@@ -18,14 +18,14 @@ use yii\helpers\Url;
 <td><?= $model->date ?></td>
 <td><?= $model->time ?></td>
 <?php
-if ($model->status == 'Aceite') {
+if ($model->status == Testdrive::ACEITE) {
     echo '<td><span class="badge bg-success">' . $model->status . '</span></td>';
-} elseif ($model->status == 'Por ver') {
+} elseif ($model->status == Testdrive::POR_VER) {
     echo '<td><span class="badge bg-secondary">' . $model->status . '</span></td>';
-
-
-} else {
+} elseif($model->status == Testdrive::RECUSADO) {
     echo '<td><span class="badge bg-danger">' . $model->status . '</span></td>';
+} else {
+    echo '<td><span class="badge bg-info">Necessita de confirmação</span></td>';
 }
 ?>
 </tr>

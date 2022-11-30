@@ -25,6 +25,7 @@ class Testdrive extends \yii\db\ActiveRecord
     const ACEITE = 'Aceite';
     const RECUSADO = 'Recusado';
     const EM_ANALISE = 'Em análise';
+    const AGUARDANDO_RESPOSTA = 'Aguardando Resposta';
 
     /**
      * {@inheritdoc}

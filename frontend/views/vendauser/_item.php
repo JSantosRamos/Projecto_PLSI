@@ -1,5 +1,6 @@
 <?php
 
+use common\models\Vendauser;
 use yii\helpers\Url;
 
 ?>
@@ -18,15 +19,17 @@ use yii\helpers\Url;
     <td><?= $model->price ?>€</td>
 
     <?php
-    if ($model->status == 'Aceite') {
+    if ($model->status == Vendauser::ACEITE) {
         echo '<td><span class="badge bg-success">' . $model->status . '</span></td>';
-    } elseif ($model->status == 'Por ver') {
+    } elseif ($model->status == Vendauser::POR_VER) {
         echo '<td><span class="badge bg-secondary">' . $model->status . '</span></td>';
 
-    } elseif($model->status == 'Recusado') {
+    } elseif($model->status == Vendauser::RECUSADO) {
         echo '<td><span class="badge bg-danger">' . $model->status . '</span></td>';
-    }else{
+    }elseif($model->status == Vendauser::EM_ANALISE){
         echo '<td><span class="badge bg-primary">' . $model->status . '</span></td>';
+    }else{
+        echo '<td><span class="badge bg-info"> Necessário Confirmar</span></td>';
     }
     ?>
 </tr>

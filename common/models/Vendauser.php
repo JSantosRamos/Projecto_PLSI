@@ -29,6 +29,7 @@ class Vendauser extends \yii\db\ActiveRecord
     const ACEITE = 'Aceite';
     const RECUSADO = 'Recusado';
     const EM_ANALISE = 'Em Análise';
+    const AGUARDANDO_RESPOSTA = 'Aguardando Resposta';
 
     /**
      * {@inheritdoc}
@@ -68,7 +69,7 @@ class Vendauser extends \yii\db\ActiveRecord
             'id' => 'ID',
             'idUser' => 'Utilizador',
             'price' => 'Valor pretendido',
-            'date' => 'Date',
+            'date' => 'Data',
             'plate' => 'Matricula',
             'mileage' => 'Quilómetro',
             'fuel' => 'Combústivel',
@@ -77,7 +78,7 @@ class Vendauser extends \yii\db\ActiveRecord
             'model' => 'Modelo',
             'serie' => 'Serie',
             'description' => 'Extras',
-            'status' => 'Status',
+            'status' => 'Estado',
         ];
     }
 
