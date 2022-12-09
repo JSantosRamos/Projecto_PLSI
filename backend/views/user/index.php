@@ -10,7 +10,7 @@ use backend\models\AuthAssignment;
 /** @var yii\web\View $this */
 /** @var common\models\UserSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
-/** @var backend\models\AuthAssignmentSearch $searchModelAssign  */
+/** @var backend\models\AuthAssignmentSearch $searchModelAssign */
 
 $this->title = 'Utilizadores';
 $this->params['breadcrumbs'][] = $this->title;
@@ -28,6 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'summary' => 'Total de Utilizadores: {totalCount}',
+        'emptyText' => 'Não foram encontrados resultados.',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -37,9 +39,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'email:email',
             [
                 'attribute' => 'status',
-                'format' =>['html'],
+                'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::tag('span', $model->status == 10 ? 'Ativo' : 'Desativo',[
+                    return Html::tag('span', $model->status == 10 ? 'Ativo' : 'Desativo', [
                         'class' => $model->status == 10 ? 'badge bg-success' : 'badge bg-danger'
                     ]);
                 }
@@ -48,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, User $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                }
             ],
         ],
     ]); ?>
@@ -56,7 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <br>
 
-<?php if($searchModelAssignment != null && $dataProviderAssignment != null) : ?>
+<?php if ($searchModelAssignment != null && $dataProviderAssignment != null) : ?>
 
     <div class="user-index">
 
@@ -64,11 +66,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= GridView::widget([
             'dataProvider' => $dataProviderAssignment,
+            'summary' => '',
+            'emptyText' => 'Não foram encontrados resultados.',
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
-                'user_id',
+                [
+                    'attribute' => 'user_id',
+                    'format' => ['html'],
+                    'value' => function ($model) {
+                        return Html::a(User::getName($model->user_id) .' (nº:'. $model->user_id.')', Url::toRoute(['user/view', 'id' => $model->user_id]), [
+                        ]);
+                    }
+                ],
                 'item_name',
-                'name',
                 [
                     'class' => ActionColumn::className(),
                     'template' => '{view}',

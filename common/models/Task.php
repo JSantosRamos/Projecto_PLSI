@@ -22,7 +22,7 @@ use Yii;
 class Task extends \yii\db\ActiveRecord
 {
     const Por_INICIAR = 'Por iniciar';
-    const EM_PROCESSO = 'Em_Processo';
+    const EM_PROCESSO = 'Em Processo';
     const FINALIZADA = 'Finalizado';
 
     /**
@@ -84,5 +84,33 @@ class Task extends \yii\db\ActiveRecord
     public function getIdCreatedBy()
     {
         return $this->hasOne(User::class, ['id' => 'idCreated_by']);
+    }
+
+    public static function getTotalTarefas(){
+
+        return Task::find()->count();
+    }
+
+    public static function getTotalStatus(){
+
+        $porIniciar = 0;
+        $emProcesso = 0;
+        $finalizado = 0;
+
+        $tarefas = Task::find()->all();
+        foreach ($tarefas as $tarefa) {
+
+            if ($tarefa->status == Task::Por_INICIAR) {
+                $porIniciar = ++$porIniciar;
+
+            } elseif ($tarefa->status == Task::EM_PROCESSO) {
+                $emProcesso = ++$emProcesso;
+
+            }elseif ($tarefa->status == Task::FINALIZADA){
+                $finalizado = ++$finalizado;
+            }
+        }
+
+        return array("porIniciar" => $porIniciar, "emProcesso" => $emProcesso, "finalizado" => $finalizado);
     }
 }

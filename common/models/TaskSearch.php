@@ -40,9 +40,13 @@ class TaskSearch extends Task
      */
     public function search($params)
     {
-        $query = Task::find();
+        $query = null;
 
-        // add conditions that should always apply here
+        if (User::isEmployee(\Yii::$app->user->id)) {
+            $query = Task::find()->where(['idAssigned_to' => \Yii::$app->user->id]);
+        } else {
+            $query = Task::find();
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

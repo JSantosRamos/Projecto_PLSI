@@ -50,7 +50,7 @@ class Venda extends \yii\db\ActiveRecord
         return [
             'id' => 'NºVenda',
             'idUser_seller' => 'Vendedor',
-            'idUser_buyer' => 'Nª do Comprador',
+            'idUser_buyer' => 'Comprador',
             'idVehicle' => 'Referência do Veículo',
             'Price' => 'Preço',
             'comment' => 'Outro',
@@ -75,5 +75,26 @@ class Venda extends \yii\db\ActiveRecord
     public function getIdUserSeller()
     {
         return $this->hasOne(User::class, ['id' => 'idUser_seller']);
+    }
+
+    /**
+     * Gets query for [[IdUserSeller]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIdVehicle()
+    {
+        return $this->hasOne(Vehicle::class, ['id' => 'idVehicle']);
+    }
+
+    public static function getValorVendas(){
+        $totalVendas = 0;
+        $vendas = Venda::find()->select('Price')->all();
+
+        foreach ($vendas as $venda) {
+            $totalVendas = $venda->Price + $totalVendas;
+        }
+
+        return $totalVendas;
     }
 }

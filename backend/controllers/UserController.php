@@ -9,6 +9,7 @@ use common\models\User;
 use common\models\UserSearch;
 use Yii;
 use yii\base\Model;
+use yii\db\StaleObjectException;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -198,7 +199,16 @@ class UserController extends Controller
     public
     function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        try {
+            $model->delete();
+
+        } catch (\Throwable $e) {
+
+            //return $this->render('view', ['model' => $model,]);
+            return $this->redirect(['view', 'id' => $model->id, 'erro_delete' => 'true']);
+        }
 
         return $this->redirect(['index']);
     }

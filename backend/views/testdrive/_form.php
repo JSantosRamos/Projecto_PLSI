@@ -26,7 +26,7 @@ use yii\bootstrap5\ActiveForm;
                 'value' => '23-Feb-1982',
                 'pluginOptions' => [
                     'autoclose' => true,
-                    'format' => 'dd-M-yyyy'
+                    'format' => 'dd-m-yyyy'
                 ]
             ]) ?>
 

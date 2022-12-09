@@ -12,16 +12,25 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'idUser_buyer')->textInput() ?>
+    <div class="row">
+        <div class="col-md-4"><?= $form->field($model, 'idVehicle')->Input('number') ?></div>
+        <div class="col-md-4"><?= $form->field($model, 'idUser_buyer')->Input('number') ?></div>
+        <div class="col-md-4"><?= $form->field($model, 'Price')->Input('number') ?></div>
+    </div>
 
-    <?= $form->field($model, 'idVehicle')->textInput() ?>
-
-    <?= $form->field($model, 'Price')->textInput() ?>
+    <?php if (!empty($message)): ?>
+        <div class="alert alert-danger" role="alert"><?= $message ?></div>
+    <?php endif; ?>
 
     <?= $form->field($model, 'comment')->textarea(['maxlength' => true]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Guardar', [
+            'class' => 'btn btn-success',
+            'data' => [
+                'confirm' => 'Tem a certeza que pretende registar esta venda? Depois de criada não pode ser alterada.',
+            ],
+        ]) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

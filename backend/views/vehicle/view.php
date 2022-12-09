@@ -1,12 +1,14 @@
 <?php
 
+use common\models\User;
+use common\models\Vehicle;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
 /** @var common\models\Vehicle $model */
 
-$this->title = 'Editar Veículo: ' . $model->brand . '('.$model->plate .')';
+$this->title = 'Editar Veículo: ' . $model->brand . '(' . $model->plate . ')';
 $this->params['breadcrumbs'][] = ['label' => 'Vehicles', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -17,13 +19,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Apagar', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?php if (User::isAdmin(Yii::$app->user->getId())){
+            Html::a('Apagar', ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => 'Are you sure you want to delete this item?',
+                    'method' => 'post',
+                ],
+            ]);
+        }  ?>
     </p>
 
     <?= DetailView::widget([
@@ -59,10 +63,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'attribute' => 'isActive',
-                'format' =>['html'],
+                'attribute' => 'status',
+                'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::tag('span', $model->isActive ? 'Publicado' : 'Não Publicado',[
+                    return Html::tag('span', $model->status, [
+                        'class' => $model->status == Vehicle::STATUS_AVAILABLE ? 'badge bg-primary' : ($model->status == Vehicle::STATUS_RESERVED ? 'badge bg-warning' : 'badge bg-success')
+                    ]);
+                }
+            ],
+            [
+                'attribute' => 'isActive',
+                'format' => ['html'],
+                'value' => function ($model) {
+                    return Html::tag('span', $model->isActive ? 'Publicado' : 'Não Publicado', [
                         'class' => $model->isActive ? 'badge bg-success' : 'badge bg-danger'
                     ]);
                 }

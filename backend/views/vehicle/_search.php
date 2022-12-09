@@ -25,7 +25,7 @@ use yii\widgets\ActiveForm;
     </div>
     <div class="form-group">
         <?= Html::submitButton('Procurar', ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Reset', ['index'], ['class' => 'btn btn-outline-secondary']) ?>
+        <?= Html::a('Limpar', ['index'], ['class' => 'btn btn-outline-secondary']) ?>
     </div>
 
     <?php //$form->field($model, 'model') ?>

@@ -41,7 +41,13 @@ class VendaSearch extends Venda
      */
     public function search($params)
     {
-        $query = Venda::find();
+        $idUser = \Yii::$app->user->id;
+
+        if (User::isEmployee($idUser)) {
+            $query = Venda::find()->where(['idUser_seller' => $idUser]);
+        } else {
+            $query = Venda::find();
+        }
 
         // add conditions that should always apply here
 

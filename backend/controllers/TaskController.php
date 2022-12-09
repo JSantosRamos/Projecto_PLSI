@@ -2,11 +2,13 @@
 
 namespace backend\controllers;
 
+use backend\models\AuthAssignment;
 use common\models\Note;
 use common\models\NoteSearch;
 use common\models\Task;
 use common\models\TaskSearch;
 use common\models\User;
+use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -25,6 +27,26 @@ class TaskController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'actions' => ['index', 'view', 'update'],
+                            'allow' => true,
+                            'roles' => ['employee'],
+                        ],
+                        [
+                            'actions' => ['create', 'delete'],
+                            'allow' => true,
+                            'roles' => ['manager'],
+                        ],
+                        [
+                            'actions' => ['delete'],
+                            'allow' => true,
+                            'roles' => ['admin'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -59,10 +81,11 @@ class TaskController extends Controller
      */
     public function actionView($id)
     {
-        $notes = Note::find()->where(['idTask' => $id])->all();
+        //$notes = Note::find()->where(['idTask' => $id])->all();
 
         $searchModelNote = new NoteSearch();
-        //$notes = $searchModelNote->search(['id' =>$id], false);
+        $searchModelNote->idTask = $id;
+        $notes = $searchModelNote->search($this->request->queryParams);
 
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -78,8 +101,9 @@ class TaskController extends Controller
     public function actionCreate()
     {
         $model = new Task();
-        $idUser = \Yii::$app->user->getId();
-        $employees = ArrayHelper::map(User::find()->where(['isEmployee'=> 1])->all(), 'id', 'name');
+        $model->idCreated_by = \Yii::$app->user->id;
+        $employees = ArrayHelper::map(User::find()->where(['isEmployee' => 1])->all(), 'id', 'name');
+        // $employees = $this->getEmployees();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -91,8 +115,7 @@ class TaskController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'idUser' => $idUser,
-            'employees' =>$employees,
+            'employees' => $employees,
 
         ]);
     }
@@ -107,8 +130,7 @@ class TaskController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $idUser = $model->idCreated_by;
-        $employees = ArrayHelper::map(User::find()->where(['isEmployee'=> 1])->all(), 'id', 'name');
+        $employees = ArrayHelper::map(User::find()->where(['isEmployee' => 1])->all(), 'id', 'name');
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -116,8 +138,7 @@ class TaskController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'idUser' => $idUser,
-            'employees' =>$employees,
+            'employees' => $employees,
         ]);
     }
 
@@ -130,6 +151,10 @@ class TaskController extends Controller
      */
     public function actionDelete($id)
     {
+        $notes = Note::find()->select('id')->where(['idTask' => $id])->all();
+
+        $this->safeDelete($notes);
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -149,5 +174,43 @@ class TaskController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     * Deletes all Notes from the Task to safe delete the Task
+     * @param array $items All Notes ids from Task
+     */
+    private function safeDelete($items)
+    {
+
+        if (empty($items)) {
+            return;
+        }
+
+        foreach ($items as $item) {
+            $note = Note::findOne($item->id);
+
+            if (!empty($note)) {
+                $note->delete();
+            }
+        }
+    }
+
+    private function getEmployees()
+    {
+        $data = [];
+
+        $employees = User::find()->select('id, name',)->where(['isEmployee' => 1])->all();
+
+        foreach ($employees as $employee) {
+            $result = AuthAssignment::find()->select('item_name')->where(['user_id' => $employee->id])->one();
+
+            if ('employee' == $result->item_name) {
+
+                $data[] = $employee->name;
+            }
+        }
+
+        return $data;
     }
 }

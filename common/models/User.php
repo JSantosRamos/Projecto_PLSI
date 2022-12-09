@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
@@ -99,7 +100,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Gets query for [[Notes]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getNotes()
     {
@@ -109,7 +110,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Gets query for [[Tasks]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getTasks()
     {
@@ -119,7 +120,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Gets query for [[Tasks0]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getTasks0()
     {
@@ -129,7 +130,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Gets query for [[Testdrives]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getTestdrives()
     {
@@ -139,7 +140,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Gets query for [[Vendas]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getVendas()
     {
@@ -149,7 +150,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Gets query for [[Vendas0]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getVendas0()
     {
@@ -159,12 +160,13 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Gets query for [[Vendausers]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getVendausers()
     {
         return $this->hasMany(Vendauser::class, ['idUser' => 'id']);
     }
+
 
     /**
      * {@inheritdoc}
@@ -356,6 +358,12 @@ class User extends ActiveRecord implements IdentityInterface
         return (array_key_exists('employee', $roles));
     }
 
+    /**
+     * Return name
+     *
+     * @param int $id id to search name
+     * @return string name of User
+     */
     public static function getName($id){
         $user = User::findOne($id);
         return $user->name;
@@ -367,5 +375,15 @@ class User extends ActiveRecord implements IdentityInterface
         if ($this->password){
             $this->password_hash = YII::$app->security->generatePasswordHash($this->password);
         }
+    }
+
+    public static function getTotalUsers(){
+
+        return User::find()->count();
+    }
+
+    public static function getTotaLActiveUsers(){
+
+        return User::find()->where(['status' => User::STATUS_ACTIVE])->count();
     }
 }

@@ -58,7 +58,7 @@ use yii\bootstrap5\ActiveForm;
         'inputOptions' => ['class' => 'custom-file-input']
     ])->textInput(['type' => 'file']) ?>
 
-    <?= $form->field($model, 'status')->dropDownList(['disponível' => 'Disponível','vendido' => 'Vendido', 'reservado' => 'Reservado',]) ?>
+    <?= $form->field($model, 'status')->dropDownList(['Disponível' => 'Disponível','Vendido' => 'Vendido', 'Reservado' => 'Reservado',]) ?>
     <?= $form->field($model, 'isActive')->checkbox() ?>
 
     <div class="form-group">

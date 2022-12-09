@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveQuery;
 use yii\helpers\FileHelper;
 
 /**
@@ -53,7 +54,7 @@ class Vehicle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['brand', 'model', 'type', 'fuel', 'mileage', 'engine', 'color', 'description', 'year', 'doorNumber', 'transmission', 'price', 'isActive', 'title', 'plate'], 'required'],
+            [['brand', 'model', 'type', 'fuel', 'mileage', 'engine', 'color', 'description', 'year', 'doorNumber', 'transmission', 'price', 'isActive', 'title', 'plate', 'status'], 'required'],
             [['imageFile'], 'image', 'extensions' => 'png, jpg, jpeg, webp', 'maxSize' => 10 * 1024 * 1024],
             [['type', 'fuel', 'color', 'description', 'transmission'], 'string'],
             [['engine', 'year', 'doorNumber', 'isActive'], 'integer'],
@@ -62,7 +63,6 @@ class Vehicle extends \yii\db\ActiveRecord
             [['image'], 'string', 'max' => 2000],
             [['plate'], 'string', 'max' => 8],
             [['plate'], 'unique'],
-            ['status', 'default', 'value' => self::STATUS_AVAILABLE],
         ];
     }
 
@@ -95,6 +95,18 @@ class Vehicle extends \yii\db\ActiveRecord
         ];
     }
 
+
+    /**
+     * Gets query for [[Vendausers]].
+     *
+     * @return ActiveQuery
+     */
+    public function getVendausers()
+    {
+        return $this->hasMany(Vendauser::class, ['idVehicle' => 'id']);
+    }
+
+
     public function save($runValidation = true, $attributeNames = null)
     {
         if ($this->imageFile) {
@@ -121,6 +133,38 @@ class Vehicle extends \yii\db\ActiveRecord
 
     public function getImageUrl()
     {
-        return Yii::$app->params['frontendUrl'] . '/storage'. $this->image;
+        return Yii::$app->params['frontendUrl'] . '/storage' . $this->image;
+    }
+
+    public static function getTotal()
+    {
+        return Vehicle::find()->count();
+    }
+
+    public static function getTotalStatus()
+    {
+        $vendido = 0;
+        $reservado = 0;
+        $disponivel = 0;
+
+        $items = Vehicle::find()->all();
+        foreach ($items as $item) {
+
+            switch ($item->status) {
+                case 'Vendido':
+                    ++$vendido;
+                    break;
+
+                case 'Reservado':
+                    ++$reservado;
+                    break;
+
+                case 'Disponível':
+                    ++$disponivel;
+                    break;
+            }
+        }
+
+        return array("vendido" => $vendido, "reservado" => $reservado, "disponivel" => $disponivel);
     }
 }

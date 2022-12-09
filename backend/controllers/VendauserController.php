@@ -2,6 +2,8 @@
 
 namespace backend\controllers;
 
+use common\models\Note;
+use common\models\NoteSearch;
 use common\models\Vendauser;
 use common\models\VendauserSearch;
 use yii\filters\AccessControl;
@@ -25,11 +27,6 @@ class VendauserController extends Controller
                 'access' => [
                     'class' => AccessControl::class,
                     'rules' => [
-                        [
-                            'actions' => ['index', 'view'],
-                            'allow' => true,
-                            'roles' => ['employee'],
-                        ],
                         [
                             'actions' => ['index', 'update', 'view'],
                             'allow' => true,
@@ -76,8 +73,13 @@ class VendauserController extends Controller
      */
     public function actionView($id)
     {
+        $searchModelNote = new NoteSearch();
+        $searchModelNote->idproposta_venda = $id;
+        $dataProviderNote = $searchModelNote->search($this->request->queryParams);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'dataProviderNote' => $dataProviderNote,
         ]);
     }
 
@@ -132,6 +134,10 @@ class VendauserController extends Controller
      */
     public function actionDelete($id)
     {
+        $notes = Note::find()->select('id')->where(['idproposta_venda' => $id])->all();
+        $this->safeDelete($notes);
+
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -151,5 +157,21 @@ class VendauserController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    private function safeDelete($items)
+    {
+
+        if (empty($items)) {
+            return;
+        }
+
+        foreach ($items as $item) {
+            $note = Note::findOne($item->id);
+
+            if (!empty($note)) {
+                $note->delete();
+            }
+        }
     }
 }

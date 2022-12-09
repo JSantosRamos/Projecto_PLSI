@@ -6,8 +6,13 @@ use yii\widgets\ListView;
 /** @var yii\web\View $this */
 /** @var common\models\Venda $model */
 /** @var common\models\VehicleSearch $searchVehicle */
+/** @var yii\data\ActiveDataProvider $dataVehicle vehicle */
 
-$this->title = 'Registo de Venda';
+/** @var common\models\UserSearch $searchUser */
+/** @var yii\data\ActiveDataProvider $dataUser user */
+
+
+$this->title = 'Registar Venda';
 $this->params['breadcrumbs'][] = ['label' => 'Vendas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -17,16 +22,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'message' => $message,
     ]) ?>
-
-</div>
-
-<div class="venda-searchlist">
-
-    <?= $this->render('searchlist', [
+    <br>
+    <hr style="border: 1px solid blue">
+    <br>
+    <?= $this->render('_searchlist', [
         'searchVehicle' => $searchVehicle,
         'dataVehicle' => $dataVehicle,
         'dataUser' => $dataUser,
         'searchUser' => $searchUser,
     ]) ?>
 </div>
+
+

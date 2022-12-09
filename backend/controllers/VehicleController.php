@@ -4,10 +4,13 @@ namespace backend\controllers;
 
 use common\models\Vehicle;
 use common\models\VehicleSearch;
+use Throwable;
+use yii\db\StaleObjectException;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 use yii\web\UploadedFile;
 
 /**
@@ -81,7 +84,7 @@ class VehicleController extends Controller
     /**
      * Creates a new Vehicle model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
+     * @return string|Response
      */
     public function actionCreate()
     {
@@ -105,7 +108,7 @@ class VehicleController extends Controller
      * Updates an existing Vehicle model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
-     * @return string|\yii\web\Response
+     * @return string|Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
@@ -126,12 +129,20 @@ class VehicleController extends Controller
      * Deletes an existing Vehicle model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
-     * @return \yii\web\Response
+     * @return string|Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        try {
+            $model->delete();
+
+        } catch (Throwable $e) {
+
+           return $this->render('/site/error',[ 'name' => 'carro', 'message' => 'carro']);
+        }
 
         return $this->redirect(['index']);
     }

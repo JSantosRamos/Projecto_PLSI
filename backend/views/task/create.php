@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 /** @var yii\web\View $this */
 /** @var common\models\Task $model */
+/** @var common\models\User $employees where isEmployee is (1 == true) */
 
 $this->title = 'Nova Tarefa';
 ?>
@@ -13,9 +14,7 @@ $this->title = 'Nova Tarefa';
 
     <?= $this->render('_form', [
         'model' => $model,
-        'idUser' => $idUser,
         'employees' => $employees,
-        'formupdate' => false
     ]) ?>
 
 </div>

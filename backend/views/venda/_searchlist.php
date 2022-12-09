@@ -33,16 +33,16 @@ $this->registerJs('$("document").ready(function(){
 );
 ?>
 
+<div class="venda-searchlist">
 
-<div class="row">
-    <div class="col">
-        <div class="vehicle-index">
+    <div class="row">
+        <div class="col">
             <!-- FORM VEHICLES -->
             <div class="vehicle-search">
 
                 <?php Pjax::begin(['id' => 'filter_vehicle']) ?>
                 <?php $form = ActiveForm::begin([
-                    'action' => ['searchlist'],
+                    'action' => ['create'],
                     'method' => 'get',
                     'options' => ['data-pjax' => true]
                 ]); ?>
@@ -52,10 +52,11 @@ $this->registerJs('$("document").ready(function(){
                     <div class="col-md-3"><?php echo $form->field($searchVehicle, 'id')->textInput(['placeholder' => 'Referência'])->label(false) ?></div>
                     <div class="col-md-3"> <?php echo $form->field($searchVehicle, 'brand')->textInput(['placeholder' => 'Marca'])->label(false) ?></div>
                     <div class="col-md-3"><?php echo $form->field($searchVehicle, 'plate')->textInput(['placeholder' => 'Matrícula'])->label(false) ?></div>
+                    <div class="col-md-3"><?php echo $form->field($searchVehicle, 'status')->dropDownList(['Vendido' => 'Vendidos', 'Reservado' => 'Reservados', 'Disponível' => 'Disponíveis'], ['prompt' => '  Todos',])->label(false) ?></div>
                 </div>
                 <div class="form-group">
                     <?= Html::submitButton('Procurar', ['class' => 'btn btn-primary']) ?>
-                    <?= Html::a('Reset', ['searchlist'], ['class' => 'btn btn-outline-secondary']) ?>
+                    <?= Html::a('Reset', ['create'], ['class' => 'btn btn-outline-secondary']) ?>
                 </div>
                 <?php ActiveForm::end(); ?>
                 <?php Pjax::end() ?>
@@ -66,6 +67,8 @@ $this->registerJs('$("document").ready(function(){
             <?php Pjax::begin(['id' => 'listvehicles']) ?>
             <?= GridView::widget([
                 'dataProvider' => $dataVehicle,
+                'summary' => '',
+                'emptyText' => 'Não foram encontrados resultados.',
                 'columns' => [
                     'id',
                     [
@@ -80,10 +83,11 @@ $this->registerJs('$("document").ready(function(){
                     'model',
                     'price:currency',
                     [
-                        'attribute' => 'isActive',
-                        'content' => function ($model) {
-                            return Html::tag('span', $model->isActive ? 'Publicado' : 'Não Publicado', [
-                                'class' => $model->isActive ? 'badge bg-success' : 'badge bg-danger'
+                        'attribute' => 'status',
+                        'format' => ['html'],
+                        'value' => function ($model) {
+                            return Html::tag('span', $model->status, [
+                                'class' => $model->status == Vehicle::STATUS_AVAILABLE ? 'badge bg-primary' : ($model->status == Vehicle::STATUS_RESERVED ? 'badge bg-warning' : 'badge bg-success')
                             ]);
                         }
                     ],
@@ -98,17 +102,14 @@ $this->registerJs('$("document").ready(function(){
             ]); ?>
             <?php Pjax::end() ?>
         </div>
-    </div>
 
-
-    <div class="col">
-        <div class="user-index">
+        <div class="col">
             <!-- FORM USERS -->
             <div class="user-search">
 
                 <?php Pjax::begin(['id' => 'filter_user']) ?>
                 <?php $form = ActiveForm::begin([
-                    'action' => ['searchlist'],
+                    'action' => ['create'],
                     'method' => 'get',
                     'options' => ['data-pjax' => true]
                 ]); ?>
@@ -120,7 +121,7 @@ $this->registerJs('$("document").ready(function(){
                 </div>
                 <div class="form-group">
                     <?= Html::submitButton('Procurar', ['class' => 'btn btn-primary']) ?>
-                    <?= Html::a('Reset', ['searchlist'], ['class' => 'btn btn-outline-secondary']) ?>
+                    <?= Html::a('Reset', ['create'], ['class' => 'btn btn-outline-secondary']) ?>
                 </div>
                 <?php ActiveForm::end(); ?>
                 <?php Pjax::end() ?>
@@ -131,6 +132,8 @@ $this->registerJs('$("document").ready(function(){
             <?php Pjax::begin(['id' => 'listusers']) ?>
             <?= GridView::widget([
                 'dataProvider' => $dataUser,
+                'summary' => '',
+                'emptyText' => 'Não foram encontrados resultados.',
                 'columns' => [
                     'id',
                     'username',
@@ -156,6 +159,7 @@ $this->registerJs('$("document").ready(function(){
             <?php Pjax::end() ?>
         </div>
     </div>
+
 </div>
 
 

@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use Codeception\PHPUnit\Wrapper\Test;
 use Yii;
 
 /**
@@ -87,5 +88,10 @@ class Testdrive extends \yii\db\ActiveRecord
     public function getIdVehicle0()
     {
         return $this->hasOne(Vehicle::class, ['id' => 'idVehicle']);
+    }
+
+    public static function getTotal()
+    {
+        return Testdrive::find()->count();
     }
 }

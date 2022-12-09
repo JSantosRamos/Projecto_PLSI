@@ -25,6 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'summary' => 'Total de Veículos: {totalCount}',
+        'emptyText' => 'Não foram encontrados resultados.',
         'columns' => [
             [
                 'attribute' => 'image',

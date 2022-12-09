@@ -48,7 +48,6 @@ class TestdriveSearch extends Testdrive
             $query = Testdrive::find()->where(['iduser' => \Yii::$app->user->id]);
         }
 
-
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([

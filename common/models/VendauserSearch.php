@@ -39,9 +39,14 @@ class VendauserSearch extends Vendauser
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $originalQuery = true)
     {
-        $query = Vendauser::find();
+
+        if($originalQuery){
+            $query = Vendauser::find();
+        }else{
+            $query = Vendauser::find()->where(['iduser' => \Yii::$app->user->id]);
+        }
 
         // add conditions that should always apply here
 

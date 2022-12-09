@@ -13,6 +13,11 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-view">
 
+    <?php if (isset($_GET['erro_delete'])) {
+        echo '<div class="alert alert-danger" role="alert">Não é possível apagar este utilizador.</div>';
+    }
+    ?>
+
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
@@ -20,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Apagar', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Têm a certeza que quer apagar este utilizador?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -37,9 +42,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'number',
             [
                 'attribute' => 'status',
-                'format' =>['html'],
+                'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::tag('span', $model->status == 10 ? 'Ativo' : 'Desativo',[
+                    return Html::tag('span', $model->status == 10 ? 'Ativo' : 'Desativo', [
                         'class' => $model->status == 10 ? 'badge bg-success' : 'badge bg-danger'
                     ]);
                 }

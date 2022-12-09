@@ -91,4 +91,56 @@ class Vendauser extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'idUser']);
     }
+
+    public static function getTotal(){
+        return Vendauser::find()->count();
+    }
+
+    public static function getTotalStatus(){
+
+        $porVer = 0;
+        $emAnalise = 0;
+        $aceite = 0;
+        $resposta = 0;
+        $recusado = 0;
+
+        $vendas = Vendauser::find()->all();
+
+        foreach ($vendas as $venda) {
+
+            switch ($venda->status) {
+                case Vendauser::POR_VER:
+                    ++$porVer;
+                    break;
+
+                case Vendauser::EM_ANALISE:
+                    ++$emAnalise;
+                    break;
+                case Vendauser::ACEITE:
+                    ++$aceite;
+                    break;
+                case Vendauser::AGUARDANDO_RESPOSTA:
+                    ++$resposta;
+                    break;
+
+                case Vendauser::RECUSADO:
+                    ++$recusado;
+                    break;
+            }
+        }
+
+        return array("porVer" => $porVer, "emAnalise" => $emAnalise,
+            "aceite" => $aceite, "resposta" => $resposta, "recusado" => $recusado);
+    }
+
+    public static function getValorTotal(){
+        $vendas = Vendauser::find()->select("price")->where(["status" => Vendauser::ACEITE])->all();
+        $total = 0;
+
+        foreach ($vendas as $venda){
+            $total = $total + $venda->price;
+        }
+
+        return $total;
+    }
 }

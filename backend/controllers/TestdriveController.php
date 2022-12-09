@@ -31,12 +31,12 @@ class TestdriveController extends Controller
                             'roles' => ['employee'],
                         ],
                         [
-                            'actions' => ['index', 'update', 'view'],
+                            'actions' => ['update'],
                             'allow' => true,
                             'roles' => ['manager'],
                         ],
                         [
-                            'actions' => ['index', 'create', 'update', 'delete', 'view'],
+                            'actions' => ['create', 'delete'],
                             'allow' => true,
                             'roles' => ['admin'],
                         ],
@@ -91,15 +91,30 @@ class TestdriveController extends Controller
         $model = new Testdrive();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+
+                $todayDate = date('d-M-Y');
+
+                if ($model->date < $todayDate) {
+
+                    return $this->render('create', [
+                        'model' => $model,
+                        'dateInvalidMessage' => 'Data inválida'
+                    ]);
+                }
+
+                if ($model->save()) {
+                    return $this->redirect(['index']);
+                }
             }
+
         } else {
             $model->loadDefaultValues();
         }
 
         return $this->render('create', [
             'model' => $model,
+            'dateInvalidMessage' => '',
         ]);
     }
 
@@ -110,12 +125,13 @@ class TestdriveController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public
+    function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
@@ -130,7 +146,8 @@ class TestdriveController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public
+    function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
@@ -144,7 +161,8 @@ class TestdriveController extends Controller
      * @return Testdrive the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected
+    function findModel($id)
     {
         if (($model = Testdrive::findOne(['id' => $id])) !== null) {
             return $model;

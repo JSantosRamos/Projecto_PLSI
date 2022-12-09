@@ -10,11 +10,13 @@ use Yii;
  * @property int $id
  * @property string $description
  * @property int $idUser
- * @property int $idTask
+ * @property int|null $idTask
+ * @property int|null $idproposta_venda
  * @property string $create_at
  *
  * @property Task $idTask0
  * @property User $idUser0
+ * @property Vendauser $idpropostaVenda
  */
 class Note extends \yii\db\ActiveRecord
 {
@@ -32,10 +34,10 @@ class Note extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['description', 'idUser', 'idTask'], 'required'],
-            [['idUser', 'idTask'], 'integer'],
-            [['create_at'], 'safe'],
+            [['description', 'idUser'], 'required'],
+            [['idUser', 'idTask', 'idproposta_venda'], 'integer'],
             [['description'], 'string', 'max' => 50],
+            [['idproposta_venda'], 'exist', 'skipOnError' => true, 'targetClass' => Vendauser::class, 'targetAttribute' => ['idproposta_venda' => 'id']],
             [['idTask'], 'exist', 'skipOnError' => true, 'targetClass' => Task::class, 'targetAttribute' => ['idTask' => 'id']],
             [['idUser'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['idUser' => 'id']],
         ];
@@ -48,9 +50,10 @@ class Note extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'description' => 'Description',
+            'description' => 'Descrição',
             'idUser' => 'Id User',
             'idTask' => 'Id Task',
+            'idproposta_venda' => 'Idproposta Venda',
             'create_at' => 'Create At',
         ];
     }
@@ -73,5 +76,15 @@ class Note extends \yii\db\ActiveRecord
     public function getIdUser0()
     {
         return $this->hasOne(User::class, ['id' => 'idUser']);
+    }
+
+    /**
+     * Gets query for [[IdpropostaVenda]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIdpropostaVenda()
+    {
+        return $this->hasOne(Vendauser::class, ['id' => 'idproposta_venda']);
     }
 }

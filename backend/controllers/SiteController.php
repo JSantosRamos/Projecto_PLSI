@@ -2,7 +2,13 @@
 
 namespace backend\controllers;
 
+use common\models\Cost;
 use common\models\LoginForm;
+use common\models\Task;
+use common\models\Testdrive;
+use common\models\Vehicle;
+use common\models\Venda;
+use common\models\Vendauser;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -29,7 +35,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['index' , 'logout'],
+                        'actions' => ['index', 'logout'],
                         'allow' => true,
                         'roles' => ['employee'],
                     ],
@@ -63,7 +69,78 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+
+        //Users
+        $users = \common\models\User::getTotalUsers();
+        $usersAtivos = \common\models\User::getTotalUsers();
+
+        //Veiculos
+        $veiculos = Vehicle::getTotal();
+        $veiculosArray = Vehicle::getTotalStatus();
+
+        //Despesas
+        $despesas = Cost::getValorDespesas();
+
+        //Tarefas
+        $tarefas = Task::getTotalTarefas();
+        $tarefasStatus = Task::getTotalStatus();
+
+        //Vendas
+        $vendas = Venda::getValorVendas();
+
+        //Propostas de compra
+        $propostas = Vendauser::getTotal();
+        $propostasArray = Vendauser::getTotalStatus();
+        $comprasTotal = Vendauser::getValorTotal();
+
+        //TestDrive
+        $drives = Testdrive::getTotal();
+
+        $testDrive_PorVer = 0;
+        $testDrive_Aceite = 0;
+        $testDrive_Recusado = 0;
+        $testDrive_AguardarResposta = 0;
+
+
+        //Test-Drive
+        $testDrives = Testdrive::find()->all();
+
+        foreach ($testDrives as $testDrive) {
+
+            switch ($testDrive->status) {
+                case Testdrive::POR_VER:
+                    ++$testDrive_PorVer;
+                    break;
+                case Testdrive::RECUSADO:
+                    ++$testDrive_Recusado;
+                    break;
+                case Testdrive::ACEITE:
+                    ++$testDrive_Aceite;
+                    break;
+                case Testdrive::AGUARDANDO_RESPOSTA:
+                    ++$testDrive_AguardarResposta;
+                    break;
+            }
+        }
+
+        $driveArray = array("aceite" => $testDrive_Aceite, "recusado" => $testDrive_Recusado,
+            "aguardar_resposta" => $testDrive_AguardarResposta, "por_ver" => $testDrive_PorVer);
+
+        return $this->render('index', [
+            'vendas' => $vendas,
+            'despesas' => $despesas,
+            'tarefas' => $tarefas,
+            'users' => $users,
+            'usersAtivos' => $usersAtivos,
+            'driveArray' => $driveArray,
+            'propostas' => $propostas,
+            'drives' => $drives,
+            'veiculos' => $veiculos,
+            'tarefasStatus' => $tarefasStatus,
+            'propostasArray' => $propostasArray,
+            'veiculosArray' => $veiculosArray,
+            'comprasTotal' => $comprasTotal
+        ]);
     }
 
     /**

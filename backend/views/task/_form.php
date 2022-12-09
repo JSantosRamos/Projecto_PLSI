@@ -10,42 +10,36 @@ use yii\widgets\ActiveForm;
 /** @var yii\widgets\ActiveForm $form */
 
 $sessionId = Yii::$app->user->getId();
+$fieldDisable = false;
+
+if (Yii::$app->controller->action->id == 'update' && User::isEmployee(Yii::$app->user->id)) {
+    $fieldDisable = true;
+}
 ?>
 
 <div class="task-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'type')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'type')->textInput(['maxlength' => true, 'disabled' => $fieldDisable]) ?>
 
-    <?= $form->field($model, 'description')->textarea(['maxlength' => true]) ?>
+    <?= $form->field($model, 'description')->textarea(['maxlength' => true, 'disabled' => $fieldDisable]) ?>
 
     <?= $form->field($model, 'date')->widget(DateTimePicker::className(), [
-        'name' => 'datetime_10',
-        'options' => ['placeholder' => 'Select operating time ...'],
-        'convertFormat' => true,
+        'name' => 'dp_2',
+        'options' => ['placeholder' => 'Selecionar', 'disabled' => $fieldDisable],
+        'type' => DateTimePicker::TYPE_COMPONENT_PREPEND,
+        'value' => '23-Feb-1982 10:01',
         'pluginOptions' => [
-            'format' => 'd-M-Y g:i A',
-            'startDate' => '01-Mar-2014 12:00 AM',
+            'autoclose' => true,
+            'format' => 'dd-M-yyyy hh:ii',
             'todayHighlight' => true
         ]
     ]) ?>
 
-    <?php if (!$formupdate) {
-        echo $form->field($model, 'idAssigned_to')->dropDownList($employees, ['prompt' => 'Funcionário a atribuir']);
-    } else {
-        if ($formupdate && (User::isManager($sessionId) || User::isAdmin($sessionId))) {
-            echo $form->field($model, 'idAssigned_to')->dropDownList($employees, ['prompt' => 'Funcionário a atribuir']);
-        } else {
-            echo $form->field($model, 'idAssigned_to')->dropDownList($employees, ['disabled' => true]);
-        }
-    } ?>
-
-    <?php  ?>
+    <?= $form->field($model, 'idAssigned_to')->dropDownList($employees, ['disabled' => $fieldDisable]) ?>
 
     <?= $form->field($model, 'status')->dropDownList(['Por iniciar' => 'Por iniciar', 'Em Processo' => 'Em Processo', 'Finalizado' => 'Finalizado',]) ?>
-
-    <?= $form->field($model, 'idCreated_by')->hiddenInput(['value' => $idUser])->label(false) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
