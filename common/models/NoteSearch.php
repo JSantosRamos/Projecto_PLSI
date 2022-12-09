@@ -17,7 +17,7 @@ class NoteSearch extends Note
     public function rules()
     {
         return [
-            [['id', 'idUser', 'idTask'], 'integer'],
+            [['id', 'idUser', 'idTask', 'idproposta_venda'], 'integer'],
             [['description', 'create_at'], 'safe'],
         ];
     }
@@ -38,19 +38,9 @@ class NoteSearch extends Note
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $originalQuery = true)
+    public function search($params)
     {
-
-        if(!$originalQuery){
-            $id = $params['id'];
-            $query = Note::find()->where(['idTask' => $id]);
-        }
-        else{
-            $query = Note::find();
-        }
-
-
-
+        $query = Note::find()->orderBy(['id'=>SORT_DESC]);
 
         // add conditions that should always apply here
 
@@ -71,6 +61,7 @@ class NoteSearch extends Note
             'id' => $this->id,
             'idUser' => $this->idUser,
             'idTask' => $this->idTask,
+            'idproposta_venda' => $this->idproposta_venda,
             'create_at' => $this->create_at,
         ]);
 

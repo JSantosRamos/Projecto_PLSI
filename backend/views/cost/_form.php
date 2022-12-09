@@ -10,18 +10,34 @@ use yii\widgets\ActiveForm;
 
 <div class="cost-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'idUser')->textInput() ?>
+    <?= $form->field($model, 'idUser')->hiddenInput()->label(false) ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'title')->textarea(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'valor')->textInput() ?>
-
-    <?= $form->field($model, 'file')->textInput(['maxlength' => true]) ?>
+    <div class="row">
+        <div class="col-md-1">
+            <?= $form->field($model, 'valor')->Input('number') ?>
+        </div>
+        <div class="col">
+            <label>Ficheiro</label>
+            <?= $form->field($model, 'uploadFile', [
+                'template' => '
+                <div class="custom-file">
+                    {input}
+                    {label}
+                    {error}
+                </div>
+            ',
+                'labelOptions' => ['class' => 'custom-file-label'],
+                'inputOptions' => ['class' => 'custom-file-input']
+            ])->textInput(['type' => 'file']) ?>
+        </div>
+    </div>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

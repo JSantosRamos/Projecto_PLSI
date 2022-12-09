@@ -4,10 +4,10 @@ namespace backend\controllers;
 
 use common\models\Note;
 use common\models\NoteSearch;
-use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use function PHPUnit\Framework\isNull;
 
 /**
  * NoteController implements the CRUD actions for Note model.
@@ -68,19 +68,24 @@ class NoteController extends Controller
      */
     public function actionCreate()
     {
-        if (!isset($_GET['idTask'])) {
-
-            return $this->redirect(Url::toRoute('task/index'));
-        }
-
         $model = new Note();
-        $model->idTask = $_GET['idTask'];
         $model->idUser = \Yii::$app->user->getId();
 
+        if (isset($_GET['idVenda'])) {
+            $model->idproposta_venda = $_GET['idVenda'];
+        }
+
+        if (isset($_GET['idTask'])) {
+            $model->idTask = $_GET['idTask'];
+        }
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                if ($model->idTask != null) {
+                    return $this->redirect(['/task/view', 'id' => $model->idTask]);
+                } else {
+                    return $this->redirect(['/vendauser/view', 'id' => $model->idproposta_venda]);
+                }
             }
         } else {
             $model->loadDefaultValues();
@@ -103,7 +108,11 @@ class NoteController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->idTask != null) {
+                return $this->redirect(['/task/view', 'id' => $model->idTask]);
+            } else {
+                return $this->redirect(['/vendauser/view', 'id' => $model->idproposta_venda]);
+            }
         }
 
         return $this->render('update', [
@@ -120,9 +129,27 @@ class NoteController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $returnID = null;
+        $type = null;
 
-        return $this->redirect(['index']);
+        $model = $this->findModel($id);
+
+        if ($model->idTask != null) {
+            $returnID = $model->idTask;
+            $type = 'task';
+
+        } else {
+            $returnID = $model->idproposta_venda;
+            $type = 'venda';
+        }
+
+        $model->delete();
+
+        if ($type == 'task') {
+            return $this->redirect(['/task/view', 'id' => $returnID]);
+        } else {
+            return $this->redirect(['/vendauser/view', 'id' => $returnID]);
+        }
     }
 
     /**

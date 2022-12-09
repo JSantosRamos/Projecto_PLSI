@@ -23,7 +23,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'idTask') ?>
 
-    <?= $form->field($model, 'create_at') ?>
+    <?= $form->field($model, 'idproposta_venda') ?>
+
+    <?php // echo $form->field($model, 'create_at') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

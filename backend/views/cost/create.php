@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\Cost $model */
 
-$this->title = 'Create Cost';
+$this->title = 'Despesa';
 $this->params['breadcrumbs'][] = ['label' => 'Costs', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

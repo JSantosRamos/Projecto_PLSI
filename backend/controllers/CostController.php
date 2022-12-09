@@ -4,9 +4,11 @@ namespace backend\controllers;
 
 use common\models\Cost;
 use app\models\CostSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * CostController implements the CRUD actions for Cost model.
@@ -21,6 +23,16 @@ class CostController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'actions' => ['index', 'view', 'update', 'delete', 'create', 'download'],
+                            'allow' => true,
+                            'roles' => ['admin'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -68,6 +80,9 @@ class CostController extends Controller
     public function actionCreate()
     {
         $model = new Cost();
+        $model->idUser = \Yii::$app->user->id;
+        $model->uploadFile = UploadedFile::getInstance($model, 'uploadFile');
+
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -92,6 +107,7 @@ class CostController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->uploadFile = UploadedFile::getInstance($model, 'uploadFile');
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -130,5 +146,12 @@ class CostController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionDownload($file)
+    {
+        $path = \Yii::getAlias('@backend/web/storage' . $file);
+
+        return \Yii::$app->response->sendFile($path);
     }
 }
