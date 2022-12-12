@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\models\Contactuser;
 use common\models\TestdriveSearch;
 use common\models\User;
+use common\models\Vehicle;
 use common\models\VendauserSearch;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
@@ -79,7 +80,9 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $vehicles = Vehicle::find()->where(['isActive' => 1])->all();
+
+        return $this->render('index', ['vehicles' => $vehicles]);
     }
 
     /**
@@ -302,6 +305,7 @@ class SiteController extends Controller
         if (Yii::$app->user->isGuest) {
             return $this->actionLogin();
         }
+
         $searchModelVendauser = new VendauserSearch();
         $dataProviderVendauser = $searchModelVendauser->search($this->request->queryParams, false);
 

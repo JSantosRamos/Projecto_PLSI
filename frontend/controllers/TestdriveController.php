@@ -113,9 +113,7 @@ class TestdriveController extends Controller
 
             if ($model->load($this->request->post())) {
 
-                $todayDate = date('d-M-Y');
-
-                if ($model->date < $todayDate) {
+                if (!$this->validateDate($model->date)) {
                     $message = 'Data inválida';
                 } else {
                     $model->save();
@@ -210,9 +208,9 @@ class TestdriveController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        if($value == 'yes'){
+        if ($value == 'yes') {
             $model->status = Testdrive::ACEITE;
-        }else{
+        } else {
             $model->status = Testdrive::RECUSADO;
         }
 
@@ -235,5 +233,16 @@ class TestdriveController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    private function validateDate($date)
+    {
+        $todayDate = date('d-m-Y');
+
+        $date = strtotime($date);
+        $todayDate = strtotime($todayDate);
+
+
+        return $date > $todayDate;
     }
 }

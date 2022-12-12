@@ -2,11 +2,16 @@
 
 namespace backend\controllers;
 
+use common\models\Brand;
+use common\models\Model;
 use common\models\Vehicle;
 use common\models\VehicleSearch;
 use Throwable;
+use Yii;
+use yii\db\Query;
 use yii\db\StaleObjectException;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -30,7 +35,7 @@ class VehicleController extends Controller
                     'class' => AccessControl::class,
                     'rules' => [
                         [
-                            'actions' => ['index', 'create', 'update', 'view'],
+                            'actions' => ['index', 'create', 'update', 'view', 'allmodels'],
                             'allow' => true,
                             'roles' => ['employee'],
                         ],
@@ -58,12 +63,14 @@ class VehicleController extends Controller
      */
     public function actionIndex()
     {
+        $brands = Brand::find()->all();
         $searchModel = new VehicleSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'brands' => $brands,
         ]);
     }
 
@@ -91,6 +98,9 @@ class VehicleController extends Controller
         $model = new Vehicle();
         $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
 
+        $brands = Brand::find()->all();
+
+
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
@@ -101,6 +111,7 @@ class VehicleController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'brands' => $brands,
         ]);
     }
 
@@ -114,6 +125,12 @@ class VehicleController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+
+        $brands = Brand::find()->all(); //get brands for select dropdown
+        $vehicle_models = Model::find()->where(['idBrand' => $model->idBrand])->all(); //get models for select dropdown
+
+        //$model->idModel = $model->getModelNameById($model->idModel);
+
         $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
@@ -122,6 +139,8 @@ class VehicleController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'brands' => $brands,
+            'vehicle_models' => $vehicle_models
         ]);
     }
 
@@ -141,7 +160,7 @@ class VehicleController extends Controller
 
         } catch (Throwable $e) {
 
-           return $this->render('/site/error',[ 'name' => 'carro', 'message' => 'carro']);
+            return $this->render('/site/error', ['name' => 'carro', 'message' => 'carro']);
         }
 
         return $this->redirect(['index']);
@@ -161,5 +180,24 @@ class VehicleController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionAllmodels()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $out = [];
+
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+
+            if ($parents != null) {
+                $brand_id = $parents[0];
+                $out = Model::find()->where(['idBrand' => $brand_id])->all();
+
+                return ['output' => $out, 'selected' => ''];
+            }
+        }
+
+        return ['output' => '', 'selected' => ''];
     }
 }

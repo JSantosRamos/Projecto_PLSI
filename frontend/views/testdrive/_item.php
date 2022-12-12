@@ -14,7 +14,7 @@ use yii\helpers\Url;
         </svg>
     </a>
 </th>
-<td><?= Html::a($model->idVehicle, Url::toRoute(['vehicle/view', 'id' => $model->idVehicle])) ?></td>
+<td><?= Html::a($model->idVehicle, Url::toRoute(['vehicle/view', 'id' => $model->idVehicle]), ['class' => ['text-decoration-none']]) ?></td>
 <td><?= $model->date ?></td>
 <td><?= $model->time ?></td>
 <?php

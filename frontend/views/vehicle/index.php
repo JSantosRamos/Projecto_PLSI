@@ -33,7 +33,6 @@ $this->registerJs('$("document").ready(function(){
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="css/styles.css" rel="stylesheet"/>
     <title><?= $this->title ?></title>
 </head>
 <body>
@@ -49,7 +48,7 @@ $this->registerJs('$("document").ready(function(){
 
 <!-- Filter-->
 <br>
-<?php echo $this->render('_search', ['model' => $searchModel]);
+<?php echo $this->render('_search', ['model' => $searchModel, 'brands' => $brands, 'vehicles_models' => $vehicles_models]);
 ?>
 <hr>
 

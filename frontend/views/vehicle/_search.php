@@ -1,6 +1,10 @@
 <?php
 
+use kartik\depdrop\DepDrop;
+use kartik\select2\Select2;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\widgets\Pjax;
 
@@ -20,8 +24,24 @@ use yii\widgets\Pjax;
 
     <h5>Procurar por:</h5>
     <div class="row">
-        <div class="col-md-2"> <?php echo $form->field($model, 'brand')->textInput() ?></div>
-        <div class="col-md-2"><?php echo $form->field($model, 'model')->textInput() ?></div>
+        <div class="col-md-2"><?= $form->field($model, 'idBrand')->widget(Select2::className(), [
+                'data' => ArrayHelper::map($brands, 'id', 'name'),
+                'options' => ['placeholder' => 'Selecione uma marca', 'id' => 'brand-id'],
+            ]);
+            ?>
+        </div>
+        <div class="col-md-2"><?= $form->field($model, 'idModel')->widget(DepDrop::classname(), [
+
+                'data' => $vehicles_models == "" ? "" : ArrayHelper::map($vehicles_models, 'id', 'name'),
+                'options' => ['placeholder' => 'Selecione um modelo'],
+                'type' => DepDrop::TYPE_SELECT2,
+                'pluginOptions' => [
+                    'depends' =>  ['brand-id'],
+                    'url' => Url::to(['/vehicle/allmodels']),
+                    'loadingText' => '',
+                ]
+            ]); ?>
+        </div>
         <div class="col-md-2"><?php echo $form->field($model, 'serie')->textInput() ?></div>
         <div class="col-md-2"><?php echo $form->field($model, 'price')->dropDownList(['1' => '0-15000 EUR', '2' => '15000-30000 EUR', '3' => '30000-45000 EUR', '4' => '45000-60000 EUR', '5' => '60000-75000 EUR', '6' => '75000-90000 EUR', '7' => '90000+ EUR'], ['prompt' => '',]) ?></div>
         <div class="col-md-2"><?php echo $form->field($model, 'fuel')->dropDownList(['Diesel' => 'Diesel', 'Gasolina' => 'Gasolina', 'Elétrico' => 'Elétrico', 'GPL' => 'GPL', 'Híbrido' => 'Híbrido',], ['prompt' => '',]) ?></div>
@@ -32,7 +52,7 @@ use yii\widgets\Pjax;
     <br>
     <div class="form-group">
         <?= Html::submitButton('Procurar', ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Reset', ['index'], ['class' => 'btn btn-outline-secondary']) ?>
+        <?= Html::a('Limpar', ['index'], ['class' => 'btn btn-outline-secondary']) ?>
     </div>
 
     <?php //$form->field($model, 'id') ?>

@@ -2,12 +2,16 @@
 
 namespace frontend\controllers;
 
+use common\models\Brand;
+use common\models\Model;
 use common\models\Vehicle;
 use common\models\VehicleSearch;
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * VehicleController implements the CRUD actions for Vehicle model.
@@ -42,6 +46,13 @@ class VehicleController extends Controller
         $searchModel = new VehicleSearch();
         $dataProvider = $searchModel->search($this->request->queryParams, true);
         $model = new Vehicle();
+        $brands = Brand::find()->all();
+
+        $vehicles_models = "";
+        if(!empty($searchModel->idBrand)){
+
+            $vehicles_models = Model::find()->where(['idBrand' => $searchModel->idBrand])->all();
+        }
 
         $vehicles = Vehicle::find()->where(['isActive' => 1])->all();
 
@@ -50,6 +61,8 @@ class VehicleController extends Controller
             'dataProvider' => $dataProvider,
             'vehicles' => $vehicles,
             'model' => $model,
+            'brands' => $brands,
+            'vehicles_models' => $vehicles_models,
         ]);
     }
 
@@ -66,9 +79,9 @@ class VehicleController extends Controller
             return $this->redirect('index');
         }
 
-        $brand = $vehicle->brand;
+        $brand = $vehicle->idBrand;
 
-        $items = Vehicle::find()->where(['isActive' => 1])->andWhere(['brand'=>$brand])->all();
+        $items = Vehicle::find()->where(['isActive' => 1])->andWhere(['idBrand'=>$brand])->all();
         $items = array_slice($items, 0, 3);
 
         return $this->render('view', [
@@ -132,6 +145,7 @@ class VehicleController extends Controller
 
         return $this->redirect(['index']);
     }
+  */
 
     /**
      * Finds the Vehicle model based on its primary key value.
@@ -147,5 +161,24 @@ class VehicleController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionAllmodels()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $out = [];
+
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+
+            if ($parents != null) {
+                $brand_id = $parents[0];
+                $out = Model::find()->where(['idBrand' => $brand_id])->all();
+
+                return ['output' => $out, 'selected' => ''];
+            }
+        }
+
+        return ['output' => '', 'selected' => ''];
     }
 }

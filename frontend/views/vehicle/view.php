@@ -79,7 +79,7 @@ YiiAsset::register($this);
             </div>
             <div class="col-md-6">
                 <div class="small mb-1">Refêrencia: <?= $model->id ?></div>
-                <h4 class="display-5 fw-bolder"><?= $model->brand ?>, <span><?= $model->model ?></span></h4>
+                <h4 class="display-5 fw-bolder"><?= $model->getBrandNameById() ?>, <span><?= $model->getModelNameById() ?></span></h4>
                 <div class="fs-5 mb-5">
                     <span><?= Yii::$app->formatter->asCurrency($model->price) ?></span>
                 </div>
@@ -128,7 +128,7 @@ YiiAsset::register($this);
                         <!-- Vehicle details-->
                         <div class="card-body p-4">
                             <div class="text-center">
-                                <h5 class="fw-bolder"><?= $item->brand ?>, <span><?= $item->model ?></span></h5>
+                                <h5 class="fw-bolder"><?= $item->getBrandNameById() ?>, <span><?= $item->getModelNameById() ?></span></h5>
                                 <div class="text-secondary"><?= $item->year ?> | <?= $item->fuel ?>
                                     | <?= $item->mileage ?> km
                                 </div>

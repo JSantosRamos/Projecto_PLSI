@@ -19,7 +19,7 @@ class TestdriveSearch extends Testdrive
     {
         return [
             [['id', 'idUser', 'idVehicle'], 'integer'],
-            [['date', 'time', 'description', 'status', 'reason'], 'safe'],
+            [['date', 'time', 'description', 'status'], 'safe'],
         ];
     }
 
@@ -72,8 +72,7 @@ class TestdriveSearch extends Testdrive
 
         $query->andFilterWhere(['like', 'time', $this->time])
             ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'status', $this->status])
-            ->andFilterWhere(['like', 'reason', $this->reason]);
+            ->andFilterWhere(['like', 'status', $this->status]);
 
         return $dataProvider;
     }

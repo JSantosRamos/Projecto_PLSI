@@ -28,6 +28,9 @@ use yii\helpers\FileHelper;
  * @property string $title
  * @property string $plate
  * @property string $status
+ * @property int $cv
+ * @property int $idBrand
+ * @property int $idModel
  */
 class Vehicle extends \yii\db\ActiveRecord
 {
@@ -54,10 +57,10 @@ class Vehicle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['brand', 'model', 'type', 'fuel', 'mileage', 'engine', 'color', 'description', 'year', 'doorNumber', 'transmission', 'price', 'isActive', 'title', 'plate', 'status'], 'required'],
+            [['type', 'fuel', 'mileage', 'engine', 'color', 'description', 'year', 'doorNumber', 'transmission', 'price', 'isActive', 'title', 'plate', 'status', 'idBrand', 'idModel', 'cv'], 'required'],
             [['imageFile'], 'image', 'extensions' => 'png, jpg, jpeg, webp', 'maxSize' => 10 * 1024 * 1024],
             [['type', 'fuel', 'color', 'description', 'transmission'], 'string'],
-            [['engine', 'year', 'doorNumber', 'isActive'], 'integer'],
+            [['engine', 'year', 'doorNumber', 'isActive', 'idModel', 'cv'], 'integer'],
             [['price'], 'number'],
             [['brand', 'model', 'serie', 'mileage', 'title'], 'string', 'max' => 50],
             [['image'], 'string', 'max' => 2000],
@@ -78,7 +81,7 @@ class Vehicle extends \yii\db\ActiveRecord
             'serie' => 'Serie',
             'type' => 'Tipologia',
             'fuel' => 'Combustível',
-            'mileage' => 'Quilómetro',
+            'mileage' => 'Quilómetros',
             'engine' => 'Cilindrada',
             'color' => 'Color',
             'description' => 'Descrição',
@@ -91,10 +94,12 @@ class Vehicle extends \yii\db\ActiveRecord
             'title' => 'Titulo',
             'plate' => 'Matrícula',
             'imageFile' => 'Escolher Imagem',
-            'status' => 'Estado'
+            'status' => 'Estado',
+            'idModel' => 'Modelo',
+            'idBrand' => 'Marca',
+            'cv' => 'CV',
         ];
     }
-
 
     /**
      * Gets query for [[Vendausers]].
@@ -166,5 +171,19 @@ class Vehicle extends \yii\db\ActiveRecord
         }
 
         return array("vendido" => $vendido, "reservado" => $reservado, "disponivel" => $disponivel);
+    }
+
+    public function getModelNameById()
+    {
+        $model = Model::findOne(['id' => $this->idModel]);
+
+        return $model == null ? '' : $model->name;
+    }
+
+    public function getBrandNameById()
+    {
+        $brand = Brand::findOne(['id' => $this->idBrand]);
+
+        return $brand == null ? '' : $brand->name;
     }
 }

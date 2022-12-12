@@ -37,8 +37,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'title',
             'description:html',
             'plate',
-            'brand',
-            'model',
+            [
+                'attribute' => 'idBrand',
+                'value' => $model->getBrandNameById(),
+            ],
+            [
+                'attribute' => 'idModel',
+                'value' => $model->getModelNameById(),
+            ],
             [
                 'attribute' => 'serie',
                 'value' => $model->serie == null ? 'Sem Informação' : $model->serie,

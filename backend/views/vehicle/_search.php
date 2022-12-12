@@ -1,5 +1,7 @@
 <?php
 
+use kartik\select2\Select2;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -18,7 +20,12 @@ use yii\widgets\ActiveForm;
     <h5>Procurar por:</h5>
     <div class="row">
         <div class="col-md-2"><?php echo $form->field($model, 'id')->textInput(['placeholder' => 'Referência'])->label(false) ?></div>
-        <div class="col-md-2"> <?php echo $form->field($model, 'brand')->textInput(['placeholder' => 'Marca'])->label(false) ?></div>
+        <div class="col-md-2"><?= $form->field($model, 'idBrand')->widget(Select2::className(), [
+                'data' => ArrayHelper::map($brands, 'id', 'name'),
+                'options' => ['placeholder' => 'Selecione uma marca', 'id' => 'brand-id'],
+            ])->label(false);
+            ?>
+        </div>
         <div class="col-md-2"><?php echo $form->field($model, 'plate')->textInput(['placeholder' => 'Matrícula'])->label(false) ?></div>
         <div class="col-md-2"><?php echo $form->field($model, 'isActive')->dropDownList(['1' =>'Publicado', '0' =>'Não Publicado'], ['prompt' => 'Todos'])->label(false) ?></div>
         <div class="col-md-2"><?php echo $form->field($model, 'status')->dropDownList(['Vendido' => 'Vendidos', 'Reservado' => 'Reservados', 'Disponível' => 'Disponíveis'], ['prompt' => '  Todos',])->label(false) ?></div>

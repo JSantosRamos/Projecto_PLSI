@@ -22,7 +22,10 @@
         "kartik-v/yii2-widget-datetimepicker": "*",
         "kartik-v/yii2-widget-datepicker": "dev-master",
         "et-soft/yii2-widget-select-year": "*",
-        "twbs/bootstrap": "5.0.2"
+        "twbs/bootstrap": "5.0.2",
+        "kv4nt/yii2-owl-carousel2": "*",
+        "kartik-v/yii2-widget-depdrop": "dev-master",
+        "kartik-v/yii2-widget-select2": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

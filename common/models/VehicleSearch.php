@@ -26,8 +26,8 @@ class VehicleSearch extends Vehicle
     public function rules()
     {
         return [
-            [['id', 'engine', 'year', 'doorNumber', 'isActive'], 'integer'],
-            [['brand', 'model', 'serie', 'type', 'fuel', 'mileage', 'color', 'description', 'transmission', 'image', 'title', 'plate', 'status'], 'safe'],
+            [['id', 'engine', 'year', 'doorNumber', 'isActive', 'idBrand', 'idModel'], 'integer'],
+            [['serie', 'type', 'fuel', 'mileage', 'color', 'description', 'transmission', 'image', 'title', 'plate', 'status', 'idBrand', 'idModel'], 'safe'],
             [['price'], 'number'],
         ];
     }
@@ -86,13 +86,13 @@ class VehicleSearch extends Vehicle
             'year' => $this->year,
             'doorNumber' => $this->doorNumber,
             'isActive' => $this->isActive,
+            'idBrand' => $this->idBrand,
+            'idModel' => $this->idModel,
         ])
             ->andFilterWhere(['between', 'price', $this->priceMin, $this->priceMax])
             ->andFilterWhere(['between', 'mileage', $this->mileageMin, $this->mileageMax]);
 
-        $query->andFilterWhere(['like', 'brand', $this->brand])
-            ->andFilterWhere(['like', 'model', $this->model])
-            ->andFilterWhere(['like', 'serie', $this->serie])
+        $query->andFilterWhere(['like', 'serie', $this->serie])
             ->andFilterWhere(['like', 'type', $this->type])
             ->andFilterWhere(['like', 'fuel', $this->fuel])
             // ->andFilterWhere(['like', 'mileage', $this->mileage])

@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Adcionar', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php echo $this->render('_search', ['model' => $searchModel, 'brands' => $brands]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -36,8 +36,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'title',
             'plate',
-            'brand',
-            'model',
+            [
+                'attribute' => 'idBrand',
+                'value' => function ($model) {
+                    return $model->getBrandNameById();
+                }
+            ],
+            [
+                'attribute' => 'idModel',
+                'value' => function ($model) {
+                    return $model->getModelNameById();
+                }
+            ],
             'price:currency',
             [
                 'attribute' => 'isActive',
@@ -49,9 +59,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'status',
-                'format' =>['html'],
+                'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::tag('span', $model->status ,[
+                    return Html::tag('span', $model->status, [
                         'class' => $model->status == Vehicle::STATUS_AVAILABLE ? 'badge bg-primary' : ($model->status == Vehicle::STATUS_RESERVED ? 'badge bg-warning' : 'badge bg-success')
                     ]);
                 }

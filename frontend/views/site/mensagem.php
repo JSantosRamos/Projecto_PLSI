@@ -39,41 +39,6 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <style>
-    body {
-        font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-        background-color: #fff;
-        font-weight: 300;
-    }
-
-    p {
-        font-weight: 300;
-    }
-
-    h1, h2, h3, h4, h5, h6, {
-        font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    }
-
-    a {
-        -webkit-transition: .3s all ease;
-        -o-transition: .3s all ease;
-        transition: .3s all ease;
-    }
-
-    a, a:hover {
-        text-decoration: none !important;
-    }
-
-    .content {
-        padding: 7rem 0;
-    }
-
-    h2 {
-        font-size: 20px;
-    }
-
-    .custom-table {
-        min-width: 900px;
-    }
 
     .custom-table thead tr, .custom-table thead th {
         padding-bottom: 30px;
@@ -84,7 +49,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     .custom-table tbody th, .custom-table tbody td {
         color: #777;
-        font-weight: 400;
         padding-bottom: 20px;
         padding-top: 20px;
         font-weight: 300;

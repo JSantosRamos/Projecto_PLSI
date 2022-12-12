@@ -19,10 +19,10 @@ use yii\bootstrap5\ActiveForm;
     <?= $form->field($model, 'date')->widget(Datepicker::className(), [
         'name' => 'dp_1',
         'type' => DatePicker::TYPE_COMPONENT_PREPEND,
-        'value' => '23-Feb-1982',
+        'options'=> ['placeholder' => "Selecione uma data."],
         'pluginOptions' => [
             'autoclose' => true,
-            'format' => 'dd-M-yyyy'
+            'format' => 'd-m-yyyy'
         ]
     ]) ?>
 

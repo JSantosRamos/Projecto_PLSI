@@ -6,7 +6,7 @@
         <!-- Vehicle details-->
         <div class="card-body p-4">
             <div class="text-center">
-                <h5 class="fw-bolder"><?= $model->brand ?>, <span><?= $model->model ?></span></h5>
+                <h5 class="fw-bolder"><?= $model->getBrandNameById() ?>, <span><?= $model->getModelNameById() ?></span></h5>
                 <div class="text-secondary"><?= $model->year ?> | <?= $model->fuel ?>
                     | <?= $model->mileage ?> km
                 </div>

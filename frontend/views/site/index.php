@@ -4,6 +4,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use kv4nt\owlcarousel\OwlCarouselWidget;
 
 $this->title = 'Auto Shop';
 ?>
@@ -63,21 +64,82 @@ $this->title = 'Auto Shop';
                 </a>
             </div>
             <div class="col-lg-4">
-                <h2 class="h4 fw-bolder">Artigos e Dicas
+                <h2 class="h4 fw-bolder">Área Cliente
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                          class="bi bi-newspaper" viewBox="0 0 16 16">
                         <path d="M0 2.5A1.5 1.5 0 0 1 1.5 1h11A1.5 1.5 0 0 1 14 2.5v10.528c0 .3-.05.654-.238.972h.738a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 1 1 0v9a1.5 1.5 0 0 1-1.5 1.5H1.497A1.497 1.497 0 0 1 0 13.5v-11zM12 14c.37 0 .654-.211.853-.441.092-.106.147-.279.147-.531V2.5a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0-.5.5v11c0 .278.223.5.497.5H12z"/>
                         <path d="M2 3h10v2H2V3zm0 3h4v3H2V6zm0 4h4v1H2v-1zm0 2h4v1H2v-1zm5-6h2v1H7V6zm3 0h2v1h-2V6zM7 8h2v1H7V8zm3 0h2v1h-2V8zm-3 2h2v1H7v-1zm3 0h2v1h-2v-1zm-3 2h2v1H7v-1zm3 0h2v1h-2v-1z"/>
                     </svg>
                 </h2>
-                <p>Veja os melhores artigos e dicas sobre o mundo automóvel!</p>
-                <a class="text-decoration-none" href="<?php echo Url::toRoute(['/blog/index']) ?>">
+                <p>Consulte os seus test-drives e propostas de venda!</p>
+                <a class="text-decoration-none" href="<?php echo Url::toRoute(['/site/mensagem']) ?>">
                     Ver mais
                 </a>
             </div>
         </div>
     </div>
 </section>
+
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <?php OwlCarouselWidget::begin([
+            'container' => 'div',
+            'assetType' => OwlCarouselWidget::ASSET_TYPE_CDN,
+            'jqueryFunction' => 'jQuery',// or $
+            'containerOptions' => [
+                'id' => 'container-id',
+                'class' => 'container-class owl-theme'
+            ],
+            'pluginOptions' => [
+                'autoplay' => true,
+                'autoplayTimeout' => 3000,
+                'items' => 3,
+                'loop' => true,
+                'itemsDesktop' => [1199, 3],
+                'itemsDesktopSmall' => [979, 3]
+            ]
+        ]);
+        ?>
+
+        <?php foreach ($vehicles as $vehicle): ?>
+            <div class="card h-100">
+                <!-- Vehicle image-->
+                <img class="card-img-top" src="http://frontendstand.test/storage/<?= $vehicle->image ?>"
+                     alt=""/>
+                <!-- Vehicle details-->
+                <div class="card-body p-4">
+                    <div class="text-center">
+                        <h5 class="fw-bolder"><?= $vehicle->getBrandNameById() ?>, <span><?= $vehicle->getModelNameById() ?></span></h5>
+                        <div class="text-secondary"><?= $vehicle->year ?> | <?= $vehicle->fuel ?>
+                            | <?= $vehicle->mileage ?> km
+                        </div>
+                        <!-- Product price-->
+                        <div class="text-secondary"> Preço:
+                            <span><?= Yii::$app->formatter->asCurrency($vehicle->price) ?></span></div>
+                    </div>
+                </div>
+                <!-- Product actions-->
+                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                    <div class="text-center"><a class="btn btn-outline-dark mt-auto"
+                                                href="<?= Yii::$app->urlManager->createUrl(['vehicle/view', 'id' => $vehicle->id]) ?>">Ver
+                            mais</a></div>
+                </div>
+            </div>
+
+        <?php endforeach; ?>
+
+        <?php OwlCarouselWidget::end(); ?>
+    </div>
+</section>
+
+
+
+
+
+
+
+
 </body>
 </html>
 

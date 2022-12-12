@@ -43,6 +43,8 @@ $this->title = 'Propostas de venda';
         ],
     ]); */ ?>
 
+
+    <?php if ($dataProvider->count > 0): ?>
     <div class="table-responsive">
         <table class="table table-striped custom-table">
             <thead>
@@ -67,5 +69,8 @@ $this->title = 'Propostas de venda';
             </tbody>
         </table>
     </div>
+
+    <?php else: echo 'Não tem propostas de venda.'?>
+    <?php endif; ?>
 </div>
 

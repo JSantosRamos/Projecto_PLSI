@@ -15,8 +15,6 @@ use Yii;
  * @property int $idUser
  * @property int $idVehicle
  * @property string $status
- * @property string|null $reason
- *
  * @property User $idUser0
  * @property Vehicle $idVehicle0
  */
@@ -47,7 +45,6 @@ class Testdrive extends \yii\db\ActiveRecord
             ['status', 'default', 'value' => self::POR_VER],
             [['idUser', 'idVehicle'], 'integer'],
             [['description'], 'string', 'max' => 100],
-            [['reason'], 'string', 'max' => 50],
             [['idUser'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['idUser' => 'id']],
             [['idVehicle'], 'exist', 'skipOnError' => true, 'targetClass' => Vehicle::class, 'targetAttribute' => ['idVehicle' => 'id']],
         ];
@@ -66,7 +63,6 @@ class Testdrive extends \yii\db\ActiveRecord
             'idUser' => 'Utilizador',
             'idVehicle' => 'Refêrencia do Veículo',
             'status' => 'Estado do Pedido',
-            'reason' => 'Reason',
         ];
     }
 
