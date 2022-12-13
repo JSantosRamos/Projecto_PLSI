@@ -58,7 +58,7 @@ AppAsset::register($this);
          }*/
 
         if (!Yii::$app->user->isGuest) {
-            $menuItems[] = ['label' => 'Área Cliente', 'url' => ['/site/mensagem']];
+            $menuItems[] = ['label' => 'Área Cliente', 'url' => ['/site/areapessoal']];
             $menuItems[] = ['label' => 'Perfil', 'url' => ['/user/update', 'id' => Yii::$app->user->id]];
         }
 

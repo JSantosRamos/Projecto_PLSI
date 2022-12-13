@@ -12,11 +12,11 @@ use yii\widgets\ListView;
 /** @var yii\data\ActiveDataProvider $dataProvider */
 $this->title = 'Test-Drives';
 ?>
-<div class="testdrive-index">
 
-    <h3><?= Html::encode($this->title) ?></h3>
 
-    <?php if ($dataProvider->count > 0): ?>
+<h3><?= Html::encode($this->title) ?></h3>
+
+<?php if ($dataProvider->count > 0): ?>
     <div class="table-responsive">
         <table class="table table-striped custom-table">
             <thead>
@@ -41,6 +41,6 @@ $this->title = 'Test-Drives';
         </table>
     </div>
 
-    <?php else: echo 'Não tem test-drives agendados.'?>
-    <?php endif; ?>
-</div>
+<?php else: echo 'Não tem test-drives agendados.' ?>
+<?php endif; ?>
+
