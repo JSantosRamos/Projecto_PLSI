@@ -8,17 +8,9 @@ use kv4nt\owlcarousel\OwlCarouselWidget;
 
 $this->title = 'Auto Shop';
 ?>
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <link rel=”stylesheet” href=”https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css”/>
-    <title><?= Html::encode($this->title) ?></title>
-</head>
-<body>
-<header class="bg-dark py-5"
-        style="background: url('http://frontendstand.test/homepage/img.png') no-repeat center center">
+
+<title><?= Html::encode($this->title) ?></title>
+<section style="background: url('http://frontendstand.test/homepage/img.png') no-repeat center center;">
     <div class="container px-5">
         <div class="row gx-5 justify-content-center">
             <div class="col-lg-6">
@@ -32,7 +24,8 @@ $this->title = 'Auto Shop';
             </div>
         </div>
     </div>
-</header>
+
+</section>
 <!-- Features section-->
 <section class="py-5 border-bottom" id="features">
     <div class="container px-5 my-5">
@@ -110,7 +103,8 @@ $this->title = 'Auto Shop';
                 <!-- Vehicle details-->
                 <div class="card-body p-4">
                     <div class="text-center">
-                        <h5 class="fw-bolder"><?= $vehicle->getBrandNameById() ?>, <span><?= $vehicle->getModelNameById() ?></span></h5>
+                        <h5 class="fw-bolder"><?= $vehicle->getBrandNameById() ?>,
+                            <span><?= $vehicle->getModelNameById() ?></span></h5>
                         <div class="text-secondary"><?= $vehicle->year ?> | <?= $vehicle->fuel ?>
                             | <?= $vehicle->mileage ?> km
                         </div>
@@ -132,14 +126,6 @@ $this->title = 'Auto Shop';
         <?php OwlCarouselWidget::end(); ?>
     </div>
 </section>
-
-
-
-
-
-
-
-
 </body>
 </html>
 

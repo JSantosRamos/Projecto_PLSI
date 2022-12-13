@@ -42,7 +42,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout', 'mensagem'],
+                        'actions' => ['logout', 'areapessoal'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -299,9 +299,8 @@ class SiteController extends Controller
      *
      * @return
      */
-    public function actionMensagem()
+    public function actionAreapessoal()
     {
-
         if (Yii::$app->user->isGuest) {
             return $this->actionLogin();
         }
@@ -313,7 +312,7 @@ class SiteController extends Controller
         $dataProviderTestdrive = $searchModelTestdrive->search($this->request->queryParams, false);
 
 
-        return $this->render('mensagem', [
+        return $this->render('areapessoal', [
             'searchModelTestdrive' => $searchModelTestdrive,
             'dataProviderTestdrive' => $dataProviderTestdrive,
             'searchModelVendauser' => $searchModelVendauser,

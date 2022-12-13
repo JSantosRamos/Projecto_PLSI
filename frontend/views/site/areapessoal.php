@@ -10,12 +10,11 @@ use yii\helpers\Url;
 $this->title = 'Área Pessoal';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
-
 <?php
 /** @var common\models\TestdriveSearch $searchModelTestdrive */
 /** @var yii\data\ActiveDataProvider $dataProviderTestdrive */
 ?>
+
 <div class="testdrive-index">
 
     <?= $this->render('/testdrive/index', [
@@ -30,6 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
 /** @var common\models\VendauserSearch $searchModelVendauser */
 /** @var yii\data\ActiveDataProvider $dataProviderVendauser */
 ?>
+
 <div class="vendauser-index">
 
     <?= $this->render('/vendauser/index', [
@@ -110,5 +110,6 @@ $this->params['breadcrumbs'][] = $this->title;
     .custom-table .box td, .custom-table .box th {
         border: none !important;
     }
+
 </style>
 

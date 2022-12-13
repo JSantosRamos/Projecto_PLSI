@@ -45,3 +45,5 @@ phpunit.phar
 /backend/web/index-test.php
 /backend/web/robots.txt
 *.jpg
+*.pdf
+*.png
