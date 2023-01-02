@@ -1,6 +1,7 @@
 <?php
 
 use common\models\User;
+use common\models\Vehicle;
 use common\models\Venda;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -34,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'idUser_seller',
                 'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::a(User::getName($model->idUser_seller) . ' (nº' . $model->idUser_seller . ')', Url::toRoute(['user/view', 'id' => $model->idUser_seller]), [
+                    return Html::a(User::getNameById($model->idUser_seller) . ' (nº' . $model->idUser_seller . ')', Url::toRoute(['user/view', 'id' => $model->idUser_seller]), [
                     ]);
                 }
             ],
@@ -42,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'idUser_buyer',
                 'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::a(User::getName($model->idUser_buyer) . ' (nº' . $model->idUser_buyer . ')', Url::toRoute(['user/view', 'id' => $model->idUser_buyer]), [
+                    return Html::a(User::getNameById($model->idUser_buyer) . ' (nº' . $model->idUser_buyer . ')', Url::toRoute(['user/view', 'id' => $model->idUser_buyer]), [
                     ]);
                 }
             ],
@@ -50,17 +51,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'idVehicle',
                 'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::a($model->idVehicle, Url::toRoute(['vehicle/view', 'id' => $model->idVehicle]), [
+                    return Html::a(Vehicle::getPlate($model->idVehicle), Url::toRoute(['vehicle/view', 'id' => $model->idVehicle]), [
                     ]);
                 }
             ],
             'Price:currency',
             //'comment',
             [
-                'class' => 'yii\grid\ActionColumn', 'template' => User::isAdmin(\Yii::$app->user->id) ? '{view} {update} {delete}' : '{view} {update}' ,
+                'class' => 'yii\grid\ActionColumn', 'template' => User::isAdmin(Yii::$app->user->id) ? '{view} {update} {delete}' : '{view}',
                 'urlCreator' => function ($action, Venda $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                }
             ],
         ],
     ]); ?>

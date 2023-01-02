@@ -18,9 +18,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <?php if (!User::isEmployee(Yii::$app->user->id)): ?>
     <p>
         <?= Html::a('Nova Tarefa', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+    <?php endif; ?>
 
     <h5>Procurar por:</h5>
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -37,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'idAssigned_to',
                 'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::a(User::getName($model->idAssigned_to) . ' (nº' . $model->idAssigned_to . ')', Url::toRoute(['user/view', 'id' => $model->idAssigned_to]), [
+                    return Html::a(User::getNameById($model->idAssigned_to) . ' (nº' . $model->idAssigned_to . ')', Url::toRoute(['user/view', 'id' => $model->idAssigned_to]), [
                     ]);
                 }
             ],

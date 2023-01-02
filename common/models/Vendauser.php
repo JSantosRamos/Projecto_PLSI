@@ -46,8 +46,7 @@ class Vendauser extends \yii\db\ActiveRecord
     {
         return [
             [['idUser', 'price', 'plate', 'mileage', 'fuel', 'year', 'brand', 'model'], 'required'],
-            [['idUser', 'mileage'], 'integer'],
-            [['price'], 'number'],
+            [['idUser'], 'integer'],
             [['date'], 'safe'],
             [['fuel', 'status'], 'string'],
             [['plate'], 'string', 'max' => 8],
@@ -92,11 +91,13 @@ class Vendauser extends \yii\db\ActiveRecord
         return $this->hasOne(User::class, ['id' => 'idUser']);
     }
 
-    public static function getTotal(){
+    public static function getTotal()
+    {
         return Vendauser::find()->count();
     }
 
-    public static function getTotalStatus(){
+    public static function getTotalStatus()
+    {
 
         $porVer = 0;
         $emAnalise = 0;
@@ -133,14 +134,29 @@ class Vendauser extends \yii\db\ActiveRecord
             "aceite" => $aceite, "resposta" => $resposta, "recusado" => $recusado);
     }
 
-    public static function getValorTotal(){
+    public static function getValorTotal()
+    {
         $vendas = Vendauser::find()->select("price")->where(["status" => Vendauser::ACEITE])->all();
         $total = 0;
 
-        foreach ($vendas as $venda){
+        foreach ($vendas as $venda) {
             $total = $total + $venda->price;
         }
 
         return $total;
     }
+
+    /*public function beforeSave($insert)
+    {
+        $name_brand = Brand::find()->select("name")->where(['id' => $this->brand]);
+        $name_model = Model::find()->select("name")->where(['id' => $this->model]);
+
+        $name_brand = empty($name_brand) ? "Sem marca(erro model)" : $name_brand;
+        $name_model = empty($name_model) ? "Sem modelo(erro model)" : $name_model;
+
+        $this->brand = $name_brand;
+        $this->model = $name_model;
+
+        return parent::beforeSave($insert);
+    }*/
 }

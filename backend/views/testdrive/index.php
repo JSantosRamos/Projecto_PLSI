@@ -2,6 +2,7 @@
 
 use common\models\Testdrive;
 use common\models\User;
+use common\models\Vehicle;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -13,15 +14,19 @@ use yii\grid\GridView;
 
 $this->title = 'Test-Drives';
 $this->params['breadcrumbs'][] = $this->title;
+$role = User::getRoleName(Yii::$app->user->id);
 ?>
 <div class="testdrive-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Criar novo', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <?php if (!User::isEmployee(Yii::$app->user->id)): ?>
+        <p>
+            <?= Html::a('Criar novo', ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
+    <?php endif; ?>
 
+    <p>Procurar por:</p>
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
@@ -34,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'idVehicle',
                 'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::a($model->idVehicle, Url::toRoute(['vehicle/view', 'id' => $model->idVehicle]), [
+                    return Html::a(Vehicle::getPlate($model->idVehicle) . '(' .$model->idVehicle . ')', Url::toRoute(['vehicle/view', 'id' => $model->idVehicle]), [
                     ]);
                 }
             ],
@@ -42,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'idUser',
                 'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::a($model->idUser, Url::toRoute(['user/view', 'id' => $model->idUser]), [
+                    return Html::a(User::getNameById($model->idUser) . " (nº" . $model->idUser . ")", Url::toRoute(['user/view', 'id' => $model->idUser]), [
                     ]);
                 }
             ],
@@ -59,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'class' => 'yii\grid\ActionColumn', 'template' => User::isAdmin(\Yii::$app->user->id) ? '{view} {update} {delete}' : '{view} {update}' ,
+                'class' => 'yii\grid\ActionColumn', 'template' => $role == 'admin' ? '{view} {update} {delete}' : ($role == 'manager' ? '{view} {update}' : '{view}'),
                 'urlCreator' => function ($action, Testdrive $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                 }

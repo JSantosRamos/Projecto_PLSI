@@ -9,10 +9,12 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Testdrive $model */
 
-$this->title = 'Marcação de Teste-drive: #'.$model->id;
+$this->title = 'Marcação de Teste-drive: #' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Testdrives', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
+$role = User::getRoleName(\Yii::$app->user->id);
 ?>
 <div class="testdrive-view">
 
@@ -23,17 +25,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             [
                 'attribute' => 'idVehicle',
-                'format' =>['html'],
+                'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::a($model->idVehicle, Url::toRoute(['vehicle/view', 'id' => $model->idVehicle]) ,[
+                    return Html::a($model->idVehicle, Url::toRoute(['vehicle/view', 'id' => $model->idVehicle]), [
                     ]);
                 }
             ],
             [
                 'attribute' => 'idUser',
-                'format' =>['html'],
+                'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::a(User::getName($model->idUser) , Url::toRoute(['user/view', 'id' => $model->idUser]) ,[
+                    return Html::a(User::getNameById($model->idUser), Url::toRoute(['user/view', 'id' => $model->idUser]), [
                     ]);
                 }
             ],
@@ -42,9 +44,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'description',
             [
                 'attribute' => 'status',
-                'format' =>['html'],
+                'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::tag('span', $model->status ,[
+                    return Html::tag('span', $model->status, [
                         'class' => $model->status == Testdrive::POR_VER ? 'badge bg-secondary' : ($model->status == Testdrive::ACEITE ? 'badge bg-success' : ($model->status == Testdrive::RECUSADO ? 'badge bg-danger' : 'badge bg-info'))
                     ]);
                 }
@@ -53,18 +55,22 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
     <p>
-        <?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?php
-        if (User::isAdmin(Yii::$app->user->id)) {
-            Html::a('Apagar', ['delete', 'id' => $model->id], [
+        <?php if ($role == 'manager'): ?>
+
+            <?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+
+        <?php elseif ($role == 'admin'): ?>
+            <?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('Apagar', ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
                     'confirm' => 'Are you sure you want to delete this item?',
                     'method' => 'post',
                 ],
             ]);
-        }
-        ?>
+            ?>
+
+        <?php endif; ?>
     </p>
 
 </div>

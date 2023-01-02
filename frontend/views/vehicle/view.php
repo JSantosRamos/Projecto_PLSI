@@ -79,7 +79,7 @@ YiiAsset::register($this);
             </div>
             <div class="col-md-6">
                 <div class="small mb-1">Refêrencia: <?= $model->id ?></div>
-                <h4 class="display-5 fw-bolder"><?= $model->getBrandNameById() ?>, <span><?= $model->getModelNameById() ?></span></h4>
+                <h4 class="display-5 fw-bolder"><?= $model->getBrandName() ?>, <span><?= $model->getModelName() ?></span></h4>
                 <div class="fs-5 mb-5">
                     <span><?= Yii::$app->formatter->asCurrency($model->price) ?></span>
                 </div>
@@ -100,11 +100,15 @@ YiiAsset::register($this);
         </div>
         <br>
         <div class="grid-container">
+            <div class="text-secondary">Marca: <br> <span class="text-dark"><?= $model->getBrandName() ?></span></div>
+            <div class="text-secondary">Modelo: <br> <span class="text-dark"><?= $model->getModelName() ?></span></div>
+            <div class="text-secondary">Série: <br> <span class="text-dark"><?= $model->serie == "" ? "-" : $model->serie ?></span></div>
             <div class="text-secondary">Ano: <br> <span class="text-dark"><?= $model->year ?></span></div>
             <div class="text-secondary">Combustível: <br> <span class="text-dark"><?= $model->fuel ?></span></div>
             <div class="text-secondary">Portas: <br> <span class="text-dark"><?= $model->doorNumber ?></span></div>
             <div class="text-secondary">Quilometros: <br> <span class="text-dark"><?= $model->mileage ?> km</span></div>
             <div class="text-secondary">Cilindrada: <br> <span class="text-dark"><?= $model->engine ?> cm3</span></div>
+            <div class="text-secondary">CV: <br> <span class="text-dark"><?= $model->cv ?></span></div>
             <div class="text-secondary">Caixa: <br> <span class="text-dark"><?= $model->transmission ?></span></div>
             <div class="text-secondary">Tipo de Veículo: <br> <span class="text-dark"><?= $model->type ?></span></div>
             <div class="text-secondary">Cor: <br> <span class="text-dark"><?= $model->color ?></span></div>
@@ -128,7 +132,7 @@ YiiAsset::register($this);
                         <!-- Vehicle details-->
                         <div class="card-body p-4">
                             <div class="text-center">
-                                <h5 class="fw-bolder"><?= $item->getBrandNameById() ?>, <span><?= $item->getModelNameById() ?></span></h5>
+                                <h5 class="fw-bolder"><?= $item->getBrandName() ?>, <span><?= $item->getModelName() ?></span></h5>
                                 <div class="text-secondary"><?= $item->year ?> | <?= $item->fuel ?>
                                     | <?= $item->mileage ?> km
                                 </div>

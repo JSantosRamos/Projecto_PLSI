@@ -15,6 +15,7 @@ $this->title = 'Nova Tarefa';
     <?= $this->render('_form', [
         'model' => $model,
         'employees' => $employees,
+        'message' => $message,
     ]) ?>
 
 </div>

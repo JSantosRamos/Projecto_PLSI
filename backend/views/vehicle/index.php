@@ -1,5 +1,6 @@
 <?php
 
+use common\models\User;
 use common\models\Vehicle;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -17,9 +18,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Adcionar', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+
+    <?php if (!User::isEmployee(Yii::$app->user->id)): ?>
+        <p>
+            <?= Html::a('Adcionar', ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
+    <?php endif; ?>
 
     <?php echo $this->render('_search', ['model' => $searchModel, 'brands' => $brands]); ?>
 
@@ -39,13 +43,13 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'idBrand',
                 'value' => function ($model) {
-                    return $model->getBrandNameById();
+                    return $model->getBrandName();
                 }
             ],
             [
                 'attribute' => 'idModel',
                 'value' => function ($model) {
-                    return $model->getModelNameById();
+                    return $model->getModelName();
                 }
             ],
             'price:currency',
@@ -68,6 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => ActionColumn::className(),
+                'template' => User::isAdmin(Yii::$app->user->id) ? '{view} {update} {delete}' : (User::isManager(Yii::$app->user->id) ? '{view} {update}' : '{view}'),
                 'urlCreator' => function ($action, Vehicle $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                 }

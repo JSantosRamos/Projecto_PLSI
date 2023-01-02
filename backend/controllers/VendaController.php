@@ -9,10 +9,10 @@ use common\models\VehicleSearch;
 use common\models\Venda;
 use common\models\VendaSearch;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * VendaController implements the CRUD actions for Venda model.
@@ -35,13 +35,9 @@ class VendaController extends Controller
                             'allow' => true,
                             'roles' => ['employee'],
                         ],
+
                         [
-                            'actions' => ['update'],
-                            'allow' => true,
-                            'roles' => ['manager'],
-                        ],
-                        [
-                            'actions' => ['delete'],
+                            'actions' => ['delete', 'update'],
                             'allow' => true,
                             'roles' => ['admin'],
                         ],
@@ -106,9 +102,11 @@ class VendaController extends Controller
         $searchUser = new UserSearch();
         $message = "";
 
-        $dataVehicle = $searchVehicle->search($this->request->queryParams);
+        $users = User::find()->where(['isEmployee' => 0])->all(); //selectbox users
+        $vehicles = Vehicle::find()->where(['status' => Vehicle::STATUS_AVAILABLE])->orWhere(['status' => Vehicle::STATUS_RESERVED])->all(); //selectbox veiculos
 
-        $dataUser = $searchUser->search($this->request->queryParams);
+        $dataVehicle = $searchVehicle->search($this->request->queryParams);
+        $dataUser = $searchUser->search($this->request->queryParams, true);
 
         if ($this->request->isPost) {
             $model->idUser_seller = \Yii::$app->user->id;
@@ -117,11 +115,11 @@ class VendaController extends Controller
 
                 $vehicle = Vehicle::findOne($model->idVehicle);
 
-                if ($vehicle == null || $vehicle->status == Vehicle::STATUS_SOLD) {
+                if ($vehicle == null || $vehicle->status == Vehicle::STATUS_SOLD) { //já não faz sentido com a selectbox veiculos... mas é uma validação extra.
                     $message = 'O veículo indicado não existe ou já está vendido';
 
                     return $this->render('create', [
-                        'model' => $model, 'searchVehicle' => $searchVehicle, 'dataVehicle' => $dataVehicle, 'searchUser' => $searchUser, 'dataUser' => $dataUser, 'message' => $message,
+                        'model' => $model, 'searchVehicle' => $searchVehicle, 'dataVehicle' => $dataVehicle, 'searchUser' => $searchUser, 'dataUser' => $dataUser, 'message' => $message, 'users' => $users, 'vehicles' => $vehicles,
                     ]);
                 }
 
@@ -144,6 +142,8 @@ class VendaController extends Controller
             'searchUser' => $searchUser,
             'dataUser' => $dataUser,
             'message' => $message,
+            'users' => $users,
+            'vehicles' => $vehicles,
         ]);
     }
 
@@ -156,14 +156,47 @@ class VendaController extends Controller
      */
     public function actionUpdate($id)
     {
+        $users = User::find()->where(['isEmployee' => 0])->all(); //selectbox users
+        $vehicles = Vehicle::find()->all(); //selectbox veiculos
+        $message = '';
+
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        $old_idVehicle = $model->idVehicle;
+
+        if ($this->request->isPost && $model->load($this->request->post())) {
+
+            if ($old_idVehicle != $model->idVehicle) { //verificar se a alteração na venda é do veiculo.
+
+                $old_vehicle = Vehicle::findOne($old_idVehicle);
+                $new_vehicle = Vehicle::findOne($model->idVehicle);
+
+                if ($new_vehicle == null || $new_vehicle->status == Vehicle::STATUS_SOLD) { //se for vai verificar se é valido.
+                    $message = 'O veículo indicado não existe ou já está vendido';
+
+                    return $this->render('update', [
+                        'model' => $model, 'message' => $message, 'users' => $users, 'vehicles' => $vehicles,
+                    ]);
+                }
+
+                if ($model->save()) {
+                    //se for vai remover o antigo do estado vendido e atualizar o novo.
+                    $new_vehicle->status = Vehicle::STATUS_SOLD;
+                    $old_vehicle->status = Vehicle::STATUS_AVAILABLE;
+
+                    $new_vehicle->save();
+                    $old_vehicle->save();
+                }
+            }
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'users' => $users,
+            'vehicles' => $vehicles,
+            'message' => $message,
         ]);
     }
 
@@ -176,7 +209,16 @@ class VendaController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        if ($model->delete()) {
+            $vehicle = Vehicle::findOne($model->idVehicle);
+
+            if ($model->idVehicle != null) {
+                $vehicle->status = Vehicle::STATUS_AVAILABLE;
+                $vehicle->save();
+            }
+        }
 
         return $this->redirect(['index']);
     }

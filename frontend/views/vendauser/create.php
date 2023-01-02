@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /** @var common\models\Vendauser $model */
 
 $this->title = 'Proposta de Venda';
-$this->params['breadcrumbs'][] = ['label' => 'Vendausers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="vendauser-create">
 
@@ -15,6 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'brands' => $brands,
+        'vehicles_models' => "",
     ]) ?>
 
 </div>

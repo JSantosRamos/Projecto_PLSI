@@ -9,7 +9,7 @@ use yii\widgets\DetailView;
 /** @var common\models\Testdrive $model */
 
 $this->title = 'Pedido de Test-Drive: #' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Área Pessoal', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Área Pessoal', 'url' => ['site/areapessoal']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>

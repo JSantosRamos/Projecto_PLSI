@@ -15,8 +15,14 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="vehicle-view">
 
+    <?php if (isset($_GET['erro_delete'])) {
+        echo '<div class="alert alert-danger" role="alert">Não é possível apagar este veículo.</div>';
+    }
+    ?>
+
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <?php if (!User::isEmployee(Yii::$app->user->id)): ?>
     <p>
         <?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php if (User::isAdmin(Yii::$app->user->getId())){
@@ -29,6 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ]);
         }  ?>
     </p>
+    <?php endif; ?>
 
     <?= DetailView::widget([
         'model' => $model,
@@ -39,11 +46,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'plate',
             [
                 'attribute' => 'idBrand',
-                'value' => $model->getBrandNameById(),
+                'value' => $model->getBrandName(),
             ],
             [
                 'attribute' => 'idModel',
-                'value' => $model->getModelNameById(),
+                'value' => $model->getModelName(),
             ],
             [
                 'attribute' => 'serie',

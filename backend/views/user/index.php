@@ -15,14 +15,18 @@ use backend\models\AuthAssignment;
 $this->title = 'Utilizadores';
 $this->params['breadcrumbs'][] = $this->title;
 
+$role = User::getRoleName(Yii::$app->user->id);
+
 ?>
 <div class="user-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Adicionar', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <?php if ($role == 'admin' || $role == 'manager'): ?>
+        <p>
+            <?= Html::a('Adicionar', ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
+    <?php endif; ?>
 
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -48,6 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => ActionColumn::className(),
+                'template' => $role == 'admin' ? '{view} {update} {delete}' : ($role == 'manager' ? '{view} {update}' : '{view}'),
                 'urlCreator' => function ($action, User $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                 }
@@ -74,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'user_id',
                     'format' => ['html'],
                     'value' => function ($model) {
-                        return Html::a(User::getName($model->user_id) .' (nº:'. $model->user_id.')', Url::toRoute(['user/view', 'id' => $model->user_id]), [
+                        return Html::a(User::getNameById($model->user_id) . ' (nº:' . $model->user_id . ')', Url::toRoute(['user/view', 'id' => $model->user_id]), [
                         ]);
                     }
                 ],

@@ -2,6 +2,8 @@
 
 /** @var yii\web\View $this */
 
+use common\models\User;
+
 $this->title = 'My Yii Application';
 
 $percTarefasPorRealizar = ($tarefasStatus["porIniciar"] * 100) / $tarefas;
@@ -205,10 +207,13 @@ $percTarefasAdecorrer = ($tarefasStatus["emProcesso"] * 100) / $tarefas;
             </div>
         </div>
 <br>
+
+        <?php if(!User::isEmployee(Yii::$app->user->id)): ?>
         <h3>Compras e Vendas</h3>
         <div>
             <canvas id="bar-chart-horizontal" width="3000" height="450"></canvas>
         </div>
+        <?php endif; ?>
 
     </div>
 </div>

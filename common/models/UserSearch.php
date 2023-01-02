@@ -38,11 +38,15 @@ class UserSearch extends User
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $backendVenda = false)
     {
-        $query = User::find();
+        //if para que os utilizadores na vista->venda->create só aparece os clientes
+        if ($backendVenda) {
+            $query = User::find()->where(['isEmployee' => 0]);
+        } else {
+            $query = User::find();
+        }
 
-        // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

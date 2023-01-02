@@ -1,5 +1,14 @@
 <?php
-$desconto = $veiculo->price - $venda->Price;
+$desconto = 0;
+
+if($venda->Price < $veiculo->price){
+    $desconto = $venda->Price - $veiculo->price ;
+}
+
+$brandName = $veiculo->getBrandName();
+$modelName = $veiculo->getModelName();
+
+
 ?>
 
 <div id="invoiceholder">
@@ -11,8 +20,8 @@ $desconto = $veiculo->price - $venda->Price;
             <div class="clientlogo"></div>
             <div class="info">
                 <h2>Vendedor:</h2>
-                <p> <?= $vendedor->name;?><br>
-                    <?= $vendedor->email;?><br><br> Telefone: <?= $vendedor->number;?>
+                <p> <?= $vendedor->name; ?><br>
+                    <?= $vendedor->email; ?><br><br> Telefone: <?= $vendedor->number; ?>
                 </p>
             </div><!--End Info-->
             <div class="title">
@@ -25,8 +34,8 @@ $desconto = $veiculo->price - $venda->Price;
             <div class="clientlogo"></div>
             <div class="info">
                 <h2>Cliente:</h2>
-                <p> <?= $cliente->name;?><br>
-                    <?= $cliente->email;?><br><br> Telefone: <?= $cliente->number;?> | Nif: <?= $cliente->nif;?>
+                <p> <?= $cliente->name; ?><br>
+                    <?= $cliente->email; ?><br><br> Telefone: <?= $cliente->number; ?> | Nif: <?= $cliente->nif; ?>
                 </p>
             </div>
         </div><!--End Invoice Mid-->
@@ -43,9 +52,11 @@ $desconto = $veiculo->price - $venda->Price;
                     </tr>
 
                     <tr class="service">
-                        <td class="tableitem"><p class="itemtext"><?= $veiculo->id;?></p></td>
-                        <td class="tableitem"><p class="itemtext"><?php echo $veiculo->brand .' ' .$veiculo->model . '('. $veiculo->plate .')';?></p></td>
-                        <td class="tableitem"><p class="itemtext"><?= $veiculo->price?>€</p></td>
+                        <td class="tableitem"><p class="itemtext"><?= $veiculo->id; ?></p></td>
+                        <td class="tableitem"><p
+                                    class="itemtext"><?php echo $brandName . ' ' . $modelName . '(' . $veiculo->plate . ')'; ?></p>
+                        </td>
+                        <td class="tableitem"><p class="itemtext"><?= $veiculo->price ?>€</p></td>
                         <td class="tableitem"><p class="itemtext"><?= $venda->Price ?>€</p></td>
                         <td class="tableitem"><p class="itemtext"><?= $desconto ?>€</p></td>
                     </tr>
@@ -55,63 +66,67 @@ $desconto = $veiculo->price - $venda->Price;
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="payment"><h2>Total: <?=$venda->Price ?>€</h2></td>
+                        <td class="payment"><h2>Total: <?= $venda->Price ?>€</h2></td>
                     </tr>
                 </table>
             </div><!--End Table-->
 
             <br>
-            <h7>Detalhe do Veículo:</h7>
+            <h6>Detalhe do Veículo:</h6>
             <div class="bl_horizTable">
                 <table>
                     <tbody>
                     <tr>
                         <th>Matrícula:</th>
-                        <td><?= $veiculo->plate?></td>
+                        <td><?= $veiculo->plate ?></td>
                     </tr>
                     <tr>
                         <th>Marca:</th>
-                        <td><?= $veiculo->brand?></td>
+                        <td><?= $brandName ?></td>
                     </tr>
                     <tr>
                         <th>Modelo:</th>
-                        <td><?= $veiculo->model?></td>
+                        <td><?= $modelName ?></td>
                     </tr>
                     <tr>
                         <th>Serie:</th>
-                        <td><?= $veiculo->serie?></td>
+                        <td><?= $veiculo->serie == "" ? "-" : $veiculo->serie ?></td>
                     </tr>
                     <tr>
                         <th>Tipologia:</th>
-                        <td><?= $veiculo->type?></td>
+                        <td><?= $veiculo->type ?></td>
                     </tr>
                     <tr>
                         <th>Combustível:</th>
-                        <td><?= $veiculo->fuel?></td>
+                        <td><?= $veiculo->fuel ?></td>
                     </tr>
                     <tr>
                         <th>Quilómetro:</th>
-                        <td><?= $veiculo->mileage?> km</td>
+                        <td><?= $veiculo->mileage ?> km</td>
                     </tr>
                     <tr>
                         <th>Ano:</th>
-                        <td><?= $veiculo->year?></td>
+                        <td><?= $veiculo->year ?></td>
                     </tr>
                     <tr>
                         <th>Cilindrada:</th>
-                        <td><?= $veiculo->engine?> cm3</td>
+                        <td><?= $veiculo->engine ?> cm3</td>
+                    </tr>
+                    <tr>
+                        <th>CV:</th>
+                        <td><?= $veiculo->cv ?> cm3</td>
                     </tr>
                     <tr>
                         <th>Caixa:</th>
-                        <td><?= $veiculo->transmission?></td>
+                        <td><?= $veiculo->transmission ?></td>
                     </tr>
                     <tr>
                         <th>NºPortas:</th>
-                        <td><?= $veiculo->doorNumber?></td>
+                        <td><?= $veiculo->doorNumber ?></td>
                     </tr>
                     <tr>
                         <th>Cor:</th>
-                        <td><?= $veiculo->color?></td>
+                        <td><?= $veiculo->color ?></td>
                     </tr>
                     </tbody>
                 </table>
@@ -127,23 +142,9 @@ $desconto = $veiculo->price - $venda->Price;
     </div><!--End Invoice-->
 </div><!-- End Invoice Holder-->
 
-<a onClick="window.print()" class="btn btn-outline-primary" src="/css/icons/imprimir.png" >Imprimir Página</a>
+<a onClick="window.print()" class="btn btn-outline-primary">Imprimir Página</a>
 
 <style>
-
-    @import url(https://fonts.googleapis.com/css?family=Roboto:100,300,400,900,700,500,300,100);
-
-    * {
-        margin: 0;
-        box-sizing: border-box;
-
-    }
-
-    ::selection {
-        background: #f31544;
-        color: #FFF;
-    }
-
     h1 {
         font-size: 1.5em;
         color: #222;
@@ -175,8 +176,6 @@ $desconto = $veiculo->price - $venda->Price;
         position: relative;
         top: -50px;
         height: 350px;
-        background-image: url('http://michaeltruong.ca/images/invoicebg.jpg');
-
         -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, .15), inset 0 -2px 4px rgba(0, 0, 0, .15);
         -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, .15), inset 0 -2px 4px rgba(0, 0, 0, .15);
         box-shadow: inset 0 2px 4px rgba(0, 0, 0, .15), inset 0 -2px 4px rgba(0, 0, 0, .15);
@@ -194,7 +193,7 @@ $desconto = $veiculo->price - $venda->Price;
         background: #FFF;
     }
 
-    [id*='invoice-'] { /* Targets all id with 'col-' */
+    [id*='invoice-'] {
         border-bottom: 1px solid #EEE;
         padding: 30px;
     }
@@ -209,15 +208,6 @@ $desconto = $veiculo->price - $venda->Price;
 
     #invoice-bot {
         min-height: 250px;
-    }
-
-    .clientlogo {
-        float: left;
-        height: 60px;
-        width: 60px;
-        background: url(http://michaeltruong.ca/images/client.jpg) no-repeat;
-        background-size: 60px 60px;
-        border-radius: 50px;
     }
 
     .info {
@@ -321,5 +311,4 @@ $desconto = $veiculo->price - $venda->Price;
     .bl_horizTable tr:last-child td {
         border-bottom-width: 0;
     }
-
 </style>

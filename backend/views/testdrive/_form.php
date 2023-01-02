@@ -2,6 +2,8 @@
 
 use common\models\Testdrive;
 use kartik\date\DatePicker;
+use kartik\select2\Select2;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
 
@@ -15,8 +17,14 @@ use yii\bootstrap5\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <div class="row">
-        <div class="col-md-6"> <?= $form->field($model, 'idUser')->Input('number') ?></div>
-        <div class="col-md-6"> <?= $form->field($model, 'idVehicle')->Input('number') ?></div>
+        <div class="col-md-6"><?= $form->field($model, 'idUser')->widget(Select2::className(), [
+                'data' => ArrayHelper::map($users, 'id', 'email'),
+                'options' => ['placeholder' => 'Selecione uma referência'],
+            ]); ?></div>
+        <div class="col-md-4"><?= $form->field($model, 'idVehicle')->widget(Select2::className(), [
+                'data' => ArrayHelper::map($vehicles, 'id', 'plate'),
+                'options' => ['placeholder' => 'Selecione uma referência'],
+            ]); ?></div>
     </div>
 
     <div class="row">
@@ -26,7 +34,7 @@ use yii\bootstrap5\ActiveForm;
                 'value' => '23-Feb-1982',
                 'pluginOptions' => [
                     'autoclose' => true,
-                    'format' => 'dd-m-yyyy'
+                    'format' => 'dd-mm-yyyy'
                 ]
             ]) ?>
 

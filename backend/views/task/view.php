@@ -31,14 +31,14 @@ $this->title = 'Tarefa: #' . $model->id . ' (' . $model->type . ')';
                 'attribute' => 'idAssigned_to',
                 'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::a(User::getName($model->idAssigned_to) . ' (nº' . $model->idAssigned_to . ')', Url::toRoute(['user/view', 'id' => $model->idAssigned_to]));
+                    return Html::a(User::getNameById($model->idAssigned_to) . ' (nº' . $model->idAssigned_to . ')', Url::toRoute(['user/view', 'id' => $model->idAssigned_to]));
                 }
             ],
             [
                 'attribute' => 'idCreated_by',
                 'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::a(User::getName($model->idCreated_by) . ' (nº' . $model->idCreated_by . ')', Url::toRoute(['user/view', 'id' => $model->idCreated_by]));
+                    return Html::a(User::getNameById($model->idCreated_by) . ' (nº' . $model->idCreated_by . ')', Url::toRoute(['user/view', 'id' => $model->idCreated_by]));
                 }
             ],
             'created_at',
@@ -56,17 +56,16 @@ $this->title = 'Tarefa: #' . $model->id . ' (' . $model->type . ')';
 
     <p>
         <?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?php
-        if (User::isEmployee(Yii::$app->user->id)) {
-            Html::a('Apagar', ['delete', 'id' => $model->id], [
+
+        <?php if (!User::isEmployee(Yii::$app->user->id)): ?>
+            <?= Html::a('Apagar', ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
-                    'confirm' => 'Are you sure you want to delete this item?',
+                    'confirm' => 'Tem a certeza que quer apagar?',
                     'method' => 'post',
                 ],
-            ]);
-        }
-        ?>
+            ]); ?>
+        <?php endif; ?>
         <?= Html::a('Adicionar Nota', Url::toRoute(['note/create', 'idTask' => $model->id]), ['class' => 'btn btn-success']) ?>
     </p>
 

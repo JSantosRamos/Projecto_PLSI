@@ -35,9 +35,14 @@ class VehicleController extends Controller
                     'class' => AccessControl::class,
                     'rules' => [
                         [
-                            'actions' => ['index', 'create', 'update', 'view', 'allmodels'],
+                            'actions' => ['index', 'view', 'allmodels'],
                             'allow' => true,
                             'roles' => ['employee'],
+                        ],
+                        [
+                            'actions' => ['create', 'update'],
+                            'allow' => true,
+                            'roles' => ['manager'],
                         ],
                         [
                             'actions' => ['delete'],
@@ -98,7 +103,7 @@ class VehicleController extends Controller
         $model = new Vehicle();
         $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
 
-        $brands = Brand::find()->all();
+        $brands = Brand::find()->all(); //selecbox
 
 
         if ($this->request->isPost) {
@@ -129,8 +134,6 @@ class VehicleController extends Controller
         $brands = Brand::find()->all(); //get brands for select dropdown
         $vehicle_models = Model::find()->where(['idBrand' => $model->idBrand])->all(); //get models for select dropdown
 
-        //$model->idModel = $model->getModelNameById($model->idModel);
-
         $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
@@ -160,7 +163,7 @@ class VehicleController extends Controller
 
         } catch (Throwable $e) {
 
-            return $this->render('/site/error', ['name' => 'carro', 'message' => 'carro']);
+            return $this->redirect(['view', 'id' => $model->id, 'erro_delete' => 'true']);
         }
 
         return $this->redirect(['index']);

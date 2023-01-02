@@ -29,7 +29,7 @@ class CostController extends Controller
                         [
                             'actions' => ['index', 'view', 'update', 'delete', 'create', 'download'],
                             'allow' => true,
-                            'roles' => ['admin'],
+                            'roles' => ['manager'],
                         ],
                     ],
                 ],

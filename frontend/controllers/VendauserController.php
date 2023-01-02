@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use common\models\Brand;
+use common\models\Model;
 use common\models\Permission;
 use common\models\Vendauser;
 use common\models\VendauserSearch;
@@ -11,6 +13,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * VendauserController implements the CRUD actions for Vendauser model.
@@ -29,7 +32,7 @@ class VendauserController extends Controller
                     'class' => AccessControl::class,
                     'rules' => [
                         [
-                            'actions' => ['index', 'create', 'update', 'delete', 'view', 'confirm'],
+                            'actions' => ['index', 'create', 'update', 'delete', 'view', 'confirm', 'allmodels'],
                             'allow' => true,
                             'roles' => ['@'],
                         ],
@@ -51,7 +54,7 @@ class VendauserController extends Controller
      */
     public function actionIndex()
     {
-       return $this->redirect(Url::toRoute('site/mensagem'));
+        return $this->redirect(Url::toRoute('site/mensagem'));
 
         /*  $searchModel = new VendauserSearch();
           $dataProvider = $searchModel->search($this->request->queryParams);
@@ -91,6 +94,8 @@ class VendauserController extends Controller
         $model = new Vendauser();
         $model->idUser = \Yii::$app->user->id;
 
+        $brands = Brand::find()->all(); //selectbox
+
         if ($this->request->isPost) {
 
             if ($model->load($this->request->post()) && $model->save()) {
@@ -102,6 +107,7 @@ class VendauserController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'brands' => $brands,
         ]);
     }
 
@@ -115,6 +121,9 @@ class VendauserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+
+        $brands = Brand::find()->all(); //get brands for select dropdown
+        $vehicle_models = Model::find()->where(['idBrand' => $model->brand])->all(); //get models for select dropdown
 
         if (!Permission::allowedAction($model->idUser)) {
             $this->redirect('site/index');
@@ -130,6 +139,8 @@ class VendauserController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'brands' => $brands,
+            'vehicle_models' => $vehicle_models
         ]);
     }
 
@@ -164,9 +175,9 @@ class VendauserController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        if($value == 'yes'){
+        if ($value == 'yes') {
             $model->status = Vendauser::ACEITE;
-        }else{
+        } else {
             $model->status = Vendauser::RECUSADO;
         }
 
@@ -189,5 +200,25 @@ class VendauserController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+
+    public function actionAllmodels()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $out = [];
+
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+
+            if ($parents != null) {
+                $brand_id = $parents[0];
+                $out = Model::find()->where(['idBrand' => $brand_id])->all();
+
+                return ['output' => $out, 'selected' => ''];
+            }
+        }
+
+        return ['output' => '', 'selected' => ''];
     }
 }

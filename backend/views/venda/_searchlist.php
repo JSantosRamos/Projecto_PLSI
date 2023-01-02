@@ -49,7 +49,6 @@ $this->registerJs('$("document").ready(function(){
 
                 <h5>Procurar por:</h5>
                 <div class="row">
-                    <div class="col-md-3"><?php echo $form->field($searchVehicle, 'id')->textInput(['placeholder' => 'Referência'])->label(false) ?></div>
                     <div class="col-md-3"> <?php echo $form->field($searchVehicle, 'brand')->textInput(['placeholder' => 'Marca'])->label(false) ?></div>
                     <div class="col-md-3"><?php echo $form->field($searchVehicle, 'plate')->textInput(['placeholder' => 'Matrícula'])->label(false) ?></div>
                     <div class="col-md-3"><?php echo $form->field($searchVehicle, 'status')->dropDownList(['Vendido' => 'Vendidos', 'Reservado' => 'Reservados', 'Disponível' => 'Disponíveis'], ['prompt' => '  Todos',])->label(false) ?></div>
@@ -77,10 +76,13 @@ $this->registerJs('$("document").ready(function(){
                             return Html::img($model->getImageUrl(), ['style' => 'width: 100px']);
                         }
                     ],
-                    'title',
                     'plate',
-                    'brand',
-                    'model',
+                    [
+                        'attribute' => 'idBrand',
+                        'value' => function ($model) {
+                            return $model->getBrandName();
+                        }
+                    ],
                     'price:currency',
                     [
                         'attribute' => 'status',
@@ -138,15 +140,6 @@ $this->registerJs('$("document").ready(function(){
                     'id',
                     'username',
                     'email:email',
-                    /* [
-                         'attribute' => 'status',
-                         'format' => ['html'],
-                         'value' => function ($model) {
-                             return Html::tag('span', $model->status == 10 ? 'Ativo' : 'Desativo', [
-                                 'class' => $model->status == 10 ? 'badge bg-success' : 'badge bg-danger'
-                             ]);
-                         }
-                     ],*/
                     [
                         'class' => ActionColumn::className(),
                         'template' => '{view}',

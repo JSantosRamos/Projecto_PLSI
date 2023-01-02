@@ -19,6 +19,7 @@ use yii\widgets\ActiveForm;
 
     <div class="row">
         <div class="col-md-2"><?php echo $form->field($model, 'id')->Input('number', ['placeholder' => 'Nº da Tarefa'])->label(false) ?></div>
+
         <?php if (!User::isEmployee(Yii::$app->user->id)): ?>
             <div class="col-md-2"> <?php echo $form->field($model, 'idAssigned_to')->Input('number', ['placeholder' => 'Utilizador'])->label(false) ?></div>
         <?php endif; ?>

@@ -36,7 +36,7 @@ class UserController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    /*public function actionIndex()
     {
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -46,14 +46,14 @@ class UserController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-
+*/
     /**
      * Displays a single User model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    /*public function actionView($id)
     {
         $userSessionID = \Yii::$app->user->getId();
 
@@ -65,7 +65,7 @@ class UserController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
-
+*/
     /**
      * Creates a new User model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -98,7 +98,7 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $userSessionID = \Yii::$app->user->getId();
-        if($id != $userSessionID){
+        if ($id != $userSessionID) {
             $id = $userSessionID;
         }
 
@@ -106,9 +106,7 @@ class UserController extends Controller
 
         if ($this->request->isPost && $model->load($this->request->post())) {
 
-            $model->setPassword($model->password_hash);
-
-            if($model->save()){
+            if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }

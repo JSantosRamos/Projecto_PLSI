@@ -7,6 +7,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
 use yii\helpers\Url;
+use yii\widgets\MaskedInput;
 
 /** @var yii\web\View $this */
 /** @var common\models\Vehicle $model */
@@ -69,7 +70,14 @@ use yii\helpers\Url;
     </div>
 
     <div class="row">
-        <div class="col-md-4"><?= $form->field($model, 'price')->input('number') ?></div>
+        <div class="col-md-4"><?= $form->field($model, 'price')->widget(MaskedInput::class, [
+                'name' => 'input-33',
+                'clientOptions' => [
+                    'alias' => 'decimal',
+                    'groupSeparator' => ',',
+                    'autoGroup' => true,
+                    'removeMaskOnSubmit' => true,
+                ]]) ?></div>
         <div class="col-md-4"><?= $form->field($model, 'status')->dropDownList(['Disponível' => 'Disponível', 'Vendido' => 'Vendido', 'Reservado' => 'Reservado',]) ?></div>
         <div class="col-md-4"><?= $form->field($model, 'doorNumber')->Input('number') ?></div>
     </div>

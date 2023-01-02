@@ -4,6 +4,8 @@ namespace backend\controllers;
 
 use common\models\Testdrive;
 use common\models\TestdriveSearch;
+use common\models\User;
+use common\models\Vehicle;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -89,23 +91,21 @@ class TestdriveController extends Controller
     public function actionCreate()
     {
         $model = new Testdrive();
+        $users = User::find()->where(['isEmployee' => 0])->all();
+        $vehicles = Vehicle::find()->where(['status' => Vehicle::STATUS_AVAILABLE])->all();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
+        if ($this->request->isPost && $model->load($this->request->post())) {
 
-                $todayDate = date('d-M-Y');
+            if (!$this->validateDate($model->date)) {
 
-                if ($model->date < $todayDate) {
+                return $this->render('create', [
+                    'model' => $model,
+                    'dateInvalidMessage' => 'Data inválida', 'users' => $users, 'vehicles' => $vehicles,
+                ]);
+            }
 
-                    return $this->render('create', [
-                        'model' => $model,
-                        'dateInvalidMessage' => 'Data inválida'
-                    ]);
-                }
-
-                if ($model->save()) {
-                    return $this->redirect(['index']);
-                }
+            if ($model->save()) {
+                return $this->redirect(['index']);
             }
 
         } else {
@@ -115,6 +115,8 @@ class TestdriveController extends Controller
         return $this->render('create', [
             'model' => $model,
             'dateInvalidMessage' => '',
+            'users' => $users,
+            'vehicles' => $vehicles,
         ]);
     }
 
@@ -129,15 +131,32 @@ class TestdriveController extends Controller
     function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $users = User::find()->where(['isEmployee' => 0])->all();
+        $vehicles = Vehicle::find()->where(['status' => Vehicle::STATUS_AVAILABLE])->all();
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+        if ($this->request->isPost && $model->load($this->request->post())) {
+
+            if ($this->validateDate($model->date)) {
+                $model->save();
+                return $this->redirect(['index']);
+
+            } else {
+
+                return $this->render('update', [
+                    'model' => $model,
+                    'dateInvalidMessage' => 'Data inválida', 'users' => $users, 'vehicles' => $vehicles,
+                ]);
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
+            'users' => $users,
+            'vehicles' => $vehicles,
+            'dateInvalidMessage' => '',
         ]);
     }
+
 
     /**
      * Deletes an existing Testdrive model.
@@ -169,5 +188,17 @@ class TestdriveController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    private
+    function validateDate($date)
+    {
+        $todayDate = date('d-m-Y');
+
+        $date = strtotime($date);
+        $todayDate = strtotime($todayDate);
+
+
+        return $date > $todayDate;
     }
 }

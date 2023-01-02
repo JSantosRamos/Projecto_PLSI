@@ -126,10 +126,13 @@ class AssignmentController extends Controller
         $sessionUserId = Yii::$app->user->getId();
 
         if(!User::isAdmin($sessionUserId)){
-            if(User::isAdmin($user_id) || User::isManager($user_id)){
-                return $this->render('view', [
-                    'model' => $this->findModel($item_name, $user_id),
-                ]);
+
+            if(User::isAdmin($user_id)){ //manager não pode alterar um admin
+                throw new \yii\web\ForbiddenHttpException('Não pode alterar um admin');
+            }
+
+            if(User::isManager($user_id)){ //manager não pode alterar outro managerc incluindo ele proprio
+                throw new \yii\web\ForbiddenHttpException('Não pode alterar um manager');
             }
         }
 

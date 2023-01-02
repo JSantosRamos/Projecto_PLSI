@@ -32,10 +32,16 @@ if (Yii::$app->controller->action->id == 'update' && User::isEmployee(Yii::$app-
         'value' => '23-Feb-1982 10:01',
         'pluginOptions' => [
             'autoclose' => true,
-            'format' => 'dd-M-yyyy hh:ii',
+            'format' => 'd-m-yyyy hh:ii',
             'todayHighlight' => true
         ]
     ]) ?>
+    <?php
+    if (!empty($message)) { ?>
+        <div class="text-danger">
+            <?php echo $message; ?>
+        </div>
+    <?php } ?>
 
     <?= $form->field($model, 'idAssigned_to')->dropDownList($employees, ['disabled' => $fieldDisable]) ?>
 

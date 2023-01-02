@@ -1,6 +1,8 @@
 <?php
 
+use common\models\User;
 use yii\helpers\Html;
+use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
@@ -9,7 +11,7 @@ use yii\widgets\DetailView;
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+YiiAsset::register($this);
 ?>
 <div class="user-view">
 
@@ -21,14 +23,22 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Apagar', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Têm a certeza que quer apagar este utilizador?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?php
+        $id = Yii::$app->user->id;
+        if (User::isAdmin($id)) {
+            echo Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);
+            echo Html::a('Apagar', ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => 'Têm a certeza que quer apagar este utilizador?',
+                    'method' => 'post',
+                ],
+            ]);
+
+        } else if (User::isManager($id) && !User::isAdmin($model->id)) {
+            echo Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);
+        }
+        ?>
     </p>
 
     <?= DetailView::widget([

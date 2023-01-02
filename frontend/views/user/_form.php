@@ -7,6 +7,7 @@ use yii\widgets\ActiveForm;
 /** @var common\models\User $model */
 /** @var yii\bootstrap5\ActiveForm $form */
 
+//$this->registerJs("jQuery('#reveal-password').change(function(){jQuery('#user-password').attr('type',this.checked?'text':'password');})");
 ?>
 
 <div class="user-form">
@@ -18,7 +19,7 @@ use yii\widgets\ActiveForm;
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5"
                                                                                              width="200px"
                                                                                              src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
-                    <span class="font-weight-bold"><?= $model->name ?></span>
+                    <span class="font-weight-bold"><?= $model->email ?></span>
                 </div>
             </div>
             <div class="col-md-5 border-right">

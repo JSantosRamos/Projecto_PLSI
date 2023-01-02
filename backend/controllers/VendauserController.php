@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\Brand;
 use common\models\Note;
 use common\models\NoteSearch;
 use common\models\Vendauser;
@@ -10,6 +11,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * VendauserController implements the CRUD actions for Vendauser model.
@@ -56,12 +58,14 @@ class VendauserController extends Controller
      */
     public function actionIndex()
     {
+        $brands = Brand::find()->all();
         $searchModel = new VendauserSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'brands' => $brands,
         ]);
     }
 

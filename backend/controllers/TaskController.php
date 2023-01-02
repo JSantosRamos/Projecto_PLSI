@@ -65,7 +65,7 @@ class TaskController extends Controller
     public function actionIndex()
     {
         $searchModel = new TaskSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = $searchModel->search($this->request->queryParams); //No TaskSearch verifica a role se for employee só devolve as tarefas atribuidas a esse id.
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -76,19 +76,25 @@ class TaskController extends Controller
     /**
      * Displays a single Task model.
      * @param int $id ID
-     * @return string
+     * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        //$notes = Note::find()->where(['idTask' => $id])->all();
+
+        $model = $this->findModel($id);
+        $userID = \Yii::$app->user->id;
+
+        if (User::isEmployee($userID) && $model->idAssigned_to != $userID) {
+            return $this->redirect('/task/index');
+        }
 
         $searchModelNote = new NoteSearch();
         $searchModelNote->idTask = $id;
         $notes = $searchModelNote->search($this->request->queryParams);
 
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
             'notes' => $notes
         ]);
     }
@@ -103,11 +109,17 @@ class TaskController extends Controller
         $model = new Task();
         $model->idCreated_by = \Yii::$app->user->id;
         $employees = ArrayHelper::map(User::find()->where(['isEmployee' => 1])->all(), 'id', 'name');
-        // $employees = $this->getEmployees();
+        $message = '';
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+
+                if (!$this->validateDate($model->date)) {
+                    $message = 'Data inválida';
+                } else {
+                    $model->save();
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
             }
         } else {
             $model->loadDefaultValues();
@@ -116,6 +128,7 @@ class TaskController extends Controller
         return $this->render('create', [
             'model' => $model,
             'employees' => $employees,
+            'message' => $message,
 
         ]);
     }
@@ -130,6 +143,12 @@ class TaskController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $userID = \Yii::$app->user->id;
+
+        if (User::isEmployee($userID) && $model->idAssigned_to != $userID) {
+            return $this->redirect('/task/index');
+        }
+
         $employees = ArrayHelper::map(User::find()->where(['isEmployee' => 1])->all(), 'id', 'name');
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
@@ -139,6 +158,7 @@ class TaskController extends Controller
         return $this->render('update', [
             'model' => $model,
             'employees' => $employees,
+            'message' => '',
         ]);
     }
 
@@ -212,5 +232,15 @@ class TaskController extends Controller
         }
 
         return $data;
+    }
+
+    private function validateDate($date)
+    {
+        $todayDate = gmdate('d-m-Y H:i');
+
+        $date = strtotime($date);
+        $todayDate = strtotime($todayDate);
+
+        return $date > $todayDate;
     }
 }

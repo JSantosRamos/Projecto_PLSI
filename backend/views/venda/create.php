@@ -23,6 +23,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $this->render('_form', [
         'model' => $model,
         'message' => $message,
+        'users' => $users,
+        'vehicles' => $vehicles,
     ]) ?>
     <br>
     <hr style="border: 1px solid blue">

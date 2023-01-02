@@ -6,7 +6,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use kv4nt\owlcarousel\OwlCarouselWidget;
 
-$this->title = 'Auto Shop';
+$this->title = 'Stand Auto';
 ?>
 
 <title><?= Html::encode($this->title) ?></title>
@@ -15,7 +15,7 @@ $this->title = 'Auto Shop';
         <div class="row gx-5 justify-content-center">
             <div class="col-lg-6">
                 <div class="text-center my-5">
-                    <h1 class="display-5 fw-bolder text-white mb-2">AUTO SHOP</h1>
+                    <h1 class="display-5 fw-bolder text-white mb-2">STAND AUTO</h1>
                     <br>
                     <br>
                     <p class="lead text-white-50 mb-4">Veja todas a nossas viaturas aos melhores preços, encontre o
@@ -58,14 +58,12 @@ $this->title = 'Auto Shop';
             </div>
             <div class="col-lg-4">
                 <h2 class="h4 fw-bolder">Área Cliente
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                         class="bi bi-newspaper" viewBox="0 0 16 16">
-                        <path d="M0 2.5A1.5 1.5 0 0 1 1.5 1h11A1.5 1.5 0 0 1 14 2.5v10.528c0 .3-.05.654-.238.972h.738a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 1 1 0v9a1.5 1.5 0 0 1-1.5 1.5H1.497A1.497 1.497 0 0 1 0 13.5v-11zM12 14c.37 0 .654-.211.853-.441.092-.106.147-.279.147-.531V2.5a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0-.5.5v11c0 .278.223.5.497.5H12z"/>
-                        <path d="M2 3h10v2H2V3zm0 3h4v3H2V6zm0 4h4v1H2v-1zm0 2h4v1H2v-1zm5-6h2v1H7V6zm3 0h2v1h-2V6zM7 8h2v1H7V8zm3 0h2v1h-2V8zm-3 2h2v1H7v-1zm3 0h2v1h-2v-1zm-3 2h2v1H7v-1zm3 0h2v1h-2v-1z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-person-fill" viewBox="0 0 16 16">
+                        <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm-1 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm-3 4c2.623 0 4.146.826 5 1.755V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-1.245C3.854 11.825 5.377 11 8 11z"/>
                     </svg>
                 </h2>
                 <p>Consulte os seus test-drives e propostas de venda!</p>
-                <a class="text-decoration-none" href="<?php echo Url::toRoute(['/site/mensagem']) ?>">
+                <a class="text-decoration-none" href="<?php echo Url::toRoute(['/site/areapessoal']) ?>">
                     Ver mais
                 </a>
             </div>
@@ -103,8 +101,8 @@ $this->title = 'Auto Shop';
                 <!-- Vehicle details-->
                 <div class="card-body p-4">
                     <div class="text-center">
-                        <h5 class="fw-bolder"><?= $vehicle->getBrandNameById() ?>,
-                            <span><?= $vehicle->getModelNameById() ?></span></h5>
+                        <h5 class="fw-bolder"><?= $vehicle->getBrandName() ?>,
+                            <span><?= $vehicle->getModelName() ?></span></h5>
                         <div class="text-secondary"><?= $vehicle->year ?> | <?= $vehicle->fuel ?>
                             | <?= $vehicle->mileage ?> km
                         </div>
@@ -126,6 +124,4 @@ $this->title = 'Auto Shop';
         <?php OwlCarouselWidget::end(); ?>
     </div>
 </section>
-</body>
-</html>
 

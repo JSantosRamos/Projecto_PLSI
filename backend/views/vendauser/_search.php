@@ -1,6 +1,8 @@
 <?php
 
 use common\models\Vendauser;
+use kartik\select2\Select2;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -17,10 +19,12 @@ use yii\widgets\ActiveForm;
     ]); ?>
 
     <div class="row">
-        <div class="col-md-2"> <?= $form->field($model, 'idUser')->textInput(['placeholder' => 'NºUtilizador'])->label(false) ?></div>
-        <div class="col-md-2"> <?= $form->field($model, 'brand')->textInput(['placeholder' => 'Marca'])->label(false) ?></div>
-        <div class="col-md-2"> <?= $form->field($model, 'model')->textInput(['placeholder' => 'Modelo'])->label(false) ?></div>
-        <div class="col-md-2"> <?= $form->field($model, 'serie')->textInput(['placeholder' => 'Serie'])->label(false) ?></div>
+        <div class="col-md-2"><?= $form->field($model, 'brand')->widget(Select2::className(), [
+                'data' => ArrayHelper::map($brands, 'name', 'name'),
+                'options' => ['placeholder' => 'Selecione uma marca', 'id' => 'brand-id'],
+            ])->label(false);
+            ?>
+        </div>
         <div class="col-md-2"><?php echo $form->field($model, 'status')->dropDownList([Vendauser::POR_VER => 'Por Ver', Vendauser::EM_ANALISE => 'Em Análise', Vendauser::AGUARDANDO_RESPOSTA => 'Sem Resposta', Vendauser::ACEITE => 'Aceite', Vendauser::RECUSADO =>'Recusado'],
                 ['prompt' => '  Todos',])->label(false) ?></div>
     </div>

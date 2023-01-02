@@ -22,7 +22,7 @@ use yii\bootstrap5\ActiveForm;
         'options'=> ['placeholder' => "Selecione uma data."],
         'pluginOptions' => [
             'autoclose' => true,
-            'format' => 'd-m-yyyy'
+            'format' => 'dd-mm-yyyy'
         ]
     ]) ?>
 

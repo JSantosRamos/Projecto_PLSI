@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\Testdrive $model */
 
-$this->title = 'Test-drive:' . ' ' . $veiculoInfo->getBrandNameById() . '('. $veiculoInfo->getModelNameById() .')';
+$this->title = 'Test-drive:' . ' ' . $veiculoInfo->getBrandName() . '('. $veiculoInfo->getModelName() .')';
 $this->params['breadcrumbs'][] = ['label' => 'Testdrives', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

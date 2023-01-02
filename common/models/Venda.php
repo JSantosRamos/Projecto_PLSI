@@ -35,7 +35,6 @@ class Venda extends \yii\db\ActiveRecord
         return [
             [['idUser_buyer', 'idVehicle', 'Price'], 'required'],
             [['idUser_seller', 'idUser_buyer', 'idVehicle'], 'integer'],
-            [['Price'], 'number'],
             [['comment'], 'string', 'max' => 100],
             [['idUser_buyer'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['idUser_buyer' => 'id']],
             [['idUser_seller'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['idUser_seller' => 'id']],
@@ -53,7 +52,7 @@ class Venda extends \yii\db\ActiveRecord
             'idUser_buyer' => 'Comprador',
             'idVehicle' => 'Referência do Veículo',
             'Price' => 'Preço',
-            'comment' => 'Outro',
+            'comment' => 'Comentário',
         ];
     }
 

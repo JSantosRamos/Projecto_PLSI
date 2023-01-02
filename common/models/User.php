@@ -7,13 +7,14 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\rbac\Role;
 use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "user".
  *
  * @property int $id
- * @property string $username
+ * @property string|null $username
  * @property string $auth_key
  * @property string $password_hash
  * @property string|null $password_reset_token
@@ -59,18 +60,20 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'password_hash', 'name', 'email', 'isEmployee'], 'required'],
+            [['password_hash', 'name', 'email', 'isEmployee'], 'required'],
             [['status', 'created_at', 'updated_at', 'isEmployee'], 'integer'],
             [['username', 'password_hash', 'password_reset_token', 'email', 'verification_token'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['name'], 'string', 'max' => 50],
-            [['username'], 'unique'],
+            // [['username'], 'unique'],
+            [['number'], 'unique'],
+            [['nif'], 'unique'],
             [['email'], 'unique'],
             [['password_reset_token'], 'unique'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
-            ['password','string', 'min' =>8],
-            [['number', 'nif'], 'string', 'min' =>9, 'max' =>9],
+            ['password', 'string', 'min' => 8],
+            [['number', 'nif'], 'string', 'min' => 9, 'max' => 9],
         ];
     }
 
@@ -369,31 +372,48 @@ class User extends ActiveRecord implements IdentityInterface
         return (array_key_exists('employee', $roles));
     }
 
+    public static function getRoleName($id)
+    {
+        $roles = Yii::$app->authManager->getRolesByUser($id);
+
+        return array_key_first($roles);
+    }
+
+
     /**
      * Return name
      *
      * @param int $id id to search name
      * @return string name of User
      */
-    public static function getName($id){
+    public static function getNameById($id)
+    {
         $user = User::findOne($id);
-        return $user->name;
+
+        return $user != null ? $user->name : "Sem nome";
     }
 
     public function afterValidate()
     {
+        /* echo '<pre>';
+         var_dump($this->password);
+         echo'</pre>';
+         exit;*/
+
         parent::afterValidate();
-        if ($this->password){
+        if ($this->password) {
             $this->password_hash = YII::$app->security->generatePasswordHash($this->password);
         }
     }
 
-    public static function getTotalUsers(){
+    public static function getTotalUsers()
+    {
 
         return User::find()->count();
     }
 
-    public static function getTotaLActiveUsers(){
+    public static function getTotaLActiveUsers()
+    {
 
         return User::find()->where(['status' => User::STATUS_ACTIVE])->count();
     }

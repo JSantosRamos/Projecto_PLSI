@@ -61,7 +61,6 @@ class Vehicle extends \yii\db\ActiveRecord
             [['imageFile'], 'image', 'extensions' => 'png, jpg, jpeg, webp', 'maxSize' => 10 * 1024 * 1024],
             [['type', 'fuel', 'color', 'description', 'transmission'], 'string'],
             [['engine', 'year', 'doorNumber', 'isActive', 'idModel', 'cv'], 'integer'],
-            [['price'], 'number'],
             [['brand', 'model', 'serie', 'mileage', 'title'], 'string', 'max' => 50],
             [['image'], 'string', 'max' => 2000],
             [['plate'], 'string', 'max' => 8],
@@ -141,6 +140,20 @@ class Vehicle extends \yii\db\ActiveRecord
         return Yii::$app->params['frontendUrl'] . '/storage' . $this->image;
     }
 
+    public function getModelName()
+    {
+        $model = Model::findOne(['id' => $this->idModel]);
+
+        return $model == null ? '' : $model->name;
+    }
+
+    public function getBrandName()
+    {
+        $brand = Brand::findOne(['id' => $this->idBrand]);
+
+        return $brand == null ? '' : $brand->name;
+    }
+
     public static function getTotal()
     {
         return Vehicle::find()->count();
@@ -173,17 +186,21 @@ class Vehicle extends \yii\db\ActiveRecord
         return array("vendido" => $vendido, "reservado" => $reservado, "disponivel" => $disponivel);
     }
 
-    public function getModelNameById()
+    public static function getPlate($id)
     {
-        $model = Model::findOne(['id' => $this->idModel]);
-
-        return $model == null ? '' : $model->name;
+        $vehicle = Vehicle::find()->where(['id' => $id])->one();
+        return $vehicle->plate;
     }
 
-    public function getBrandNameById()
+    public static function getBrandNameById($id)
     {
-        $brand = Brand::findOne(['id' => $this->idBrand]);
-
+        $brand = Brand::findOne($id);
         return $brand == null ? '' : $brand->name;
+    }
+
+    public static function getModelNameById($id)
+    {
+        $model = Model::findOne($id);
+        return $model == null ? '' : $model->name;
     }
 }

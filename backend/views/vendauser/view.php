@@ -1,9 +1,11 @@
 <?php
 
 use common\models\User;
+use common\models\Vehicle;
 use common\models\Vendauser;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 use yii\widgets\ListView;
 
@@ -13,7 +15,7 @@ use yii\widgets\ListView;
 $this->title = 'Proposta de venda: #' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Vendausers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+YiiAsset::register($this);
 ?>
 <div class="vendauser-view">
 
@@ -26,12 +28,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'idUser',
                 'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::a(\common\models\User::getName($model->idUser), Url::toRoute(['user/view', 'id' => $model->idUser]), [
+                    return Html::a(User::getNameById($model->idUser), Url::toRoute(['user/view', 'id' => $model->idUser]), [
                     ]);
                 }
             ],
-            'brand',
-            'model',
+            [
+                'attribute' => 'brand',
+                'value' => function ($model) {return Vehicle::getBrandNameById($model->brand);}
+            ],
+            [
+                'attribute' => 'model',
+                'value' => function ($model) {return Vehicle::getModelNameById($model->model);}
+            ],
             [
                 'attribute' => 'serie',
                 'value' => $model->serie == null ? 'Sem serie' : $model->serie,

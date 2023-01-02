@@ -17,10 +17,10 @@ use yii\widgets\ActiveForm;
     ]); ?>
 
     <div class="row">
-        <div class="col-md-2"><?php echo $form->field($model, 'idVehicle')->textInput(['placeholder' => 'Referência do Veículo'])->label(false) ?></div>
-        <div class="col-md-2"> <?php echo $form->field($model, 'idUser')->textInput(['placeholder' => 'Utilizador'])->label(false) ?></div>
-        <div class="col-md-2"><?php echo $form->field($model, 'status')->dropDownList([Testdrive::POR_VER => 'Por Ver', Testdrive::AGUARDANDO_RESPOSTA => 'Sem Resposta', Testdrive::ACEITE => 'Aceite', Testdrive::RECUSADO =>'Recusado'],
-                ['prompt' => '  Todos',])->label(false) ?></div>
+        <div class="col-md-2"><?php echo $form->field($model, 'idVehicle')->Input('number', ['placeholder' => 'Veículo'])->label(false) ?></div>
+        <div class="col-md-2"> <?php echo $form->field($model, 'idUser')->Input('number',['placeholder' => 'NºUtilizador'])->label(false) ?></div>
+        <div class="col-md-2"><?php echo $form->field($model, 'status')->dropDownList([Testdrive::POR_VER => 'Por Ver', Testdrive::AGUARDANDO_RESPOSTA => 'Sem Resposta', Testdrive::ACEITE => 'Aceite', Testdrive::RECUSADO => 'Recusado'],
+                ['prompt' => 'Todos os estados',])->label(false) ?></div>
     </div>
     <div class="form-group">
         <?= Html::submitButton('Procurar', ['class' => 'btn btn-primary']) ?>

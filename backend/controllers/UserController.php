@@ -33,9 +33,14 @@ class UserController extends Controller
                     'class' => AccessControl::class,
                     'rules' => [
                         [
-                            'actions' => ['index', 'view', 'create', 'update'],
+                            'actions' => ['index', 'view'],
                             'allow' => true,
                             'roles' => ['employee'],
+                        ],
+                        [
+                            'actions' => ['create', 'update'],
+                            'allow' => true,
+                            'roles' => ['manager'],
                         ],
                         [
                             'actions' => ['delete'],
@@ -176,8 +181,6 @@ class UserController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post())) {
-
-            $model->setPassword($model->password_hash);
 
             if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);

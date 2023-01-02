@@ -4,6 +4,8 @@ namespace backend\controllers;
 
 use common\models\Note;
 use common\models\NoteSearch;
+use common\models\User;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -22,6 +24,16 @@ class NoteController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'actions' => ['index', 'view', 'update', 'create', 'delete'],
+                            'allow' => true,
+                            'roles' => ['employee'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -106,9 +118,14 @@ class NoteController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $userID = \Yii::$app->user->id;
+
+        if (User::isEmployee($userID) && $model->idUser != $userID) {
+            return $this->redirect(['/site/index']);
+        }
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            if ($model->idTask != null) {
+            if ($model->idTask != null) { //As notas podem ser atribuidas a tarefas ou propostas depois da alteração verifica para onde enviar o utilizador.
                 return $this->redirect(['/task/view', 'id' => $model->idTask]);
             } else {
                 return $this->redirect(['/vendauser/view', 'id' => $model->idproposta_venda]);
@@ -133,6 +150,12 @@ class NoteController extends Controller
         $type = null;
 
         $model = $this->findModel($id);
+
+        $userID = \Yii::$app->user->id;
+
+        if (User::isEmployee($userID) && $model->idUser != $userID) {
+            return $this->redirect(['/site/index']);
+        }
 
         if ($model->idTask != null) {
             $returnID = $model->idTask;
