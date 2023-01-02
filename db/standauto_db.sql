@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 13-Dez-2022 às 15:43
+-- Tempo de geração: 02-Jan-2023 às 21:14
 -- Versão do servidor: 10.4.24-MariaDB
 -- versão do PHP: 8.1.6
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Banco de dados: `yii2teste`
+-- Banco de dados: `standauto`
 --
 
 -- --------------------------------------------------------
@@ -42,8 +42,7 @@ CREATE TABLE `auth_assignment` (
 INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`, `name`, `email`) VALUES
 ('admin', '25', 1668009515, NULL, NULL),
 ('customer', '33', 1669042157, NULL, NULL),
-('customer', '37', 1670233363, NULL, NULL),
-('customer', '38', 1670233522, NULL, NULL),
+('customer', '42', 1672307470, NULL, NULL),
 ('employee', '35', 1669042785, NULL, NULL),
 ('employee', '36', 1669726711, NULL, NULL),
 ('manager', '34', 1669042692, NULL, NULL);
@@ -170,7 +169,9 @@ INSERT INTO `contactuser` (`id`, `name`, `email`, `subject`, `body`) VALUES
 (2, 'gwgwgw', 'gwgwgw@gmail.com', 'fafafa', 'fafafa'),
 (3, 'gwgwgw', 'gwgwgw@gmail.com', 'fafafa', 'fafafa'),
 (4, 'fafafafa', 'fafafaf@gmailcom', 'fafafa', 'fafafa'),
-(5, 'ddada', 'fafafaf@gmailcom', 'dada', 'dada');
+(5, 'ddada', 'fafafaf@gmailcom', 'dada', 'dada'),
+(6, 'user', 'user@gmailcom', 'Registo', 'Não consigo regisar'),
+(7, 'User', 'user@gmail.com', 'Registo', 'Já consegui regisar');
 
 -- --------------------------------------------------------
 
@@ -185,14 +186,6 @@ CREATE TABLE `cost` (
   `valor` double NOT NULL,
   `file` varchar(2000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Extraindo dados da tabela `cost`
---
-
-INSERT INTO `cost` (`id`, `idUser`, `title`, `valor`, `file`) VALUES
-(3, 25, 'Fatura ', 100, '/costs/UXw_imZih-3XJd-PbS3yqVTo_TCQ1u6M/IPL-TeSP-PSI-MDS-2223-Proposta_José Ramos.pdf'),
-(4, 25, 'Fatira', 100, '/costs/OOvqUEXxhXqxaLmMGalACUHuKhkuzHnd/IPL-TeSP-PSI-MDS-2223-Proposta_José Ramos (2).pdf');
 
 -- --------------------------------------------------------
 
@@ -269,8 +262,16 @@ CREATE TABLE `note` (
   `idUser` int(11) NOT NULL,
   `idTask` int(11) DEFAULT NULL,
   `idproposta_venda` int(11) DEFAULT NULL,
-  `create_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `create_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `note`
+--
+
+INSERT INTO `note` (`id`, `description`, `idUser`, `idTask`, `idproposta_venda`, `create_at`) VALUES
+(50, 'Nota do manager', 34, 21, NULL, '2022-12-30 13:22:49'),
+(53, 'ok', 35, 21, NULL, '2023-01-02 11:14:42');
 
 -- --------------------------------------------------------
 
@@ -285,7 +286,7 @@ CREATE TABLE `task` (
   `description` varchar(300) NOT NULL,
   `status` enum('Por iniciar','Em Processo','Finalizado') NOT NULL,
   `idCreated_by` int(11) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `idAssigned_to` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -294,9 +295,9 @@ CREATE TABLE `task` (
 --
 
 INSERT INTO `task` (`id`, `type`, `date`, `description`, `status`, `idCreated_by`, `created_at`, `idAssigned_to`) VALUES
-(17, 'Testedrive', '01-Dec-2022 14:10', 'jfjjsfsfsfs', 'Em Processo', 34, '2022-12-05 15:03:51', 36),
-(18, 'Dia1', '01-Dec-2022 17:10', 'Dia1', 'Por iniciar', 34, '2022-12-05 15:03:34', 35),
-(19, 'Tes', '30-Nov-2022 11:20', 'fwfwgw', 'Por iniciar', 25, '2022-12-05 14:52:41', 36);
+(19, 'Tes', '30-Nov-2022 11:20', 'fwfwgw', 'Por iniciar', 25, '2022-12-05 14:52:41', 36),
+(21, 'Testedrive', '31-Dec-2022 14:25', 'Para o func1', 'Em Processo', 34, '2022-12-30 13:22:23', 35),
+(23, 'teste data', '31-12-2022 14:25', 'teste data', 'Em Processo', 25, '2023-01-01 15:49:45', 34);
 
 -- --------------------------------------------------------
 
@@ -319,9 +320,8 @@ CREATE TABLE `testdrive` (
 --
 
 INSERT INTO `testdrive` (`id`, `date`, `time`, `description`, `idUser`, `idVehicle`, `status`) VALUES
-(41, '12/12/2022', '10:00', 'Gosto muito', 25, 13, 'Aceite'),
-(42, '14-12-2022', '12:00', 'dwdwdwdw', 25, 14, 'Recusado'),
-(43, '22-12-2022', '12:00', 'cscvscsvsvsv', 25, 14, 'Por ver');
+(43, '22-12-2022', '12:00', 'por API3', 36, 14, 'Por ver'),
+(44, '22-12-2022', '12:00', 'cscvscsvsvsv', 25, 14, 'Aceite');
 
 -- --------------------------------------------------------
 
@@ -331,7 +331,7 @@ INSERT INTO `testdrive` (`id`, `date`, `time`, `description`, `idUser`, `idVehic
 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
-  `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `username` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `auth_key` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `password_hash` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password_reset_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -352,12 +352,10 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `username`, `auth_key`, `password_hash`, `password_reset_token`, `email`, `status`, `created_at`, `updated_at`, `verification_token`, `name`, `nif`, `number`, `isEmployee`) VALUES
 (25, 'admin', 'UfbsiYCY7jReKod0nEc_efANrzuW6BTV', '$2y$13$VF3xZ4fjUF5ah6w7ktVEJew.YriRywqyI/HuMKRFvlJJ53S0yW7B2', NULL, 'admin@gmail.com', 10, 1668009515, 1670771457, 'QoUV1UPBevCKmuYk8dwtcilfSoJzpQWc_1668009515', 'Admin', '000564586', '921987564', 1),
-(33, 'PauloSantos', 'aT-ZhEMzsscFC742i7G5NXBQPrTiTPU8', '$2y$13$0OmBTh9fom8WykcpyHPmyeG3GdhfWa3GxcclDzWk8cziEGlQHPN12', NULL, 'paulosantos@gmail.com', 10, 1669042157, 1669042157, 'ZP4jvrfDgmQfU149WQwOq6TVkeAwG-Sc_1669042156', 'Paulo Santos', '999888444', '915303789', 0),
-(34, 'manager', 'Bt9pOn0v530ayWfwnct0nMXLoOB2r0wc', '$2y$13$w3oh4glXZLPft7i1hLHmROXqQxdx5Y9Lal5.T.KLVwEylyVmT2lSu', NULL, 'manager@gmail.com', 10, 1669042692, 1669914662, 'VCZGH2EexQErr1iiT6u_DJAYTINUOdnV_1669042692', 'Manager', '111222333', '912788544', 1),
-(35, 'RuiFerreira', 'FRGlroqvsakiaZ6geeOB4Nk4Lnazp2Ls', '$2y$13$WLB0OwXjMdBnrjDeZhX8IeYibq1Jb1SJc03A17a9pcaYt19lui.g.', NULL, 'ruiferreira@gmail.com', 10, 1669042785, 1669905221, 'j5aeW6v4_iC0tJPOcSTgfnYH240l33_v_1669042784', 'Rui Ferreira', '098776563', '923455888', 1),
-(36, 'RGomes', 'GyMVZ1a8Mjd3RBpXiLvY9S7VW-K08zOo', '$2y$13$VAwtoyNLqMJ.bSe9Zoxi2OgjtLSvnomRU1dbdLDnkuriYwRjkjkJa', NULL, 'RGomes@gmail.com', 10, 1669726711, 1669726711, '0vN-BCG4VN41Cx1FGmEmjiwOv8N003Tz_1669726710', 'Rodrigo Gomes', '097777777', '910567776', 1),
-(37, 'adminteste123', 'TZymdHj37VbcRxfVpKmRxfK3YyVH6MLT', '$2y$13$HtdMljEEVTgCt3YsXbJ6ieOYo87njVoBkIyOQ38tLyOVfhJXr9wp2', NULL, 'adminaa@gmail.com', 10, 1670233363, 1670233363, 'tZWJ8DepA5Dv6H2YVzCqwr5EwVt81vNK_1670233363', 'Admin', NULL, NULL, 0),
-(38, 'admin9999', 'oGr6QtOAYjc1lp8Ny-X4PjHZd7XB2yRX', '$2y$13$FeWy6rAx9RaCYNl7w4Lt9.8c0uftvOwWWvl0LsM88S7SVy4v23iZa', NULL, 'admin9999@gmail.com', 10, 1670233522, 1670233522, 'F_Mbf2fPDkxkHo-unc82koegRQhSoWC2_1670233522', 'admin9', NULL, NULL, 0);
+(34, 'manager', 'Bt9pOn0v530ayWfwnct0nMXLoOB2r0wc', '$2y$13$1mo7XxZoF355It6K9e/AkO2.gkQaQrVKqcB9tPMH7be6tW9XhUj6G', NULL, 'manager@gmail.com', 10, 1669042692, 1672335274, 'VCZGH2EexQErr1iiT6u_DJAYTINUOdnV_1669042692', 'Manager', '111222333', '912788544', 1),
+(35, 'func1', 'FRGlroqvsakiaZ6geeOB4Nk4Lnazp2Ls', '$2y$13$LYbWCoLh0rP9JlFYimOvMuYWt2FltQjQxFNmpVHSL2OOXeKFFzj96', NULL, 'func1@gmail.com', 10, 1669042785, 1672403122, 'j5aeW6v4_iC0tJPOcSTgfnYH240l33_v_1669042784', 'Funcionário1', '098776563', '923455888', 1),
+(36, 'func2', 'GyMVZ1a8Mjd3RBpXiLvY9S7VW-K08zOo', '$2y$13$n/bctwhO0gIzwMyPRkIt1.sJUeMt/YbvD0uLFEfjZHLKUOeTmFe8y', NULL, 'func2@gmail.com', 10, 1669726711, 1672406407, '0vN-BCG4VN41Cx1FGmEmjiwOv8N003Tz_1669726710', 'Funcionário2', '097777777', '910567776', 1),
+(42, 'user1', 'HjTIkh8iXxGEe9wriyrcnEZug5YTdvSH', '$2y$13$zedvaxavaVZabJ312JIdDOS0mDzfJwWJ0ukV28S0NNnogAEg7uMmS', NULL, 'user@gmail.com', 10, 1672307469, 1672316768, 'ajmm0-KqamvgeLQyA5h2yzOk0XnJmZ7p_1672307469', 'User', '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -395,8 +393,8 @@ CREATE TABLE `vehicle` (
 --
 
 INSERT INTO `vehicle` (`id`, `brand`, `model`, `serie`, `type`, `fuel`, `mileage`, `engine`, `color`, `description`, `year`, `doorNumber`, `transmission`, `price`, `image`, `isActive`, `title`, `plate`, `cv`, `idBrand`, `idModel`, `status`) VALUES
-(13, NULL, NULL, '', 'Carrinha', 'Diesel', '5000', 2000, 'Preto', '<p>jrjrjr</p>\r\n', 2020, 4, 'Manual', 34000, '/vehicles/cYB05NcajaJTfHrD27A011hnNdgjfmRY/Audi-A3-30tdi-17_925x520_acf_cropped.jpg', 1, 'Audiiiii', '55-CA-67', 33, 4, 5, 'Vendido'),
-(14, NULL, NULL, '', 'Utilitário', 'Diesel', '5000', 2000, 'Azul', '<p>Muito Bom estado</p>\r\n', 2023, 4, 'Automático', 60000, '/vehicles/D2GV7IUUsAaJ1L0jq8xf4Z_dDZCI82UN/bmw-m-series-m2-coupe-lci-modelfinder.png', 1, 'BMW Serie 2', '55-CR-65', 180, 7, 13, 'Disponível');
+(13, NULL, NULL, '', 'Carrinha', 'Diesel', '5000', 2000, 'Preto', '<p>jrjrjr</p>\r\n', 2020, 4, 'Manual', 34000, '/vehicles/cYB05NcajaJTfHrD27A011hnNdgjfmRY/Audi-A3-30tdi-17_925x520_acf_cropped.jpg', 1, 'Audi', '55-CA-67', 33, 4, 5, 'Disponível'),
+(14, NULL, NULL, '', 'Utilitário', 'Diesel', '5000', 2000, 'Azul', '<p>Muito Bom estado</p>\r\n', 2023, 4, 'Automático', 50000, '/vehicles/D2GV7IUUsAaJ1L0jq8xf4Z_dDZCI82UN/bmw-m-series-m2-coupe-lci-modelfinder.png', 1, 'BMW Serie 2', '55-CR-65', 180, 7, 13, 'Vendido');
 
 -- --------------------------------------------------------
 
@@ -409,7 +407,7 @@ CREATE TABLE `venda` (
   `idUser_seller` int(11) NOT NULL,
   `idUser_buyer` int(11) NOT NULL,
   `idVehicle` int(11) NOT NULL,
-  `Price` double NOT NULL,
+  `Price` decimal(10,0) NOT NULL,
   `comment` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -418,7 +416,7 @@ CREATE TABLE `venda` (
 --
 
 INSERT INTO `venda` (`id`, `idUser_seller`, `idUser_buyer`, `idVehicle`, `Price`, `comment`) VALUES
-(11, 25, 33, 13, 10000, '');
+(19, 25, 42, 14, '40000', '');
 
 -- --------------------------------------------------------
 
@@ -441,6 +439,14 @@ CREATE TABLE `vendauser` (
   `description` varchar(500) DEFAULT NULL,
   `status` enum('Por ver','Em Análise','Aceite','Recusado','Aguardando Resposta') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `vendauser`
+--
+
+INSERT INTO `vendauser` (`id`, `idUser`, `price`, `date`, `plate`, `mileage`, `fuel`, `year`, `brand`, `model`, `serie`, `description`, `status`) VALUES
+(17, 25, 1111, '2023-01-02 19:57:31', '11-AA-11', 11111, 'Gasolina', '2017', '6', '11', NULL, '', 'Por ver'),
+(18, 25, 63000, '2023-01-02 19:27:36', '12-BB-90', 100000, 'Gasolina', '2010', '7', '13', NULL, 'Muitos', 'Por ver');
 
 --
 -- Índices para tabelas despejadas
@@ -535,9 +541,10 @@ ALTER TABLE `testdrive`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username` (`username`),
   ADD UNIQUE KEY `email` (`email`),
-  ADD UNIQUE KEY `password_reset_token` (`password_reset_token`);
+  ADD UNIQUE KEY `password_reset_token` (`password_reset_token`),
+  ADD UNIQUE KEY `number` (`number`),
+  ADD UNIQUE KEY `nif` (`nif`);
 
 --
 -- Índices para tabela `vehicle`
@@ -578,7 +585,7 @@ ALTER TABLE `brand`
 -- AUTO_INCREMENT de tabela `contactuser`
 --
 ALTER TABLE `contactuser`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de tabela `cost`
@@ -596,43 +603,43 @@ ALTER TABLE `model`
 -- AUTO_INCREMENT de tabela `note`
 --
 ALTER TABLE `note`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT de tabela `task`
 --
 ALTER TABLE `task`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de tabela `testdrive`
 --
 ALTER TABLE `testdrive`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT de tabela `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT de tabela `vehicle`
 --
 ALTER TABLE `vehicle`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de tabela `venda`
 --
 ALTER TABLE `venda`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de tabela `vendauser`
 --
 ALTER TABLE `vendauser`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Restrições para despejos de tabelas
