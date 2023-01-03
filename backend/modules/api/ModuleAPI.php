@@ -2,6 +2,9 @@
 
 namespace backend\modules\api;
 
+use common\models\User;
+use yii\filters\auth\HttpBasicAuth;
+
 /**
  * api module definition class
  */
@@ -18,7 +21,6 @@ class ModuleAPI extends \yii\base\Module
     public function init()
     {
         parent::init();
-
-        // custom initialization code goes here
+        \Yii::$app->user->enableSession = false;
     }
 }

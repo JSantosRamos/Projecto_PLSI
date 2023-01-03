@@ -69,17 +69,19 @@ return [
                     ],
                 ],
 
-                //vehicle
+                //veiculos
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/vehicle',
                     'extraPatterns' => [
-                        'GET {id}/preco' => 'preco', //preço do veiculo
-                        'GET precobrand/{idBrand}' => 'precobrand', //preço para a marca
+                        'GET total' =>'total', //total
+                        'GET {id}/price' => 'price', //preço do veiculo
+                        'GET brand/{id}' => 'brand', //por marca
+                        'GET model/{id}' => 'model', //por modelo
+                        'GET {id}/status' => 'status',
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\d+>',
-                        '{idBbrand}' => '<brand:\\d+>'
                     ]
                 ],
 
@@ -109,12 +111,8 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/testdrive',
                     'extraPatterns' => [
-                        'GET user' => 'userbyid',
+                        'GET user' => 'mytestdrives', //user pode ver os seus testdrives
                     ],
-                    /*
-                    'tokens' => [
-                        '{id}' => '<id:\\d+>',
-                    ]*/
                 ],
 
                 //vendauser
