@@ -44,7 +44,7 @@ use yii\widgets\MaskedInput;
         </div>
 
         <div class="col-md-4"><?= $form->field($model, 'idModel')->widget(DepDrop::classname(), [
-                'data' => $vehicles_models == "" ? "" : ArrayHelper::map($vehicles_models, 'id', 'name'),
+                'data' => $vehicle_models == "" ? "" : ArrayHelper::map($vehicle_models, 'id', 'name'),
                 'options' => ['placeholder' => 'Selecione um modelo'],
                 'type' => DepDrop::TYPE_SELECT2,
                 'pluginOptions' => [

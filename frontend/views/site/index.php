@@ -52,7 +52,7 @@ $this->title = 'Stand Auto';
                 </h2>
                 <p>Tem um automóvel para vender? Nós temos a proposta ideal para si.
                     Tratamos de todo o processo de forma rápida e simples!</p>
-                <a class="text-decoration-none" href="<?php echo Url::toRoute(['/vendauser/create']) ?>">
+                <a class="text-decoration-none" id="vendacarro" href="<?php echo Url::toRoute(['/vendauser/create']) ?>">
                     Ver mais
                 </a>
             </div>

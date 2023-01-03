@@ -39,7 +39,7 @@ AppAsset::register($this);
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center"
                href="<?php echo Url::toRoute(['/site/index']) ?>">
-                <div class="sidebar-brand-text mx-3">Auto Shop</div>
+                <div class="sidebar-brand-text mx-3">Stand Auto</div>
             </a>
 
             <!-- Divider -->

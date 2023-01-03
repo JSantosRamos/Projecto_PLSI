@@ -8,7 +8,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Vehicle $model */
 
-$this->title = 'Editar Veículo: ' . $model->brand . '(' . $model->plate . ')';
+$this->title = 'Editar Veículo: ('.$model->plate .')';
 $this->params['breadcrumbs'][] = ['label' => 'Vehicles', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);

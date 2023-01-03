@@ -1,6 +1,5 @@
 <?php
 
-use etsoft\widgets\YearSelectbox;
 use kartik\depdrop\DepDrop;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
@@ -29,13 +28,13 @@ $mat = 'old';
                 'mask' => $mat == 'old' ? '[99]-[AA]-[99]' : '[AA]-[99]-[AA]',
             ]) ?></div>
         <div class="col-md-4"><?= $form->field($model, 'brand')->widget(Select2::className(), [
-                'data' => ArrayHelper::map($brands, 'id', 'name'),
+                'data' => ArrayHelper::map($vBrands, 'id', 'name'),
                 'options' => ['placeholder' => 'Selecione uma marca', 'id' => 'brand-id'],
             ]);
             ?>
         </div>
         <div class="col-md-4"><?= $form->field($model, 'model')->widget(DepDrop::classname(), [
-                'data' => $vehicles_models == "" ? "" : ArrayHelper::map($vehicles_models, 'id', 'name'),
+                'data' => $vModels == "" ? "" : ArrayHelper::map($vModels, 'id', 'name'),
                 'options' => ['placeholder' => 'Selecione um modelo'],
                 'type' => DepDrop::TYPE_SELECT2,
                 'pluginOptions' => [

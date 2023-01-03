@@ -103,8 +103,8 @@ class VehicleController extends Controller
         $model = new Vehicle();
         $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
 
-        $brands = Brand::find()->all(); //selecbox
-
+        $brands = Brand::find()->all(); //get brands for select dropdown
+        $vehicle_models = Model::find()->all(); //get models for select dropdown
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -117,6 +117,7 @@ class VehicleController extends Controller
         return $this->render('create', [
             'model' => $model,
             'brands' => $brands,
+            'vehicle_models' => $vehicle_models,
         ]);
     }
 

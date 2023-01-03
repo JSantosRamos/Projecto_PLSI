@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php if (!User::isEmployee(Yii::$app->user->id)): ?>
         <p>
-            <?= Html::a('Adcionar', ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('Adicionar', ['create'], ['class' => 'btn btn-success']) ?>
         </p>
     <?php endif; ?>
 

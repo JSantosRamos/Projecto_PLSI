@@ -4,7 +4,7 @@
 
 use common\models\User;
 
-$this->title = 'My Yii Application';
+$this->title = 'Stand Auto Gestão';
 
 $percTarefasPorRealizar = ($tarefasStatus["porIniciar"] * 100) / $tarefas;
 $percTarefasAdecorrer = ($tarefasStatus["emProcesso"] * 100) / $tarefas;
@@ -14,8 +14,6 @@ $percTarefasAdecorrer = ($tarefasStatus["emProcesso"] * 100) / $tarefas;
 
     <div class="body-content">
         <div class="row">
-
-            <!-- Earnings (Annual) Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-success shadow h-100 py-2">
                     <div class="card-body">
@@ -34,7 +32,6 @@ $percTarefasAdecorrer = ($tarefasStatus["emProcesso"] * 100) / $tarefas;
                 </div>
             </div>
 
-            <!-- Earnings (Monthly) Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-danger shadow h-100 py-2">
                     <div class="card-body">
@@ -53,7 +50,6 @@ $percTarefasAdecorrer = ($tarefasStatus["emProcesso"] * 100) / $tarefas;
                 </div>
             </div>
 
-            <!-- Tasks Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
                     <div class="card-body">
@@ -84,7 +80,6 @@ $percTarefasAdecorrer = ($tarefasStatus["emProcesso"] * 100) / $tarefas;
                 </div>
             </div>
 
-            <!-- Tasks Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-info shadow h-100 py-2">
                     <div class="card-body">
@@ -115,7 +110,6 @@ $percTarefasAdecorrer = ($tarefasStatus["emProcesso"] * 100) / $tarefas;
                 </div>
             </div>
 
-            <!-- Pending Requests Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-warning shadow h-100 py-2">
                     <div class="card-body">

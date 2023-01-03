@@ -54,7 +54,7 @@ class VendauserController extends Controller
      */
     public function actionIndex()
     {
-        return $this->redirect(Url::toRoute('site/mensagem'));
+        return $this->redirect(Url::toRoute('site/areapessoal'));
 
         /*  $searchModel = new VendauserSearch();
           $dataProvider = $searchModel->search($this->request->queryParams);
@@ -94,7 +94,8 @@ class VendauserController extends Controller
         $model = new Vendauser();
         $model->idUser = \Yii::$app->user->id;
 
-        $brands = Brand::find()->all(); //selectbox
+        $vBrands = Brand::find()->all(); //dropdown marcas
+        $vModels = Model::find()->all(); // dropdown modelos
 
         if ($this->request->isPost) {
 
@@ -107,7 +108,8 @@ class VendauserController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'brands' => $brands,
+            'vBrands' => $vBrands,
+            'vModels' => $vModels,
         ]);
     }
 
@@ -122,8 +124,8 @@ class VendauserController extends Controller
     {
         $model = $this->findModel($id);
 
-        $brands = Brand::find()->all(); //get brands for select dropdown
-        $vehicle_models = Model::find()->where(['idBrand' => $model->brand])->all(); //get models for select dropdown
+        $vBrands = Brand::find()->all(); //get brands for select dropdown
+        $vModels = Model::find()->where(['idBrand' => $model->brand])->all(); //get models for select dropdown
 
         if (!Permission::allowedAction($model->idUser)) {
             $this->redirect('site/index');
@@ -139,8 +141,8 @@ class VendauserController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'brands' => $brands,
-            'vehicle_models' => $vehicle_models
+            'vBrands' => $vBrands,
+            'vModels' => $vModels,
         ]);
     }
 
