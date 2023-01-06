@@ -27,13 +27,11 @@ use yii\widgets\MaskedInput;
         'preset' => 'basic'
     ]) ?>
 
-
     <div class="row">
         <div class="col-md-4"><?= $form->field($model, 'plate')->textInput(['maxlength' => true]) ?></div>
         <div class="col-md-4"><?= $form->field($model, 'type')->dropDownList(['Cabrio' => 'Cabrio', 'Carrinha' => 'Carrinha', 'Desportivo' => 'Desportivo', 'SUV' => 'SUV', 'Utilitário' => 'Utilitário',], ['prompt' => '']) ?></div>
         <div class="col-md-4"><?= $form->field($model, 'fuel')->dropDownList(['Diesel' => 'Diesel', 'Gasolina' => 'Gasolina', 'Elétrico' => 'Elétrico', 'GPL' => 'GPL', 'Híbrido' => 'Híbrido',], ['prompt' => '']) ?></div>
     </div>
-
 
     <div class="row">
         <div class="col-md-4"><?= $form->field($model, 'idBrand')->widget(Select2::className(), [

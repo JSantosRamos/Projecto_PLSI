@@ -10,22 +10,21 @@ use yii\widgets\MaskedInput;
 /** @var common\models\Venda $model */
 /** @var yii\widgets\ActiveForm $form */
 
+/** @var common\models\User $users lista de utilizadores do tipo clientes para a dropdow */
+/** @var common\models\Vehicle $vehicles lista de veiculos para a dropdow */
+
 ?>
 
 <div class="venda-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
     <div class="row">
-        <div class="col-md-4"><?= $form->field($model, 'idVehicle')->widget(Select2::className(), [
+        <h4>Dados do Veículo</h4>
+        <div class="col-md-3"><?= $form->field($model, 'idVehicle')->widget(Select2::className(), [
                 'data' => ArrayHelper::map($vehicles, 'id', 'plate'),
                 'options' => ['placeholder' => 'Selecione uma referência'],
             ]); ?></div>
-        <div class="col-md-4"><?= $form->field($model, 'idUser_buyer')->widget(Select2::className(), [
-                'data' => ArrayHelper::map($users, 'id', 'email'),
-                'options' => ['placeholder' => 'Selecione uma cliente'],
-            ]); ?></div>
-        <div class="col-md-4"><?= $form->field($model, 'Price')->widget(MaskedInput::class, [
+        <div class="col-md-3"><?= $form->field($model, 'price')->widget(MaskedInput::class, [
                 'name' => 'input-33',
                 'clientOptions' => [
                     'alias' => 'decimal',
@@ -33,6 +32,25 @@ use yii\widgets\MaskedInput;
                     'autoGroup' => true,
                     'removeMaskOnSubmit' => true,
                 ]]) ?></div>
+
+        <h4>Dados de Cliente</h4>
+        <div class="col-md-3"><?= $form->field($model, 'name')->textInput() ?>
+        </div>
+
+        <div class="col-md-2"><?= $form->field($model, 'number')->widget(MaskedInput::class, [
+                'name' => 'input-1',
+                'mask' => '999 999 999',
+            ]) ?>
+        </div>
+        <div class="col-md-2"><?= $form->field($model, 'nif')->widget(MaskedInput::class, [
+                'name' => 'input-1',
+                'mask' => '999 999 999',
+            ]) ?>
+        </div>
+        <div class="col-md-3"><?= $form->field($model, 'idUser_buyer')->widget(Select2::className(), [
+                'data' => ArrayHelper::map($users, 'id', 'email'),
+                'options' => ['placeholder' => 'Selecione um cliente (opcional)'],
+            ]); ?></div>
     </div>
 
     <?php if (!empty($message)): ?>
@@ -43,7 +61,7 @@ use yii\widgets\MaskedInput;
 
     <div class="form-group">
         <?= Html::submitButton('Guardar', [
-            'class' => 'btn btn-success',
+            'class' => 'btn btn-primary',
             'data' => [
                 'confirm' => 'Tem a certeza que pretende registar esta venda? Depois de criada não pode ser alterada.',
             ],

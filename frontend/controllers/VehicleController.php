@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\Brand;
+use common\models\Image;
 use common\models\Model;
 use common\models\Vehicle;
 use common\models\VehicleSearch;
@@ -84,9 +85,12 @@ class VehicleController extends Controller
         $items = Vehicle::find()->where(['isActive' => 1])->andWhere(['idBrand'=>$brand])->all();
         $items = array_slice($items, 0, 3);
 
+        $vehicle_imagens = Image::find()->where(['idVehicle' => $id])->all();
+
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'items' => $items
+            'items' => $items,
+            'vehicle_imagens' => $vehicle_imagens,
         ]);
     }
 

@@ -4,14 +4,14 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
-/** @var common\models\Blog $model */
+/** @var common\models\Image $model */
 
-$this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Blogs', 'url' => ['index']];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Images', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="blog-view">
+<div class="image-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Tem a certeza que quer apagar?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -30,10 +30,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'idUser',
-            'title',
-            'description:ntext',
-            'data',
+            [
+                'attribute' => 'path',
+                'format' => ['html'],
+                'value' => function ($model) {
+                    return Html::img($model->getImageUrl(), ['style' => 'width: 100px']);
+                }
+            ],
+            'idVehicle',
         ],
     ]) ?>
 

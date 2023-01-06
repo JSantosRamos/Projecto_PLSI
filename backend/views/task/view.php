@@ -3,6 +3,7 @@
 use common\models\Note;
 use common\models\Task;
 use common\models\User;
+use yii\bootstrap5\LinkPager;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\helpers\Html;
@@ -78,8 +79,12 @@ $this->title = 'Tarefa: #' . $model->id . ' (' . $model->type . ')';
     <hr style="border: 1px solid blue">
     <?= ListView::widget([
         'dataProvider' => $notes,
-        'layout' => '{items}',
         'itemView' => '/note/_item',
+        'summary' => '',
+        'emptyText' => 'Não foram encontrados resultados.',
+        'pager' => [
+            'class' => LinkPager::class
+        ]
     ]) ?>
 </div>
 

@@ -144,6 +144,7 @@ class TaskController extends Controller
     {
         $model = $this->findModel($id);
         $userID = \Yii::$app->user->id;
+        $message = '';
 
         if (User::isEmployee($userID) && $model->idAssigned_to != $userID) {
             return $this->redirect('/task/index');
@@ -151,14 +152,19 @@ class TaskController extends Controller
 
         $employees = ArrayHelper::map(User::find()->where(['isEmployee' => 1])->all(), 'id', 'name');
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            if (!$this->validateDate($model->date)) {
+                $message = 'Data inválida';
+            } else {
+                $model->save();
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
             'employees' => $employees,
-            'message' => '',
+            'message' => $message,
         ]);
     }
 

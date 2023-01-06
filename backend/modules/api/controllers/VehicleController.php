@@ -63,21 +63,21 @@ class VehicleController extends ActiveController
     {
         $vehicles = Vehicle::find()->where(['status' => 'Disponivel', 'isActive' => 1])->all();
 
-        /*foreach ($vehicles as $veh) {
-            //$brand = Brand::find()->select('name')->where(['id' => $veh->idBrand])->one();
-            //$model_veh = Model::find()->select('name')->where(['id' => $veh->idModel])->one();
+        foreach ($vehicles as $veh) {
+            $brand = Brand::find()->select('name')->where(['id' => $veh->idBrand])->one();
+            $model_veh = Model::find()->select('name')->where(['id' => $veh->idModel])->one();
 
             //obtem a imagem e convert para base64
-            //$url = $veh->getImageUrl();
-            // $data = file_get_contents($url);
-            // $imageBase64 = base64_encode($data);
+            $url = $veh->getImageUrl();
+            $data = file_get_contents($url);
+            $imageBase64 = base64_encode($data);
 
             //Atribui ao veiculo os novos campos
-            //$veh->brand = $brand["name"];
-            //$veh->model = $model_veh["name"];
+            $veh->brand = $brand["name"];
+            $veh->model = $model_veh["name"];
             //$veh->image = $url;
-            //$veh->image = $imageBase64;
-        }*/
+            $veh->image = $imageBase64;
+        }
 
         return $vehicles;
     }

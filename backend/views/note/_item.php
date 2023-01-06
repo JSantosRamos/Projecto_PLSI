@@ -10,7 +10,7 @@ $sessionID = Yii::$app->user->id;
 
 <p><?= $model->description; ?></p>
 <p>
-    <br><span>Criado por: <?= User::getNameById($model->idUser); ?> a <?= $model->create_at; ?> </span>
+    <br><b>Criado por: <?= User::getNameById($model->idUser); ?> a <?= $model->create_at; ?></b>
 </p>
 
 <?php if (User::isEmployee($sessionID) && $model->idUser != $sessionID): ?>

@@ -6,8 +6,13 @@ use common\models\User;
 
 $this->title = 'Stand Auto Gestão';
 
-$percTarefasPorRealizar = ($tarefasStatus["porIniciar"] * 100) / $tarefas;
-$percTarefasAdecorrer = ($tarefasStatus["emProcesso"] * 100) / $tarefas;
+if ($tarefas > 0) {
+    $percTarefasPorRealizar = ($tarefasStatus["porIniciar"] * 100) / $tarefas;
+    $percTarefasAdecorrer = ($tarefasStatus["emProcesso"] * 100) / $tarefas;
+} else {
+    $percTarefasPorRealizar = 0;
+    $percTarefasAdecorrer = 0;
+}
 
 ?>
 <div class="site-index">
@@ -55,7 +60,8 @@ $percTarefasAdecorrer = ($tarefasStatus["emProcesso"] * 100) / $tarefas;
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tarefas por realizar
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tarefas por
+                                    realizar
                                 </div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
@@ -200,13 +206,13 @@ $percTarefasAdecorrer = ($tarefasStatus["emProcesso"] * 100) / $tarefas;
                 <canvas id="chart-vehicle" width="1500" height="450"></canvas>
             </div>
         </div>
-<br>
+        <br>
 
-        <?php if(!User::isEmployee(Yii::$app->user->id)): ?>
-        <h3>Compras e Vendas</h3>
-        <div>
-            <canvas id="bar-chart-horizontal" width="3000" height="450"></canvas>
-        </div>
+        <?php if (!User::isEmployee(Yii::$app->user->id)): ?>
+            <h3>Compras e Vendas</h3>
+            <div>
+                <canvas id="bar-chart-horizontal" width="3000" height="450"></canvas>
+            </div>
         <?php endif; ?>
 
     </div>
@@ -279,7 +285,7 @@ $percTarefasAdecorrer = ($tarefasStatus["emProcesso"] * 100) / $tarefas;
             datasets: [
                 {
                     label: "Test-Drives",
-                    backgroundColor: ["#28A745", "#ffc107","#007BFF"],
+                    backgroundColor: ["#28A745", "#ffc107", "#007BFF"],
                     data: [vendido, reservado, disponivel]
                 }
             ]
@@ -308,7 +314,7 @@ $percTarefasAdecorrer = ($tarefasStatus["emProcesso"] * 100) / $tarefas;
             ]
         },
         options: {
-            legend: { display: false },
+            legend: {display: false},
             title: {
                 display: true,
                 text: 'Valor total em compra e venda de veículos.'

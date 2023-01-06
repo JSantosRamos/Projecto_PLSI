@@ -18,8 +18,8 @@ class VendaSearch extends Venda
     {
         return [
             [['id', 'idUser_seller', 'idUser_buyer', 'idVehicle'], 'integer'],
-            [['Price'], 'number'],
-            [['comment'], 'safe'],
+            [['price'], 'number'],
+            [['comment', 'number', 'nif', 'address', 'name'], 'safe'],
         ];
     }
 
@@ -41,18 +41,13 @@ class VendaSearch extends Venda
      */
     public function search($params)
     {
-        $idUser = \Yii::$app->user->id;
-
-        if (User::isEmployee($idUser)) {
-            $query = Venda::find()->where(['idUser_seller' => $idUser]);
-        } else {
-            $query = Venda::find();
-        }
+        $query = Venda::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+
         ]);
 
         $this->load($params);
@@ -69,10 +64,13 @@ class VendaSearch extends Venda
             'idUser_seller' => $this->idUser_seller,
             'idUser_buyer' => $this->idUser_buyer,
             'idVehicle' => $this->idVehicle,
-            'Price' => $this->Price,
+            'price' => $this->price,
         ]);
 
-        $query->andFilterWhere(['like', 'comment', $this->comment]);
+        $query->andFilterWhere(['like', 'comment', $this->comment])
+            ->andFilterWhere(['like', 'number', $this->number])
+            ->andFilterWhere(['like', 'nif', $this->nif])
+            ->andFilterWhere(['like', 'address', $this->address]);
 
         return $dataProvider;
     }

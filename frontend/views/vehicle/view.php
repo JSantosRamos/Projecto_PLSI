@@ -10,6 +10,7 @@ use yii\widgets\DetailView;
 
 $this->title = $model->title;
 
+var_dump($vehicle_imagens);
 YiiAsset::register($this);
 ?>
 <!DOCTYPE html>
@@ -48,27 +49,28 @@ YiiAsset::register($this);
     <div class="container px-4 px-lg-5 my-5">
         <div class="row gx-4 gx-lg-5 align-items-center">
             <div class="col-md-6">
-                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
-                                class="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                                aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                                aria-label="Slide 3"></button>
-                    </div>
+                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                             <img src="http://frontendstand.test/storage/<?= $model->image ?>" class="d-block w-100"
                                  alt="...">
                         </div>
+
+                        <?php if ($vehicle_imagens != null): ?>
+                            <?php foreach ($vehicle_imagens as $image): ?>
+                                <div class="carousel-item">
+                                    <img src="http://frontendstand.test/storage/<?= $image->path ?>" class="d-block w-100" alt="...">
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
                             data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
                             data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
@@ -77,7 +79,8 @@ YiiAsset::register($this);
             </div>
             <div class="col-md-6">
                 <div class="small mb-1">Refêrencia: <?= $model->id ?></div>
-                <h4 class="display-5 fw-bolder"><?= $model->getBrandName() ?>, <span><?= $model->getModelName() ?></span></h4>
+                <h4 class="display-5 fw-bolder"><?= $model->getBrandName() ?>,
+                    <span><?= $model->getModelName() ?></span></h4>
                 <div class="fs-5 mb-5">
                     <span><?= Yii::$app->formatter->asCurrency($model->price) ?></span>
                 </div>
@@ -100,7 +103,8 @@ YiiAsset::register($this);
         <div class="grid-container">
             <div class="text-secondary">Marca: <br> <span class="text-dark"><?= $model->getBrandName() ?></span></div>
             <div class="text-secondary">Modelo: <br> <span class="text-dark"><?= $model->getModelName() ?></span></div>
-            <div class="text-secondary">Série: <br> <span class="text-dark"><?= $model->serie == "" ? "-" : $model->serie ?></span></div>
+            <div class="text-secondary">Série: <br> <span
+                        class="text-dark"><?= $model->serie == "" ? "-" : $model->serie ?></span></div>
             <div class="text-secondary">Ano: <br> <span class="text-dark"><?= $model->year ?></span></div>
             <div class="text-secondary">Combustível: <br> <span class="text-dark"><?= $model->fuel ?></span></div>
             <div class="text-secondary">Portas: <br> <span class="text-dark"><?= $model->doorNumber ?></span></div>
@@ -130,7 +134,8 @@ YiiAsset::register($this);
                         <!-- Vehicle details-->
                         <div class="card-body p-4">
                             <div class="text-center">
-                                <h5 class="fw-bolder"><?= $item->getBrandName() ?>, <span><?= $item->getModelName() ?></span></h5>
+                                <h5 class="fw-bolder"><?= $item->getBrandName() ?>,
+                                    <span><?= $item->getModelName() ?></span></h5>
                                 <div class="text-secondary"><?= $item->year ?> | <?= $item->fuel ?>
                                     | <?= $item->mileage ?> km
                                 </div>
@@ -142,7 +147,8 @@ YiiAsset::register($this);
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <div class="text-center"><a class="btn btn-outline-dark mt-auto"
-                                                        href="<?= Yii::$app->urlManager->createUrl(['vehicle/view', 'id' => $item->id]) ?>">Ver mais</a></div>
+                                                        href="<?= Yii::$app->urlManager->createUrl(['vehicle/view', 'id' => $item->id]) ?>">Ver
+                                    mais</a></div>
                         </div>
                     </div>
                 </div>

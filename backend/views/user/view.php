@@ -46,10 +46,7 @@ YiiAsset::register($this);
         'attributes' => [
             'id',
             'name',
-            'username',
             'email:email',
-            'nif',
-            'number',
             [
                 'attribute' => 'status',
                 'format' => ['html'],

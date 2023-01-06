@@ -56,9 +56,9 @@ class Task extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'Nº da Tarefa',
-            'type' => 'Titulo',
+            'type' => 'Título',
             'date' => 'Data',
-            'description' => 'Description',
+            'description' => 'Descrição',
             'status' => 'Estado',
             'idCreated_by' => 'Criado por',
             'created_at' => 'Criada em',

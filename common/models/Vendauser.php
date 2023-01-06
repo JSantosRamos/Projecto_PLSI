@@ -25,6 +25,7 @@ use Yii;
  */
 class Vendauser extends \yii\db\ActiveRecord
 {
+
     const POR_VER = 'Por ver';
     const ACEITE = 'Aceite';
     const RECUSADO = 'Recusado';
@@ -159,4 +160,5 @@ class Vendauser extends \yii\db\ActiveRecord
 
         return parent::beforeSave($insert);
     }*/
+
 }

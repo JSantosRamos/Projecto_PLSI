@@ -3,11 +3,15 @@
 namespace backend\controllers;
 
 use common\models\Brand;
+use common\models\Image;
+use common\models\ImageSearch;
 use common\models\Model;
 use common\models\Vehicle;
 use common\models\VehicleSearch;
 use Throwable;
 use Yii;
+use yii\data\ActiveDataProvider;
+use yii\data\Pagination;
 use yii\db\Query;
 use yii\db\StaleObjectException;
 use yii\filters\AccessControl;
@@ -88,8 +92,15 @@ class VehicleController extends Controller
     public function actionView($id)
     {
 
+        $query = Image::find()->where(['idVehicle' => $id]);
+        $imagens = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => ['pageSize' => 4]
+        ]);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'imagens' => $imagens,
         ]);
     }
 
@@ -159,8 +170,13 @@ class VehicleController extends Controller
     {
         $model = $this->findModel($id);
 
+        $vehImagens = Image::find()->where(['idVehicle' => $id])->all(); //limpa todas as imagens do veiculo antes de apagar
+        foreach ($vehImagens as $image) {
+            $image->delete();
+        }
+
         try {
-            $model->delete();
+            $model->delete(); //erro se o veiculo estiver vendido
 
         } catch (Throwable $e) {
 

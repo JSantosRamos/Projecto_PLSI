@@ -32,7 +32,7 @@ if (Yii::$app->controller->action->id == 'update' && User::isEmployee(Yii::$app-
         'value' => '23-Feb-1982 10:01',
         'pluginOptions' => [
             'autoclose' => true,
-            'format' => 'd-m-yyyy hh:ii',
+            'format' => 'dd-mm-yyyy hh:ii',
             'todayHighlight' => true
         ]
     ]) ?>
@@ -48,7 +48,7 @@ if (Yii::$app->controller->action->id == 'update' && User::isEmployee(Yii::$app-
     <?= $form->field($model, 'status')->dropDownList(['Por iniciar' => 'Por iniciar', 'Em Processo' => 'Em Processo', 'Finalizado' => 'Finalizado',]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Guardar', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

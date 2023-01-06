@@ -24,8 +24,6 @@ use yii\web\IdentityInterface;
  * @property int|null $updated_at
  * @property string|null $verification_token
  * @property string|null $name
- * @property string|null $nif
- * @property string|null $number
  * @property int $isEmployee
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -66,14 +64,11 @@ class User extends ActiveRecord implements IdentityInterface
             [['auth_key'], 'string', 'max' => 32],
             [['name'], 'string', 'max' => 50],
             // [['username'], 'unique'],
-            [['number'], 'unique'],
-            [['nif'], 'unique'],
             [['email'], 'unique'],
             [['password_reset_token'], 'unique'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
             ['password', 'string', 'min' => 8],
-            [['number', 'nif'], 'string', 'min' => 9, 'max' => 9],
         ];
     }
 
@@ -94,8 +89,6 @@ class User extends ActiveRecord implements IdentityInterface
             'updated_at' => 'Updated At',
             'verification_token' => 'Verification Token',
             'name' => 'Nome',
-            'nif' => 'Nif',
-            'number' => 'Número',
             'isEmployee' => 'Conta de Funcionário'
         ];
     }
@@ -372,6 +365,12 @@ class User extends ActiveRecord implements IdentityInterface
         return (array_key_exists('employee', $roles));
     }
 
+    /**
+     * Return role name to provider id
+     *
+     * @param int $id to find name
+     * @return string if id provided have rbac role
+     */
     public static function getRoleName($id)
     {
         $roles = Yii::$app->authManager->getRolesByUser($id);
@@ -395,11 +394,6 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function afterValidate()
     {
-        /* echo '<pre>';
-         var_dump($this->password);
-         echo'</pre>';
-         exit;*/
-
         parent::afterValidate();
         if ($this->password) {
             $this->password_hash = YII::$app->security->generatePasswordHash($this->password);
@@ -416,5 +410,11 @@ class User extends ActiveRecord implements IdentityInterface
     {
 
         return User::find()->where(['status' => User::STATUS_ACTIVE])->count();
+    }
+
+    public static function randomPassword()
+    {
+
+        return mt_rand(10000000, 99999999);
     }
 }

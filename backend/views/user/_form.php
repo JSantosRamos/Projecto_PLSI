@@ -1,5 +1,6 @@
 <?php
 
+use common\models\User;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -15,14 +16,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
     <div class="row">
-        <div class="col-md-6"><?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?></div>
         <div class="col-md-6"><?= $form->field($model, 'email')->Input('email') ?></div>
+        <div class="col-md-6"><?= $form->field($model, 'username')->textInput(['maxlength' => true, 'placeholder' => 'Opcional...']) ?></div>
     </div>
     <div class="row">
-        <div class="col-md-4"><?= $form->field($model, 'nif')->Input('number') ?></div>
-
-        <div class="col-md-4"><?= $form->field($model, 'number')->Input('number') ?></div>
-
         <div class="col-md-4"><?= $form->field($model, 'status')->dropDownList(['10' => 'Ativo', '9' => 'Desativa']) ?></div>
     </div>
 
@@ -36,7 +33,7 @@ use yii\widgets\ActiveForm;
              style="display: none"> <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
         </div>
     <?php else:
-        echo '<div class="row"><div class="col-md-4">' . $form->field($model, 'password_hash')->passwordInput(['maxlength' => true]) . '</div> </div>';
+        echo '<div class="row"><div class="col-md-4">' . $form->field($model, 'password_hash')->passwordInput(['maxlength' => true, 'value' => User::randomPassword(), 'disabled' => true]) . '</div> </div>';
     endif;
     ?>
 
@@ -44,7 +41,7 @@ use yii\widgets\ActiveForm;
 
     <br>
     <div class="form-group">
-        <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Guardar', ['class' => 'btn btn-primary ']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

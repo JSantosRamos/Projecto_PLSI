@@ -114,6 +114,7 @@ class Vehicle extends \yii\db\ActiveRecord
     public function save($runValidation = true, $attributeNames = null)
     {
         if ($this->imageFile) {
+
             $this->image = '/vehicles/' . Yii::$app->security->generateRandomString() . '/' . $this->imageFile->name;
         }
 

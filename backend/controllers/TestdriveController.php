@@ -198,7 +198,6 @@ class TestdriveController extends Controller
         $date = strtotime($date);
         $todayDate = strtotime($todayDate);
 
-
         return $date > $todayDate;
     }
 }

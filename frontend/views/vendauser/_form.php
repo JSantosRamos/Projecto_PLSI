@@ -14,8 +14,7 @@ use yii\widgets\Pjax;
 /** @var common\models\Vendauser $model */
 /** @var yii\widgets\ActiveForm $form */
 
-$range = range(2010, 2023);
-$mat = 'old';
+$range = range(2020, 2023);
 ?>
 
 <div class="vendauser-form">
@@ -24,9 +23,11 @@ $mat = 'old';
     <?php $form = ActiveForm::begin(); ?>
 
     <div class="row">
-        <div class="col-md-4"><?= $form->field($model, 'plate')->widget(MaskedInput::class, [
-                'mask' => $mat == 'old' ? '[99]-[AA]-[99]' : '[AA]-[99]-[AA]',
-            ]) ?></div>
+        <div class="col-md-4" id="matriculaNew"
+             style=""><?= $form->field($model, 'plate')->widget(MaskedInput::class, [
+                'mask' => '[AA]-[99]-[AA]',
+            ]) ?>
+        </div>
         <div class="col-md-4"><?= $form->field($model, 'brand')->widget(Select2::className(), [
                 'data' => ArrayHelper::map($vBrands, 'id', 'name'),
                 'options' => ['placeholder' => 'Selecione uma marca', 'id' => 'brand-id'],
@@ -38,7 +39,7 @@ $mat = 'old';
                 'options' => ['placeholder' => 'Selecione um modelo'],
                 'type' => DepDrop::TYPE_SELECT2,
                 'pluginOptions' => [
-                    'depends' =>  ['brand-id'],
+                    'depends' => ['brand-id'],
                     'url' => Url::to(['/vehicle/allmodels']),
                     'loadingText' => '',
                 ]
@@ -55,7 +56,7 @@ $mat = 'old';
                     'autoGroup' => true,
                     'removeMaskOnSubmit' => true,
                 ]]) ?></div>
-        <div class="col-md-4"><?= $form->field($model, 'year')->dropDownList(array_combine($range, $range), ['onchange' => 'plateFunc()']) ?></div>
+        <div class="col-md-4"><?= $form->field($model, 'year')->dropDownList(array_combine($range, $range), ['onchange' => 'myFunction()']) ?></div>
         <div class="col-md-4"> <?= $form->field($model, 'fuel')->dropDownList(['Diesel' => 'Diesel', 'Gasolina' => 'Gasolina', 'Elétrico' => 'Elétrico', 'GPL' => 'GPL', 'Híbrido' => 'Híbrido',], ['prompt' => '']) ?></div>
     </div>
 

@@ -46,8 +46,11 @@ YiiAsset::register($this);
                     ]);
                 }
             ],
-            'Price:currency',
-            'comment',
+            'name',
+            'nif',
+            'number',
+            'address',
+            'price:currency',
         ],
     ]) ?>
     <p>

@@ -9,12 +9,15 @@ use common\models\User;
 use common\models\UserSearch;
 use Yii;
 use yii\base\Model;
+use yii\data\ActiveDataProvider;
 use yii\db\StaleObjectException;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
+use yii\validators\BooleanValidator;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use function PHPUnit\Framework\throwException;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -66,24 +69,27 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        $searchModelAssignment = null;
-        $dataProviderAssignment = null;
-
         $sessionUserId = Yii::$app->user->getId();
-        if (Yii::$app->authManager->checkAccess($sessionUserId, 'canCreateAllUsers') || Yii::$app->authManager->checkAccess($sessionUserId, 'canCreateEmployee')) {
-
-            $searchModelAssignment = new AuthAssignmentSearch();
-            $dataProviderAssignment = $searchModelAssignment->search($this->request->queryParams);
-        }
 
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+
+        //Users Assignement
+        $userPermissons = null; //searchModel para AuthAssigment
+        $userPermissonsSearch = null; //dataProvider para AuthAssigment
+
+        if (Yii::$app->authManager->checkAccess($sessionUserId, 'canCreateAllUsers') || Yii::$app->authManager->checkAccess($sessionUserId, 'canCreateEmployee')) {
+
+            $userPermissonsSearch = new AuthAssignmentSearch();
+            $userPermissons = $userPermissonsSearch->search($this->request->queryParams); //retorna dados do tipo dataProvider para AuthAssigment
+        }
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'searchModelAssignment' => $searchModelAssignment,
-            'dataProviderAssignment' => $dataProviderAssignment
+            'userPermissons' => $userPermissons,
+            'userPermissonsSearch' => $userPermissonsSearch,
         ]);
     }
 
@@ -108,27 +114,37 @@ class UserController extends Controller
     public function actionCreate()
     {
         $model = new User();
-        //$sessionUserId = Yii::$app->user->getId();
-
-        //if (Yii::$app->authManager->checkAccess($sessionUserId, 'canCreateAllUsers')) {
-
-        // $roles = ArrayHelper::map(Role::find()->all(), 'id', 'name');
-        //}
+        $normalPassword = '';
 
         if ($this->request->isPost) {
 
             if ($model->load($this->request->post())) {
 
                 if (!empty($model->password_hash)) {
+                    $normalPassword = $model->password_hash;
+
                     $model->generateAuthKey();
                     $model->generateEmailVerificationToken();
                     $model->setPassword($model->password_hash);
                 }
 
                 if ($model->save()) {
-                    $auth = \Yii::$app->authManager;
-                    $authorRole = $auth->getRole('customer');
-                    $auth->assign($authorRole, $model->getId());
+
+                    if ($model->isEmployee == 1) //checkbox is selected
+                    {
+                        $roleName = 'employee';
+
+                    } else {
+                        $roleName = 'customer';
+                    }
+
+                    if (!$this->setUserAuth($roleName, $model->getId())) {
+
+                        Yii::$app->session->setFlash('danger', 'Erro nas permissões do utilizador!');
+                        return $this->redirect(['user/index']);
+                    }
+
+                    $this->sendpassword($model->email, $normalPassword);
 
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
@@ -154,20 +170,21 @@ class UserController extends Controller
         $updateValido = true;
         $sessionUserID = Yii::$app->user->getId();
 
-        if ($sessionUserID != $id) {
-            $role = User::isAdmin($sessionUserID) ? 'admin' : (User::isManager($sessionUserID) ? 'manager' : 'employee');
-            $roleUserUpdate = User::isAdmin($id) ? 'admin' : (User::isManager($id) ? 'manager' : 'employee');
+        $sessionUserRole = User::getRoleName($sessionUserID);
+        $updateUserRole = User::getRoleName($id);
 
-            switch ($role) {
+        if ($sessionUserID != $id) {
+
+            switch ($sessionUserRole) {
                 case 'admin':
                     break;
                 case 'manager':
-                    if ($roleUserUpdate == 'admin' || $roleUserUpdate == 'manager') {
+                    if ($updateUserRole == 'admin' || $updateUserRole == 'manager') {
                         $updateValido = false;
                     }
                     break;
                 case 'employee':
-                    if ($roleUserUpdate == 'admin' || $roleUserUpdate == 'manager' || $roleUserUpdate == 'employee') {
+                    if ($updateUserRole == 'admin' || $updateUserRole == 'manager' || $updateUserRole == 'employee') {
                         $updateValido = false;
                     }
                     break;
@@ -175,6 +192,7 @@ class UserController extends Controller
         }
 
         if (!$updateValido) {
+
             return $this->redirect(['index']);
         }
 
@@ -183,6 +201,7 @@ class UserController extends Controller
         if ($this->request->isPost && $model->load($this->request->post())) {
 
             if ($model->save()) {
+
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
@@ -205,7 +224,14 @@ class UserController extends Controller
         $model = $this->findModel($id);
 
         try {
-            $model->delete();
+            if ($model->delete()) {
+
+                //delete permissoes
+                $permission = AuthAssignment::findOne(['user_id' => $id]);
+                if ($permission != null) {
+                    $permission->delete();
+                }
+            }
 
         } catch (\Throwable $e) {
 
@@ -234,4 +260,29 @@ class UserController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
+    private function sendpassword($email, $password)
+    {
+        Yii::$app->mailer->compose()
+            ->setFrom('standauto@domain.com')
+            ->setTo($email)
+            ->setSubject('Email sent from Yii2-Swiftmailer')
+            ->setTextBody('Password: ' . $password)
+            ->send();
+    }
+
+    private function setUserAuth($roleName, $user_id): bool
+    {
+        $auth = \Yii::$app->authManager;
+
+        $authorRole = $auth->getRole($roleName);
+
+        try {
+            $auth->assign($authorRole, $user_id);
+        } catch (\Exception $e) {
+
+            return false;
+        }
+
+        return true;
+    }
 }

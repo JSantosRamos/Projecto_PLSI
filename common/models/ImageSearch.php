@@ -4,12 +4,12 @@ namespace common\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Note;
+use common\models\Image;
 
 /**
- * NoteSearch represents the model behind the search form of `common\models\Note`.
+ * ImageSearch represents the model behind the search form of `common\models\Image`.
  */
-class NoteSearch extends Note
+class ImageSearch extends Image
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class NoteSearch extends Note
     public function rules()
     {
         return [
-            [['id', 'idUser', 'idTask', 'idproposta_venda'], 'integer'],
-            [['description', 'create_at'], 'safe'],
+            [['id', 'idVehicle'], 'integer'],
+            [['path'], 'safe'],
         ];
     }
 
@@ -40,13 +40,12 @@ class NoteSearch extends Note
      */
     public function search($params)
     {
-        $query = Note::find()->orderBy(['id'=>SORT_DESC]);
+        $query = Image::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => ['pageSize' => 4]
         ]);
 
         $this->load($params);
@@ -60,13 +59,10 @@ class NoteSearch extends Note
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'idUser' => $this->idUser,
-            'idTask' => $this->idTask,
-            'idproposta_venda' => $this->idproposta_venda,
-            'create_at' => $this->create_at,
+            'idVehicle' => $this->idVehicle,
         ]);
 
-        $query->andFilterWhere(['like', 'description', $this->description]);
+        $query->andFilterWhere(['like', 'path', $this->path]);
 
         return $dataProvider;
     }

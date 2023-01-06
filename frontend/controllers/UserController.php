@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use common\models\User;
 use common\models\UserSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -71,7 +72,7 @@ class UserController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate()
+   /* public function actionCreate()
     {
         $model = new User();
 
@@ -86,11 +87,11 @@ class UserController extends Controller
         return $this->render('create', [
             'model' => $model,
         ]);
-    }
+    }*/
 
     /**
      * Updates an existing User model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * If update is successful, the browser will be redirected to the 'update' page.
      * @param int $id ID
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
@@ -106,8 +107,17 @@ class UserController extends Controller
 
         if ($this->request->isPost && $model->load($this->request->post())) {
 
+            if(empty($model->number)){
+                $model->number = null;
+            }
+
+            if(empty($model->nif)){
+                $model->nif = null;
+            }
+
             if ($model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                Yii::$app->session->setFlash('success', 'Alterado com sucesso');
+                return $this->redirect(['update', 'id' => $model->id]);
             }
         }
 

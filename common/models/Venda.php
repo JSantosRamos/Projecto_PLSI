@@ -11,9 +11,11 @@ use Yii;
  * @property int $idUser_seller
  * @property int $idUser_buyer
  * @property int $idVehicle
- * @property float $Price
+ * @property float $price
  * @property string|null $comment
- *
+ * @property string $number
+ * @property string $nif
+ * @property string $address
  * @property User $idUserBuyer
  * @property User $idUserSeller
  */
@@ -33,9 +35,10 @@ class Venda extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idUser_buyer', 'idVehicle', 'Price'], 'required'],
+            [['idVehicle', 'price', 'number', 'nif', 'address', 'name'], 'required'],
             [['idUser_seller', 'idUser_buyer', 'idVehicle'], 'integer'],
-            [['comment'], 'string', 'max' => 100],
+            [['name'], 'string', 'max' => 100],
+            [['comment'], 'string', 'max' => 300],
             [['idUser_buyer'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['idUser_buyer' => 'id']],
             [['idUser_seller'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['idUser_seller' => 'id']],
         ];
@@ -51,8 +54,12 @@ class Venda extends \yii\db\ActiveRecord
             'idUser_seller' => 'Vendedor',
             'idUser_buyer' => 'Comprador',
             'idVehicle' => 'Referência do Veículo',
-            'Price' => 'Preço',
+            'price' => 'Preço',
             'comment' => 'Comentário',
+            'number' => 'Telefone',
+            'nif' => 'NIF',
+            'address' => 'Morada',
+            'name' => 'Nome'
         ];
     }
 
@@ -86,12 +93,13 @@ class Venda extends \yii\db\ActiveRecord
         return $this->hasOne(Vehicle::class, ['id' => 'idVehicle']);
     }
 
-    public static function getValorVendas(){
+    public static function getValorVendas()
+    {
         $totalVendas = 0;
-        $vendas = Venda::find()->select('Price')->all();
+        $vendas = Venda::find()->select('price')->all();
 
         foreach ($vendas as $venda) {
-            $totalVendas = $venda->Price + $totalVendas;
+            $totalVendas = $venda->price + $totalVendas;
         }
 
         return $totalVendas;

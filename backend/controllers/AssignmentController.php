@@ -54,17 +54,18 @@ class AssignmentController extends Controller
     /**
      * Lists all AuthAssignment models.
      *
-     * @return string
+     * @return \yii\web\Response
      */
     public function actionIndex()
     {
-        $searchModel = new AuthAssignmentSearch();
+        return $this->redirect('/user/index');
+        /*$searchModel = new AuthAssignmentSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
+        ]);*/
     }
 
     /**

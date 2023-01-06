@@ -49,7 +49,7 @@ class NoteController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+   /* public function actionIndex()
     {
         $searchModel = new NoteSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -58,7 +58,7 @@ class NoteController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
-    }
+    }*/
 
     /**
      * Displays a single Note model.
@@ -66,12 +66,12 @@ class NoteController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    /*public function actionView($id)
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
-    }
+    }*/
 
     /**
      * Creates a new Note model.

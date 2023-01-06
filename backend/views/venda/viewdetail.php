@@ -1,13 +1,12 @@
 <?php
 $desconto = 0;
 
-if($venda->Price < $veiculo->price){
-    $desconto = $venda->Price - $veiculo->price ;
+if($venda->price < $veiculo->price){
+    $desconto = $venda->price - $veiculo->price ;
 }
 
 $brandName = $veiculo->getBrandName();
 $modelName = $veiculo->getModelName();
-
 
 ?>
 
@@ -21,7 +20,7 @@ $modelName = $veiculo->getModelName();
             <div class="info">
                 <h2>Vendedor:</h2>
                 <p> <?= $vendedor->name; ?><br>
-                    <?= $vendedor->email; ?><br><br> Telefone: <?= $vendedor->number; ?>
+                    <?= $vendedor->email; ?><br>
                 </p>
             </div><!--End Info-->
             <div class="title">
@@ -34,11 +33,10 @@ $modelName = $veiculo->getModelName();
             <div class="clientlogo"></div>
             <div class="info">
                 <h2>Cliente:</h2>
-                <p> <?= $cliente->name; ?><br>
-                    <?= $cliente->email; ?><br><br> Telefone: <?= $cliente->number; ?> | Nif: <?= $cliente->nif; ?>
+                <p> <?= $venda->name; ?><br> Telefone: <?= $venda->number; ?> | Nif: <?= $venda->nif; ?>
                 </p>
             </div>
-        </div><!--End Invoice Mid-->
+        </div>
 
         <div id="invoice-bot">
             <div id="table">
@@ -57,7 +55,7 @@ $modelName = $veiculo->getModelName();
                                     class="itemtext"><?php echo $brandName . ' ' . $modelName . '(' . $veiculo->plate . ')'; ?></p>
                         </td>
                         <td class="tableitem"><p class="itemtext"><?= $veiculo->price ?>€</p></td>
-                        <td class="tableitem"><p class="itemtext"><?= $venda->Price ?>€</p></td>
+                        <td class="tableitem"><p class="itemtext"><?= $venda->price ?>€</p></td>
                         <td class="tableitem"><p class="itemtext"><?= $desconto ?>€</p></td>
                     </tr>
 
@@ -66,7 +64,7 @@ $modelName = $veiculo->getModelName();
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="payment"><h2>Total: <?= $venda->Price ?>€</h2></td>
+                        <td class="payment"><h2>Total: <?= $venda->price ?>€</h2></td>
                     </tr>
                 </table>
             </div><!--End Table-->

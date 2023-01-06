@@ -18,7 +18,7 @@ class UserSearch extends User
     {
         return [
             [['id', 'status', 'created_at', 'updated_at', 'isEmployee'], 'integer'],
-            [['username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'verification_token', 'name', 'nif', 'number'], 'safe'],
+            [['username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'verification_token', 'name'], 'safe'],
         ];
     }
 
@@ -50,6 +50,7 @@ class UserSearch extends User
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => ['pageSize' => 5]
         ]);
 
         $this->load($params);
@@ -75,9 +76,7 @@ class UserSearch extends User
             ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'verification_token', $this->verification_token])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'nif', $this->nif])
-            ->andFilterWhere(['like', 'number', $this->number]);
+            ->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }
