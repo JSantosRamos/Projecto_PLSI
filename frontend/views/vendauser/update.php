@@ -5,9 +5,9 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\Vendauser $model */
 
-$this->title = 'Proposta de Venda: #' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = 'Proposta de Venda:';
+$this->params['breadcrumbs'][] = ['label' => $model->plate, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = 'Editar';
 ?>
 <div class="vendauser-update">
 

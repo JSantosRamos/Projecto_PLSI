@@ -104,55 +104,7 @@ $this->registerJs('$("document").ready(function(){
             ]); ?>
             <?php Pjax::end() ?>
         </div>
-
-        <div class="col">
-            <!-- FORM USERS -->
-            <div class="user-search">
-
-                <?php Pjax::begin(['id' => 'filter_user']) ?>
-                <?php $form = ActiveForm::begin([
-                    'action' => ['create'],
-                    'method' => 'get',
-                    'options' => ['data-pjax' => true]
-                ]); ?>
-
-                <h5>Procurar por:</h5>
-                <div class="row">
-                    <div class="col-md-4"><?php echo $form->field($searchUser, 'username')->textInput(['placeholder' => 'Username'])->label(false) ?></div>
-                    <div class="col-md-4"> <?php echo $form->field($searchUser, 'email')->textInput(['placeholder' => 'Email'])->label(false) ?></div>
-                </div>
-                <div class="form-group">
-                    <?= Html::submitButton('Procurar', ['class' => 'btn btn-primary']) ?>
-                    <?= Html::a('Reset', ['create'], ['class' => 'btn btn-outline-secondary']) ?>
-                </div>
-                <?php ActiveForm::end(); ?>
-                <?php Pjax::end() ?>
-
-            </div>
-
-            <!-- START VIEW TABLE -->
-            <?php Pjax::begin(['id' => 'listusers']) ?>
-            <?= GridView::widget([
-                'dataProvider' => $dataUser,
-                'summary' => '',
-                'emptyText' => 'Não foram encontrados resultados.',
-                'columns' => [
-                    'id',
-                    'username',
-                    'email:email',
-                    [
-                        'class' => ActionColumn::className(),
-                        'template' => '{view}',
-                        'urlCreator' => function ($action, User $model, $key, $index, $column) {
-                            return Url::toRoute(['/user/view', 'id' => $model->id]);
-                        }
-                    ],
-                ],
-            ]); ?>
-            <?php Pjax::end() ?>
-        </div>
     </div>
-
 </div>
 
 

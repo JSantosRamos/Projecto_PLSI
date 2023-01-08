@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\widgets\MaskedInput;
 
 /** @var yii\web\View $this */
 /** @var common\models\Cost $model */
@@ -17,9 +18,16 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'title')->textarea(['maxlength' => true]) ?>
 
     <div class="row">
-        <div class="col-md-1">
-            <?= $form->field($model, 'valor')->Input('number') ?>
-        </div>
+
+        <div class="col-md-2"><?= $form->field($model, 'valor')->widget(MaskedInput::class, [
+                'name' => 'input-33',
+                'clientOptions' => [
+                    'alias' => 'decimal',
+                    'groupSeparator' => ',',
+                    'autoGroup' => true,
+                    'removeMaskOnSubmit' => true,
+                ]]) ?></div>
+
         <div class="col">
             <label>Ficheiro</label>
             <?= $form->field($model, 'uploadFile', [
@@ -37,7 +45,7 @@ use yii\widgets\ActiveForm;
     </div>
 
     <div class="form-group">
-        <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Guardar', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

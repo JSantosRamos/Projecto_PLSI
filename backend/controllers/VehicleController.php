@@ -6,6 +6,7 @@ use common\models\Brand;
 use common\models\Image;
 use common\models\ImageSearch;
 use common\models\Model;
+use common\models\User;
 use common\models\Vehicle;
 use common\models\VehicleSearch;
 use Throwable;
@@ -143,6 +144,11 @@ class VehicleController extends Controller
     {
         $model = $this->findModel($id);
 
+        if ($model->status == Vehicle::STATUS_SOLD && !User::isAdmin(Yii::$app->user->id)) {
+            Yii::$app->session->setFlash('danger', 'Não pode alterar veículos vendidos!');
+            return $this->redirect(['index']);
+        }
+
         $brands = Brand::find()->all(); //get brands for select dropdown
         $vehicle_models = Model::find()->where(['idBrand' => $model->idBrand])->all(); //get models for select dropdown
 
@@ -176,7 +182,12 @@ class VehicleController extends Controller
         }
 
         try {
-            $model->delete(); //erro se o veiculo estiver vendido
+
+            if ($model->status == Vehicle::STATUS_RESERVED || $model->status == Vehicle::STATUS_SOLD) {
+                return $this->redirect(['view', 'id' => $model->id, 'erro_delete' => 'true']);
+            }
+
+            $model->delete();
 
         } catch (Throwable $e) {
 

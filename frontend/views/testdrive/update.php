@@ -6,9 +6,9 @@ use yii\helpers\Html;
 /** @var common\models\Testdrive $model */
 
 $this->title = 'Alterar pedido de Testdrive: #' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Testdrives', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Área Cliente', 'url' => ['/site/areapessoal']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Editar';
 ?>
 <div class="testdrive-update">
 

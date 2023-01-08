@@ -4,6 +4,8 @@ use yii\helpers\Html;
 
 /** @var yii\web\View $this */
 /** @var common\models\User $model */
+
+$this->params['breadcrumbs'][] = 'Perfil';
 ?>
 
 <div class="user-update">

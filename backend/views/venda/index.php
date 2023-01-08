@@ -12,6 +12,9 @@ use yii\grid\GridView;
 /** @var common\models\VendaSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
+/** @var common\models\User $users array de funcionarios para dropdown */
+/** @var common\models\Vehicle $vehicles array de vendidos para dropdown */
+
 $this->title = 'Vendas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -23,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </svg>', ['create']) ?>
     </h1>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php echo $this->render('_search', ['model' => $searchModel, 'users' => $users, 'vehicles' => $vehicles]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -44,6 +47,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'idUser_buyer',
                 'format' => ['html'],
                 'value' => function ($model) {
+                    if ($model->idUser_buyer == null) {
+                        return 'Sem conta';
+                    }
                     return Html::a(User::getNameById($model->idUser_buyer) . ' (nº' . $model->idUser_buyer . ')', Url::toRoute(['user/view', 'id' => $model->idUser_buyer]), [
                     ]);
                 }

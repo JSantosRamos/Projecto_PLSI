@@ -34,8 +34,12 @@ YiiAsset::register($this);
                 'attribute' => 'idUser_buyer',
                 'format' => ['html'],
                 'value' => function ($model) {
-                    return Html::a(User::getNameById($model->idUser_buyer) . ' (nº' . $model->idUser_buyer . ')', Url::toRoute(['user/view', 'id' => $model->idUser_buyer]), [
-                    ]);
+                    if ($model->idUser_buyer == null) {
+                        return 'Sem conta';
+                    } else {
+                        return Html::a(User::getNameById($model->idUser_buyer) . ' (nº' . $model->idUser_buyer . ')', Url::toRoute(['user/view', 'id' => $model->idUser_buyer]), [
+                        ]);
+                    }
                 }
             ],
             [
@@ -60,7 +64,7 @@ YiiAsset::register($this);
             <?= Html::a('Apagar', ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
-                    'confirm' => 'Are you sure you want to delete this item?',
+                    'confirm' => 'Tem a certeza que quer apagar?',
                     'method' => 'post',
                 ],
             ])

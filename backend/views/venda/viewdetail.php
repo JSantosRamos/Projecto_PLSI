@@ -112,7 +112,7 @@ $modelName = $veiculo->getModelName();
                     </tr>
                     <tr>
                         <th>CV:</th>
-                        <td><?= $veiculo->cv ?> cm3</td>
+                        <td><?= $veiculo->cv ?></td>
                     </tr>
                     <tr>
                         <th>Caixa:</th>

@@ -23,21 +23,20 @@ use yii\widgets\ActiveForm;
         <div class="col-md-4"><?= $form->field($model, 'status')->dropDownList(['10' => 'Ativo', '9' => 'Desativa']) ?></div>
     </div>
 
-    <?php
-    if (Yii::$app->controller->action->id == 'update'):?>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="cbox" onclick="myShowPwd()">
-            <label class="form-check-label" for="flexSwitchCheckDefault">Alterar Password</label>
-        </div>
-        <div id="password"
-             style="display: none"> <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
-        </div>
-    <?php else:
-        echo '<div class="row"><div class="col-md-4">' . $form->field($model, 'password_hash')->passwordInput(['maxlength' => true, 'value' => User::randomPassword(), 'disabled' => true]) . '</div> </div>';
-    endif;
-    ?>
-
     <?= $form->field($model, 'isEmployee')->checkbox() ?>
+
+    <?php if (Yii::$app->controller->action->id == 'create'): ?>
+        <?= $form->field($model, 'password_hash')->passwordInput(['maxlength' => true, 'value' => User::randomPassword(), 'readonly' => true]) ?>
+
+    <?php elseif (Yii::$app->controller->action->id == 'update' && User::isAdmin(Yii::$app->user->id)): ?>
+        <?= $form->field($model, 'changePassword')->checkbox(['onchange' => 'myShowPwd()']) ?>
+        <div id="password" style="display: none">
+            <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'passwordConf')->passwordInput(['maxlength' => true]) ?>
+        </div>
+    <?php else: ?>
+        <?= $form->field($model, 'password_hash')->hiddenInput(['maxlength' => true, 'readonly' => true])->label(false) ?>
+    <?php endif; ?>
 
     <br>
     <div class="form-group">
@@ -49,8 +48,7 @@ use yii\widgets\ActiveForm;
 </div>
 <script>
     function myShowPwd() {
-
-        let isCheck = $('#cbox').is(":checked");
+        let isCheck = $('#user-changepassword').is(":checked");
 
         if (isCheck) {
             $('#password').show();

@@ -1,18 +1,21 @@
 <?php
 
-namespace frontend\controllers;
+namespace backend\controllers;
 
-use common\models\Blog;
-use common\models\BlogSearch;
+use common\models\Reserve;
+use common\models\ReserveSearch;
+use common\models\Vehicle;
+use Yii;
+use yii\db\StaleObjectException;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * BlogController implements the CRUD actions for Blog model.
+ * ReserveController implements the CRUD actions for Reserve model.
  */
-class BlogController extends Controller
+class ReserveController extends Controller
 {
     /**
      * @inheritDoc
@@ -26,14 +29,14 @@ class BlogController extends Controller
                     'class' => AccessControl::class,
                     'rules' => [
                         [
-                            'actions' => ['index', 'create', 'update', 'delete', 'view'],
+                            'actions' => ['index', 'view', 'download'],
                             'allow' => true,
-                            'roles' => ['@'],
+                            'roles' => ['employee'],
                         ],
                         [
-                            'actions' => ['index'],
+                            'actions' => ['delete'],
                             'allow' => true,
-                            'roles' => ['?'],
+                            'roles' => ['manager'],
                         ],
                     ],
                 ],
@@ -48,13 +51,13 @@ class BlogController extends Controller
     }
 
     /**
-     * Lists all Blog models.
+     * Lists all Reserve models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new BlogSearch();
+        $searchModel = new ReserveSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -64,7 +67,7 @@ class BlogController extends Controller
     }
 
     /**
-     * Displays a single Blog model.
+     * Displays a single Reserve model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -77,13 +80,13 @@ class BlogController extends Controller
     }
 
     /**
-     * Creates a new Blog model.
+     * Creates a new Reserve model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Blog();
+        $model = new Reserve();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -99,7 +102,7 @@ class BlogController extends Controller
     }
 
     /**
-     * Updates an existing Blog model.
+     * Updates an existing Reserve model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -119,7 +122,7 @@ class BlogController extends Controller
     }
 
     /**
-     * Deletes an existing Blog model.
+     * Deletes an existing Reserve model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -127,24 +130,45 @@ class BlogController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        $vehicle = Vehicle::findOne(['id' => $model->idVehicle]);
+
+        if ($vehicle->status == Vehicle::STATUS_RESERVED) {
+            $vehicle->status = Vehicle::STATUS_AVAILABLE;
+            $vehicle->save();
+        }
+
+        try {
+            $model->delete();
+        } catch (\Throwable $e) {
+            Yii::$app->session->setFlash('danger', "Ocurreu um erro a apagar a reserva!");
+            return $this->redirect(['index', 'id' => $model->id]);
+        }
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Blog model based on its primary key value.
+     * Finds the Reserve model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Blog the loaded model
+     * @return Reserve the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Blog::findOne(['id' => $id])) !== null) {
+        if (($model = Reserve::findOne(['id' => $id])) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionDownload($file)
+    {
+        $path = \Yii::getAlias('@backend/web/storage' . $file);
+
+        return \Yii::$app->response->sendFile($path);
     }
 }

@@ -55,13 +55,6 @@ class TestdriveController extends Controller
     public function actionIndex()
     {
         return $this->redirect(Url::toRoute('site/areapessoal'));
-        /* $searchModel = new TestdriveSearch();
-         $dataProvider = $searchModel->search($this->request->queryParams);
-
-         return $this->render('index', [
-             'searchModel' => $searchModel,
-             'dataProvider' => $dataProvider,
-         ]);*/
     }
 
     /**

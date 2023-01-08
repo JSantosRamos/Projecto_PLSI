@@ -2,6 +2,7 @@
 
 /** @var yii\web\View $this */
 
+use common\models\Vehicle;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kv4nt\owlcarousel\OwlCarouselWidget;
@@ -52,13 +53,15 @@ $this->title = 'Stand Auto';
                 </h2>
                 <p>Tem um automóvel para vender? Nós temos a proposta ideal para si.
                     Tratamos de todo o processo de forma rápida e simples!</p>
-                <a class="text-decoration-none" id="vendacarro" href="<?php echo Url::toRoute(['/vendauser/create']) ?>">
+                <a class="text-decoration-none" id="vendacarro"
+                   href="<?php echo Url::toRoute(['/vendauser/create']) ?>">
                     Ver mais
                 </a>
             </div>
             <div class="col-lg-4">
                 <h2 class="h4 fw-bolder">Área Cliente
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-person-fill" viewBox="0 0 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-file-person-fill" viewBox="0 0 16 16">
                         <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm-1 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm-3 4c2.623 0 4.146.826 5 1.755V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-1.245C3.854 11.825 5.377 11 8 11z"/>
                     </svg>
                 </h2>
@@ -95,6 +98,11 @@ $this->title = 'Stand Auto';
 
         <?php foreach ($vehicles as $vehicle): ?>
             <div class="card h-100">
+
+                <?php if ($vehicle->status == Vehicle::STATUS_RESERVED) {
+                    echo '<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Reservado</div>';
+                }
+                ?>
                 <!-- Vehicle image-->
                 <img class="card-img-top" src="http://frontendstand.test/storage/<?= $vehicle->image ?>"
                      alt=""/>

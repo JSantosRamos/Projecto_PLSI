@@ -1,5 +1,7 @@
 <?php
 
+use common\models\User;
+use common\models\Vehicle;
 use dosamigos\ckeditor\CKEditor;
 use kartik\depdrop\DepDrop;
 use kartik\select2\Select2;
@@ -46,7 +48,7 @@ use yii\widgets\MaskedInput;
                 'options' => ['placeholder' => 'Selecione um modelo'],
                 'type' => DepDrop::TYPE_SELECT2,
                 'pluginOptions' => [
-                    'depends' =>  ['brand-id'],
+                    'depends' => ['brand-id'],
                     'url' => Url::to(['/vehicle/allmodels']),
                     'loadingText' => '',
                 ]
@@ -76,6 +78,7 @@ use yii\widgets\MaskedInput;
                     'autoGroup' => true,
                     'removeMaskOnSubmit' => true,
                 ]]) ?></div>
+
         <div class="col-md-4"><?= $form->field($model, 'status')->dropDownList(['Disponível' => 'Disponível', 'Vendido' => 'Vendido', 'Reservado' => 'Reservado',]) ?></div>
         <div class="col-md-4"><?= $form->field($model, 'doorNumber')->Input('number') ?></div>
     </div>
@@ -83,12 +86,12 @@ use yii\widgets\MaskedInput;
 
     <?= $form->field($model, 'imageFile', [
         'template' => '
-                <div class="custom-file">
-                    {input}
-                    {label}
-                    {error}
-                </div>
-            ',
+                                    <div class="custom-file">
+                                        {input}
+                                        {label}
+                                        {error}
+                                    </div>
+                                ',
         'labelOptions' => ['class' => 'custom-file-label'],
         'inputOptions' => ['class' => 'custom-file-input']
     ])->textInput(['type' => 'file']) ?>
@@ -97,7 +100,7 @@ use yii\widgets\MaskedInput;
     <?= $form->field($model, 'isActive')->checkbox() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Guardar', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

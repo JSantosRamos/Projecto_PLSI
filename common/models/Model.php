@@ -70,9 +70,16 @@ class Model extends \yii\db\ActiveRecord
         return $this->hasMany(Vehicle::class, ['idModel' => 'id']);
     }
 
-    public static function getModels($id){
-      $models = Model::find()->where(["idBrand" => $id])->all();
+    public static function getModels($id)
+    {
+        $models = Model::find()->where(["idBrand" => $id])->all();
 
-     return ArrayHelper::map($models,'id', 'name');
+        return ArrayHelper::map($models, 'id', 'name');
+    }
+
+    public static function getNameById($id)
+    {
+        $model = Model::findOne(['id' => $id]);
+        return $model == null ? '' : $model->name;
     }
 }

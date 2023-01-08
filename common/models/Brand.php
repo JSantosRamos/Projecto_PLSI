@@ -64,4 +64,9 @@ class Brand extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Vehicle::class, ['idBrand' => 'id']);
     }
+
+    public static function getNameById($id){
+        $brand = Brand::findOne(['id' => $id]);
+        return $brand == null ? '' : $brand->name;
+    }
 }

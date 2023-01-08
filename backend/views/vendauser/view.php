@@ -1,8 +1,11 @@
 <?php
 
+use common\models\Brand;
+use common\models\Model;
 use common\models\User;
 use common\models\Vehicle;
 use common\models\Vendauser;
+use yii\bootstrap5\LinkPager;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\YiiAsset;
@@ -13,8 +16,6 @@ use yii\widgets\ListView;
 /** @var common\models\Vendauser $model */
 
 $this->title = 'Proposta de venda: #' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Vendausers', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
 ?>
 <div class="vendauser-view">
@@ -34,11 +35,11 @@ YiiAsset::register($this);
             ],
             [
                 'attribute' => 'brand',
-                'value' => function ($model) {return Vehicle::getBrandNameById($model->brand);}
+                'value' => function ($model) {return Brand::getNameById($model->brand);}
             ],
             [
                 'attribute' => 'model',
-                'value' => function ($model) {return Vehicle::getModelNameById($model->model);}
+                'value' => function ($model) {return Model::getNameById($model->brand);}
             ],
             [
                 'attribute' => 'serie',
@@ -92,8 +93,12 @@ YiiAsset::register($this);
     <hr style="border: 1px solid blue">
     <?= ListView::widget([
         'dataProvider' => $dataProviderNote,
-        'layout' => '{items}',
+        'summary' => '',
+        'emptyText' => 'Não foram encontrados resultados.',
         'itemView' => '/note/_item',
+        'pager' => [
+            'class' => LinkPager::class
+        ]
     ]) ?>
 </div>
 

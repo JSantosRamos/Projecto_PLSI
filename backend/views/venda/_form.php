@@ -38,14 +38,22 @@ use yii\widgets\MaskedInput;
         </div>
 
         <div class="col-md-2"><?= $form->field($model, 'number')->widget(MaskedInput::class, [
-                'name' => 'input-1',
+                'name' => 'phone',
                 'mask' => '999 999 999',
+                'clientOptions' => [
+                    'removeMaskOnSubmit' => true,
+                ]
             ]) ?>
         </div>
         <div class="col-md-2"><?= $form->field($model, 'nif')->widget(MaskedInput::class, [
                 'name' => 'input-1',
                 'mask' => '999 999 999',
+                'clientOptions' => [
+                    'removeMaskOnSubmit' => true,
+                ]
             ]) ?>
+        </div>
+        <div class="col-md-2"><?= $form->field($model, 'address')->textInput() ?>
         </div>
         <div class="col-md-3"><?= $form->field($model, 'idUser_buyer')->widget(Select2::className(), [
                 'data' => ArrayHelper::map($users, 'id', 'email'),
@@ -62,9 +70,7 @@ use yii\widgets\MaskedInput;
     <div class="form-group">
         <?= Html::submitButton('Guardar', [
             'class' => 'btn btn-primary',
-            'data' => [
-                'confirm' => 'Tem a certeza que pretende registar esta venda? Depois de criada não pode ser alterada.',
-            ],
+            'data' => Yii::$app->controller->action->id == 'create' ? ['confirm' => 'Tem a certeza que pretende registar esta venda? Depois de criada não pode ser alterada.'] : [],
         ]) ?>
     </div>
 

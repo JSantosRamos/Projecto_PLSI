@@ -33,6 +33,8 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_ACTIVE = 10;
 
     public $password;
+    public $passwordConf;
+    public $changePassword; //necessario para criar uma checkbox
 
     /**
      * {@inheritdoc}
@@ -69,6 +71,8 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
             ['password', 'string', 'min' => 8],
+            ['password', 'compare', 'compareAttribute' => 'passwordConf'],
+            ['passwordConf', 'compare', 'compareAttribute' => 'password']
         ];
     }
 
@@ -89,7 +93,9 @@ class User extends ActiveRecord implements IdentityInterface
             'updated_at' => 'Updated At',
             'verification_token' => 'Verification Token',
             'name' => 'Nome',
-            'isEmployee' => 'Conta de Funcionário'
+            'isEmployee' => 'Conta de Funcionário',
+            'changePassword' => 'Alterar Password',
+            'passwordConf' => 'Confirmar Password',
         ];
     }
 

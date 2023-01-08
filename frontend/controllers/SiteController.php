@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\Contactuser;
+use common\models\ReserveSearch;
 use common\models\TestdriveSearch;
 use common\models\User;
 use common\models\Vehicle;
@@ -162,10 +163,10 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionAbout()
+    /*public function actionAbout()
     {
         return $this->render('about');
-    }
+    }*/
 
     /**
      * Signs user up.
@@ -176,7 +177,7 @@ class SiteController extends Controller
     {
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+            Yii::$app->session->setFlash('success', 'Obrigado pelo seu registo, faça login para continuar.');
             return $this->goHome();
         }
 
@@ -190,7 +191,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionRequestPasswordReset()
+    /*public function actionRequestPasswordReset()
     {
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -206,7 +207,7 @@ class SiteController extends Controller
         return $this->render('requestPasswordResetToken', [
             'model' => $model,
         ]);
-    }
+    }*/
 
     /**
      * Resets password.
@@ -215,7 +216,7 @@ class SiteController extends Controller
      * @return mixed
      * @throws BadRequestHttpException
      */
-    public function actionResetPassword($token)
+    /*public function actionResetPassword($token)
     {
         try {
             $model = new ResetPasswordForm($token);
@@ -241,7 +242,7 @@ class SiteController extends Controller
      * @return yii\web\Response
      * @throws BadRequestHttpException
      */
-    public function actionVerifyEmail($token)
+    /*public function actionVerifyEmail($token)
     {
         try {
             $model = new VerifyEmailForm($token);
@@ -255,14 +256,14 @@ class SiteController extends Controller
 
         Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
         return $this->goHome();
-    }
+    }*/
 
     /**
      * Resend verification email
      *
      * @return mixed
      */
-    public function actionResendVerificationEmail()
+   /* public function actionResendVerificationEmail()
     {
         $model = new ResendVerificationEmailForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -277,7 +278,6 @@ class SiteController extends Controller
             'model' => $model
         ]);
     }
-
 
     /**
      * Show all Vendausermodel and Testdrivemodel created by the login user
@@ -296,12 +296,17 @@ class SiteController extends Controller
         $searchModelTestdrive = new TestdriveSearch();
         $dataProviderTestdrive = $searchModelTestdrive->search($this->request->queryParams, false);
 
+        $searchModelReserve = new ReserveSearch();
+        $dataProviderReserve = $searchModelReserve->search($this->request->queryParams, false);
+
 
         return $this->render('areapessoal', [
             'searchModelTestdrive' => $searchModelTestdrive,
             'dataProviderTestdrive' => $dataProviderTestdrive,
             'searchModelVendauser' => $searchModelVendauser,
             'dataProviderVendauser' => $dataProviderVendauser,
+            'searchModelReserve' => $searchModelReserve,
+            'dataProviderReserve' => $dataProviderReserve,
         ]);
     }
 }

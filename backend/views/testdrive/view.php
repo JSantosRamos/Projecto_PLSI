@@ -55,21 +55,17 @@ $role = User::getRoleName(\Yii::$app->user->id);
     ]) ?>
 
     <p>
-        <?php if ($role == 'manager'): ?>
+        <?php if ($role == 'manager' || $role == 'admin'): ?>
 
-            <?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-
-        <?php elseif ($role == 'admin'): ?>
             <?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
             <?= Html::a('Apagar', ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
-                    'confirm' => 'Are you sure you want to delete this item?',
+                    'confirm' => 'Tem a certeza que quer apagar?',
                     'method' => 'post',
                 ],
             ]);
             ?>
-
         <?php endif; ?>
     </p>
 

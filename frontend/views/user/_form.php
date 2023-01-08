@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <div class="container rounded bg-white mt-5 mb-5">
-        <div class="row" style="background: whitesmoke">
+        <div class="row" style="background: #e9ecef">
             <div class="col-md-3 border-right">
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5"
                                                                                              width="200px"
@@ -30,24 +30,18 @@ use yii\widgets\ActiveForm;
                     <div class="row mt-3">
                         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-                        <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
-
                         <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-                        <div class="col-md-6"><?= $form->field($model, 'nif')->Input('number') ?></div>
+                        <?= $form->field($model, 'username')->textInput(['maxlength' => true, 'placeholder' => 'Opcional']) ?>
 
-                        <div class="col-md-6"><?= $form->field($model, 'number')->Input('number') ?></div>
                     </div>
                     <br>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="cbox" onclick="myShowPwd()">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Alterar password
-                        </label>
+                    <?= $form->field($model, 'changePassword')->checkbox(['onchange' => 'myShowPwd()']) ?>
+                    <div id="password" style="display: none">
+                        <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'passwordConf')->passwordInput(['maxlength' => true]) ?>
                     </div>
-                    <div id="password"
-                         style="display: none"> <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
-                    </div>
+
                 </div>
                 <div class="mt-5 text-center"><?= Html::submitButton('Guardar', ['class' => 'btn btn-dark']) ?></div>
             </div>
@@ -60,10 +54,12 @@ use yii\widgets\ActiveForm;
 <script>
     function myShowPwd() {
 
-        let isCheck = $('#cbox').is(":checked");
+        let isCheck = $('#user-changepassword').is(":checked");
 
         if (isCheck) {
             $('#password').show();
+            $('#user-passwordconf').show();
+
         } else {
             $('#password').hide();
         }

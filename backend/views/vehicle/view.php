@@ -14,11 +14,10 @@ use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
 /** @var common\models\Vehicle $model */
-
-$this->title = 'Editar Veículo: (' . $model->plate . ')';
-$this->params['breadcrumbs'][] = ['label' => 'Vehicles', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
+common\widgets\Alert::widget();
+
+$this->title = $model->id;
 ?>
 <div class="vehicle-view">
 
@@ -27,7 +26,7 @@ YiiAsset::register($this);
     }
     ?>
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1>Veículo:<?= Html::encode($this->title) ?></h1>
 
     <?php if (!User::isEmployee(Yii::$app->user->id)): ?>
         <p>

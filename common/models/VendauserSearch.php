@@ -41,17 +41,17 @@ class VendauserSearch extends Vendauser
      */
     public function search($params, $originalQuery = true)
     {
-
         if($originalQuery){
-            $query = Vendauser::find();
+            $query = Vendauser::find()->orderBy(["id" => SORT_DESC]);
         }else{
-            $query = Vendauser::find()->where(['iduser' => \Yii::$app->user->id]);
+            $query = Vendauser::find()->where(['iduser' => \Yii::$app->user->id])->orderBy(["id" => SORT_DESC]);
         }
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => ['pageSize' => 5]
         ]);
 
         $this->load($params);

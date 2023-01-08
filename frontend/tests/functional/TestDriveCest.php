@@ -3,13 +3,18 @@
 
 namespace frontend\tests\Functional;
 
+use common\models\User;
 use frontend\tests\FunctionalTester;
 
 class TestDriveCest
 {
     public function _before(FunctionalTester $I)
     {
-        $I->amLoggedInAs(96);
+
+        $user = User::findByEmail('testinguser@testes.com');
+        $id = $user->id;
+
+        $I->amLoggedInAs($id);
         $I->amOnPage('/');
     }
 

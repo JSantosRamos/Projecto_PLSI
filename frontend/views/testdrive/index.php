@@ -1,6 +1,7 @@
 <?php
 
 use common\models\Testdrive;
+use yii\bootstrap5\LinkPager;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -32,9 +33,13 @@ $this->title = 'Test-Drives';
             <tr class="">
                 <?= ListView::widget([
                     'dataProvider' => $dataProvider,
-                    'layout' => '{items}',
+                    'itemOptions' => ['class' => 'col mb-5'],
+                    'summary' => '',
+                    'emptyText' => 'Não foram encontrados resultados.',
                     'itemView' => '_item',
-                    'itemOptions' => ['class' => 'col mb-5']
+                    'pager' => [
+                        'class' => LinkPager::class
+                    ],
                 ]) ?>
             </tr>
             </tbody>

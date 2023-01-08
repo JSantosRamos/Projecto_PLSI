@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\models\Brand;
 use common\models\Model;
 use common\models\Permission;
+use common\models\User;
 use common\models\Vendauser;
 use common\models\VendauserSearch;
 use yii\helpers\Url;
@@ -55,14 +56,6 @@ class VendauserController extends Controller
     public function actionIndex()
     {
         return $this->redirect(Url::toRoute('site/areapessoal'));
-
-        /*  $searchModel = new VendauserSearch();
-          $dataProvider = $searchModel->search($this->request->queryParams);
-
-          return $this->render('index', [
-              'searchModel' => $searchModel,
-              'dataProvider' => $dataProvider,
-          ]);*/
     }
 
     /**
@@ -92,7 +85,8 @@ class VendauserController extends Controller
     public function actionCreate()
     {
         $model = new Vendauser();
-        $model->idUser = \Yii::$app->user->id;
+        $user = Yii::$app->user->identity;
+        $model->idUser = $user->id;
 
         $vBrands = Brand::find()->all(); //dropdown marcas
         $vModels = Model::find()->all(); // dropdown modelos
@@ -100,7 +94,8 @@ class VendauserController extends Controller
         if ($this->request->isPost) {
 
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                Yii::$app->session->setFlash('success', 'A sua proposta foi registada, pode acompanhar a mesma na Área Cliente, será contactado em ' . $user->email);
+                return $this->redirect(['/site/index']);
             }
         } else {
             $model->loadDefaultValues();

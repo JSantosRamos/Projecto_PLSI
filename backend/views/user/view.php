@@ -12,6 +12,7 @@ $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
+common\widgets\Alert::widget()
 ?>
 <div class="user-view">
 
@@ -25,20 +26,19 @@ YiiAsset::register($this);
     <p>
         <?php
         $id = Yii::$app->user->id;
-        if (User::isAdmin($id)) {
-            echo Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);
-            echo Html::a('Apagar', ['delete', 'id' => $model->id], [
+        if (User::isAdmin($id)): ?>
+            <?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']); ?>
+            <?= Html::a('Apagar', ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
                     'confirm' => 'Têm a certeza que quer apagar este utilizador?',
                     'method' => 'post',
                 ],
-            ]);
+            ]); ?>
 
-        } else if (User::isManager($id) && !User::isAdmin($model->id)) {
-            echo Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);
-        }
-        ?>
+        <?php elseif (User::isManager($id) && !User::isAdmin($model->id)): ?>
+            <?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?php endif; ?>
     </p>
 
     <?= DetailView::widget([

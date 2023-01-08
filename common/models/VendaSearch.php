@@ -41,12 +41,17 @@ class VendaSearch extends Venda
      */
     public function search($params)
     {
-        $query = Venda::find();
+        if (User::isEmployee(\Yii::$app->user->id)) {
+            $query = Venda::find()->where(['idUser_seller' => \Yii::$app->user->id]);
+        } else {
+            $query = Venda::find();
+        }
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => ['pageSize' => 5]
 
         ]);
 

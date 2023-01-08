@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var common\models\BlogSearch $model */
+/** @var common\models\ReserveSearch $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="blog-search">
+<div class="reserve-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -19,11 +19,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'idUser') ?>
 
-    <?= $form->field($model, 'title') ?>
+    <?= $form->field($model, 'idVehicle') ?>
 
-    <?= $form->field($model, 'description') ?>
+    <?= $form->field($model, 'number') ?>
 
-    <?= $form->field($model, 'data') ?>
+    <?= $form->field($model, 'nif') ?>
+
+    <?php // echo $form->field($model, 'morada') ?>
+
+    <?php // echo $form->field($model, 'cc') ?>
+
+    <?php // echo $form->field($model, 'create_at') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

@@ -195,13 +195,15 @@ class Vehicle extends \yii\db\ActiveRecord
 
     public static function getBrandNameById($id)
     {
-        $brand = Brand::findOne($id);
+        $vehicle = Vehicle::findOne($id);
+        $brand = Brand::findOne($vehicle->idBrand);
         return $brand == null ? '' : $brand->name;
     }
 
     public static function getModelNameById($id)
     {
-        $model = Model::findOne($id);
+        $vehicle = Vehicle::findOne($id);
+        $model = Model::findOne($vehicle->idModel);
         return $model == null ? '' : $model->name;
     }
 }

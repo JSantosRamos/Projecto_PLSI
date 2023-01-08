@@ -1,10 +1,13 @@
 <?php
 
 use common\models\Testdrive;
+use yii\bootstrap5\LinkPager;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\ListView;
+use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
 $this->title = 'Área Pessoal';
@@ -13,103 +16,72 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php
 /** @var common\models\TestdriveSearch $searchModelTestdrive */
 /** @var yii\data\ActiveDataProvider $dataProviderTestdrive */
+
 ?>
 
-<div class="testdrive-index">
+<div class="row">
+    <div class="testdrive-index col-md-4">
+        <h3>Teste-Drives</h3>
+        <?php if ($dataProviderTestdrive->count > 0): ?>
+            <?php Pjax::begin(); ?>
+            <?= ListView::widget([
+                'dataProvider' => $dataProviderTestdrive,
+                'itemOptions' => ['class' => 'col mb-5'],
+                'summary' => '',
+                'emptyText' => 'Não foram encontrados resultados.',
+                'itemView' => '/testdrive/_item',
+                'pager' => [
+                    'class' => LinkPager::class
+                ],
+            ]) ?>
+            <?php Pjax::end(); ?>
+        <?php else: echo 'Não tem test-drives agendados.' ?>
+        <?php endif; ?>
+    </div>
+    <?php
+    /** @var common\models\VendauserSearch $searchModelVendauser */
+    /** @var yii\data\ActiveDataProvider $dataProviderVendauser */
+    ?>
 
-    <?= $this->render('/testdrive/index', [
-        'dataProvider' => $dataProviderTestdrive,
-        'searchModel' => $searchModelTestdrive,
-    ]) ?>
+    <div class="vendauser-index col-md-4">
+
+        <h3>Propostas de venda</h3>
+        <?php if ($dataProviderVendauser->count > 0): ?>
+            <?php Pjax::begin(); ?>
+            <?= ListView::widget([
+                'dataProvider' => $dataProviderVendauser,
+                'itemOptions' => ['class' => 'col mb-5'],
+                'summary' => '',
+                'emptyText' => 'Não foram encontrados resultados.',
+                'itemView' => '/vendauser/_item',
+                'pager' => [
+                    'class' => LinkPager::class
+                ],
+            ]) ?>
+            <?php Pjax::end(); ?>
+        <?php else: echo 'Não tem Propostas.' ?>
+        <?php endif; ?>
+    </div>
+
+    <div class="reserve-index col-md-4">
+
+        <h3>Reservas</h3>
+        <?php if ($dataProviderReserve->count > 0): ?>
+            <?php Pjax::begin(); ?>
+            <?= ListView::widget([
+                'dataProvider' => $dataProviderReserve,
+                'itemOptions' => ['class' => 'col mb-5'],
+                'summary' => '',
+                'emptyText' => 'Não foram encontrados resultados.',
+                'itemView' => '/reserve/_item',
+                'pager' => [
+                    'class' => LinkPager::class
+                ],
+            ]) ?>
+            <?php Pjax::end(); ?>
+        <?php else: echo 'Não tem Propostas.' ?>
+        <?php endif; ?>
+    </div>
 </div>
 
-<hr style="color: blue">
-
-<?php
-/** @var common\models\VendauserSearch $searchModelVendauser */
-/** @var yii\data\ActiveDataProvider $dataProviderVendauser */
-?>
-
-<div class="vendauser-index">
-
-    <?= $this->render('/vendauser/index', [
-        'dataProvider' => $dataProviderVendauser,
-        'searchModel' => $searchModelVendauser,
-    ]) ?>
-</div>
-
-<style>
-
-    .custom-table thead tr, .custom-table thead th {
-        padding-bottom: 30px;
-        border-top: none;
-        border-bottom: none !important;
-        color: #000;
-    }
-
-    .custom-table tbody th, .custom-table tbody td {
-        color: #777;
-        padding-bottom: 20px;
-        padding-top: 20px;
-        font-weight: 300;
-        border: none;
-        -webkit-transition: .3s all ease;
-        -o-transition: .3s all ease;
-        transition: .3s all ease;
-    }
-
-    .custom-table tbody th small, .custom-table tbody td small {
-        color: #b3b3b3;
-        font-weight: 300;
-    }
-
-    .custom-table tbody tr {
-        -webkit-transition: .3s all ease;
-        -o-transition: .3s all ease;
-        transition: .3s all ease;
-    }
-
-    .custom-table tbody tr .name {
-        text-decoration: line-through;
-        position: relative;
-        display: inline-block;
-    }
-
-    .custom-table tbody tr .name:before {
-        content: "";
-        height: 2px;
-        top: 50%;
-        position: absolute;
-        left: 0;
-        right: 0;
-        background: #dc3545;
-        opacity: 0;
-        visibility: hidden;
-    }
-
-    .custom-table tbody tr.active {
-        opacity: .4;
-    }
-
-    .custom-table tbody tr.active .name:before {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    .custom-table .td-box-wrap {
-        padding: 0;
-    }
-
-    .custom-table .box {
-        background: #fff;
-        border-radius: 4px;
-        margin-top: 15px;
-        margin-bottom: 15px;
-    }
-
-    .custom-table .box td, .custom-table .box th {
-        border: none !important;
-    }
-
-</style>
 

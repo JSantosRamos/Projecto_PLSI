@@ -20,7 +20,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'idVehicle',
+            [
+                'attribute' => 'idVehicle',
+                'format' => ['html'],
+                'value' => function ($model) {
+                    return Html::a($model->idVehicle, Url::toRoute(['/vehicle/view', 'id' => $model->idVehicle]), [
+                    ]);
+                }
+            ],
             [
                 'attribute' => 'status',
                 'format' => ['html'],
@@ -57,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
             O seu pedido pode ter sofrido alterações, pois não existia dísponiblidade para o dia/hora anteriormente
             selecionada, porfavor confirme se aceita as novas alterações.
             Se não houver dísponiblidade pode sempre marcar novo test-drive ou <a class="text"
-                                                                                  href="<?= Url::toRoute('/site/contact') ?>">contact-nos</a>
+                                                                                  href="<?= Url::toRoute('/site/contact') ?>">contactar</a>
             para qualquer questão.
         </p>
         <p>

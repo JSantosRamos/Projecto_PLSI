@@ -5,8 +5,8 @@ use yii\widgets\ListView;
 
 /** @var yii\web\View $this */
 /** @var common\models\Venda $model */
-/** @var common\models\User $users  lista de utilizadores do tipo clientes para a dropdow*/
-/** @var common\models\Vehicle $vehicles  lista de veiculos para a dropdow*/
+/** @var common\models\User $users lista de utilizadores do tipo clientes para a dropdow */
+/** @var common\models\Vehicle $vehicles lista de veiculos para a dropdow */
 /** @var string $message erro se o veículo que o utilizador está a tentar registar já está vendido, já não acontece por causa da dropdow mas a validação ainda existe */
 /** @var common\models\VehicleSearch $searchVehicle */
 /** @var yii\data\ActiveDataProvider $dataVehicle vehicle */
@@ -29,14 +29,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'vehicles' => $vehicles,
     ]) ?>
     <br>
-    <hr style="border: 1px solid blue">
-    <br>
-    <?= $this->render('_searchlist', [
+
+    <?=
+    $this->render('_searchlist', [
         'searchVehicle' => $searchVehicle,
         'dataVehicle' => $dataVehicle,
         'dataUser' => $dataUser,
         'searchUser' => $searchUser,
     ]) ?>
+
 </div>
 
 

@@ -85,40 +85,43 @@ $this->registerJs('$("document").ready(function(){
 </div>
 <br>
 
-<h2>Gerir Permissões de Utilizadores</h2>
 
-<?php echo $this->render('/assignment/_search', ['modelPermissons' => $userPermissonsSearch]); ?>
+<?php if (!User::isEmployee(Yii::$app->user->id)): ?>
+    <h2>Gerir Permissões de Utilizadores</h2>
 
-<?php Pjax::begin(['id' => 'listpermissions']) ?>
-<?= GridView::widget([
-    'dataProvider' => $userPermissons,
-    'summary' => '',
-    'emptyText' => 'Não foram encontrados resultados.',
-    'columns' => [
-        ['class' => 'yii\grid\SerialColumn'],
-        [
-            'attribute' => 'user_id',
-            'format' => ['html'],
-            'value' => function ($model) {
-                return Html::a(User::getNameById($model->user_id) . ' (nº:' . $model->user_id . ')', Url::toRoute(['user/view', 'id' => $model->user_id]), [
-                ]);
-            }
+    <?php echo $this->render('/assignment/_search', ['modelPermissons' => $userPermissonsSearch]); ?>
+
+    <?php Pjax::begin(['id' => 'listpermissions']) ?>
+    <?= GridView::widget([
+        'dataProvider' => $userPermissons,
+        'summary' => '',
+        'emptyText' => 'Não foram encontrados resultados.',
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            [
+                'attribute' => 'user_id',
+                'format' => ['html'],
+                'value' => function ($model) {
+                    return Html::a(User::getNameById($model->user_id) . ' (nº:' . $model->user_id . ')', Url::toRoute(['user/view', 'id' => $model->user_id]), [
+                    ]);
+                }
+            ],
+            'item_name',
+            [
+                'class' => ActionColumn::className(),
+                'headerOptions' => ['style' => 'width:5%'],
+                'template' => '{view}',
+                'urlCreator' => function ($action, AuthAssignment $modelAuth, $key, $index, $column) {
+                    return Yii::$app->urlManager->createUrl(['assignment/view', 'item_name' => $modelAuth->item_name, 'user_id' => $modelAuth->user_id]);
+                }
+            ],
         ],
-        'item_name',
-        [
-            'class' => ActionColumn::className(),
-            'headerOptions' => ['style' => 'width:5%'],
-            'template' => '{view}',
-            'urlCreator' => function ($action, AuthAssignment $modelAuth, $key, $index, $column) {
-                return Yii::$app->urlManager->createUrl(['assignment/view', 'item_name' => $modelAuth->item_name, 'user_id' => $modelAuth->user_id]);
-            }
-        ],
-    ],
-    'pager' => [
-        'class' => LinkPager::class
-    ]
-]); ?>
-<?php Pjax::end() ?>
+        'pager' => [
+            'class' => LinkPager::class
+        ]
+    ]); ?>
+    <?php Pjax::end() ?>
+<?php endif; ?>
 
 
 

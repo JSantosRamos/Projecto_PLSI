@@ -1,5 +1,6 @@
 <?php
 
+use kartik\select2\Select2;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -15,21 +16,23 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'idUser_seller') ?>
-
-    <?= $form->field($model, 'idUser_buyer') ?>
-
-    <?= $form->field($model, 'idVehicle') ?>
-
-    <?= $form->field($model, 'Price') ?>
-
-    <?php // echo $form->field($model, 'comment') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
+    <div class="row">
+        <div class="col-md-2">
+            <?= $form->field($model, 'idUser_seller')->widget(Select2::className(), [
+                'data' => $users,
+                'options' => ['placeholder' => 'Selecionar'],
+            ]); ?>
+        </div>
+        <div class="col-md-2">
+            <?= $form->field($model, 'idVehicle')->widget(Select2::className(), [
+                'data' => $vehicles,
+                'options' => ['placeholder' => 'Selecionar'],
+            ]); ?>
+        </div>
+        <div class="form-group">
+            <?= Html::submitButton('Procurar', ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('Limpar', ['index'], ['class' => 'btn btn-outline-secondary']) ?>
+        </div>
     </div>
 
     <?php ActiveForm::end(); ?>

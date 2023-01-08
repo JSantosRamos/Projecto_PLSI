@@ -37,6 +37,7 @@ class Venda extends \yii\db\ActiveRecord
         return [
             [['idVehicle', 'price', 'number', 'nif', 'address', 'name'], 'required'],
             [['idUser_seller', 'idUser_buyer', 'idVehicle'], 'integer'],
+            [['nif', 'number'], 'string', 'min' => 9],
             [['name'], 'string', 'max' => 100],
             [['comment'], 'string', 'max' => 300],
             [['idUser_buyer'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['idUser_buyer' => 'id']],

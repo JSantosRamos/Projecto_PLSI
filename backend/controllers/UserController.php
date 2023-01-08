@@ -121,7 +121,7 @@ class UserController extends Controller
             if ($model->load($this->request->post())) {
 
                 if (!empty($model->password_hash)) {
-                    $normalPassword = $model->password_hash;
+                    $normalPassword = $model->password_hash; //guarda a password antes de criar a hash para enviar para o user
 
                     $model->generateAuthKey();
                     $model->generateEmailVerificationToken();
@@ -140,11 +140,11 @@ class UserController extends Controller
 
                     if (!$this->setUserAuth($roleName, $model->getId())) {
 
-                        Yii::$app->session->setFlash('danger', 'Erro nas permissões do utilizador!');
+                        Yii::$app->session->setFlash('error', 'Erro nas permissões do utilizador!');
                         return $this->redirect(['user/index']);
                     }
 
-                    $this->sendpassword($model->email, $normalPassword);
+                    $this->sendpassword($model->email, $normalPassword); //envia para o user
 
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
@@ -235,8 +235,7 @@ class UserController extends Controller
 
         } catch (\Throwable $e) {
 
-            //return $this->render('view', ['model' => $model,]);
-            return $this->redirect(['view', 'id' => $model->id, 'erro_delete' => 'true']);
+            return $this->redirect(['view', 'id' => $model->id, 'erro_delete' => 'true']);//users com reservas  ou vendas
         }
 
         return $this->redirect(['index']);

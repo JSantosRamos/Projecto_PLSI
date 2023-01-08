@@ -1,6 +1,8 @@
 <?php
 
+use common\models\User;
 use yii\helpers\Html;
+use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
@@ -9,7 +11,7 @@ use yii\widgets\DetailView;
 $this->title = $model->item_name;
 $this->params['breadcrumbs'][] = ['label' => 'Utilizadores', 'url' => ['user/index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+YiiAsset::register($this);
 ?>
 <div class="auth-assignment-view">
 
@@ -25,13 +27,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Editar', ['update', 'item_name' => $model->item_name, 'user_id' => $model->user_id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Apagar', ['delete', 'item_name' => $model->item_name, 'user_id' => $model->user_id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
+
+        <?php if (User::isAdmin(Yii::$app->user->id)): ?>
+            <?= Html::a('Apagar', ['delete', 'item_name' => $model->item_name, 'user_id' => $model->user_id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => 'Tem a certeza que quer apagar?',
+                    'method' => 'post',
+                ],
+            ]) ?>
+        <?php endif; ?>
+
     </p>
 
 </div>

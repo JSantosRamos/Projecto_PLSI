@@ -14,6 +14,7 @@ use yii\grid\GridView;
 $this->title = 'Veículos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<?= common\widgets\Alert::widget() ?>
 <div class="vehicle-index">
 
     <h1><?= Html::encode($this->title) ?>

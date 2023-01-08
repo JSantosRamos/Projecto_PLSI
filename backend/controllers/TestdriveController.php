@@ -10,6 +10,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use const http\Client\Curl\VERSIONS;
 
 /**
  * TestdriveController implements the CRUD actions for Testdrive model.
@@ -33,14 +34,9 @@ class TestdriveController extends Controller
                             'roles' => ['employee'],
                         ],
                         [
-                            'actions' => ['update'],
+                            'actions' => ['update', 'create', 'delete'],
                             'allow' => true,
                             'roles' => ['manager'],
-                        ],
-                        [
-                            'actions' => ['create', 'delete'],
-                            'allow' => true,
-                            'roles' => ['admin'],
                         ],
                     ],
                 ],
@@ -133,6 +129,11 @@ class TestdriveController extends Controller
         $model = $this->findModel($id);
         $users = User::find()->where(['isEmployee' => 0])->all();
         $vehicles = Vehicle::find()->where(['status' => Vehicle::STATUS_AVAILABLE])->all();
+
+        $vehicle = Vehicle::findOne(['id' => $model->idVehicle]);
+        if ($vehicle->status == Vehicle::STATUS_SOLD) { //Se o veiculo for vendido depois do teste ser marcado o teste já não tinha o id do veiculo no update e passava a não ser possivel marcar o estado do teste.
+            $vehicles[] = $vehicle;
+        }
 
         if ($this->request->isPost && $model->load($this->request->post())) {
 

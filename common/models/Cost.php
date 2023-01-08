@@ -34,7 +34,6 @@ class Cost extends \yii\db\ActiveRecord
         return [
             [['idUser', 'title', 'valor'], 'required'],
             [['idUser'], 'integer'],
-            [['valor'], 'number'],
             [['title'], 'string', 'max' => 100],
             [['file'], 'file'],
         ];
@@ -47,7 +46,7 @@ class Cost extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'idUser' => 'Id User',
+            'idUser' => 'Adicionado por',
             'title' => 'Texto',
             'valor' => 'Valor',
             'file' => 'Ficheiro',

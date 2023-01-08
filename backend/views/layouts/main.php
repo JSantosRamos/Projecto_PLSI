@@ -128,26 +128,13 @@ AppAsset::register($this);
                 </li>
             <?php endif; ?>
 
-            <?php if (!User::isEmployee(Yii::$app->user->id)): ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?php echo Url::toRoute(['/vendauser/index']) ?>">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                             class="bi bi-cash" viewBox="0 0 16 16">
-                            <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
-                            <path d="M0 4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V4zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V6a2 2 0 0 1-2-2H3z"/>
-                        </svg>
-                        <span>Propostas</span></a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="<?php echo Url::toRoute(['/image/index']) ?>">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-image" viewBox="0 0 16 16">
-                            <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
-                            <path d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54A.505.505 0 0 1 1 12.5v-9a.5.5 0 0 1 .5-.5h13z"/>
-                        </svg>
-                        <span>Imagens</span></a>
-                </li>
-            <?php endif; ?>
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo Url::toRoute(['/reserve/index']) ?>">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-check-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5zm8.854-9.646a.5.5 0 0 0-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
+                    </svg>
+                    <span>Reservas</span></a>
+            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">

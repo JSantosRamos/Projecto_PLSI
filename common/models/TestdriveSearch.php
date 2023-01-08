@@ -6,6 +6,7 @@ use PHPUnit\Util\Test;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\Testdrive;
+use yii\data\Pagination;
 
 /**
  * TestdriveSearch represents the model behind the search form of `common\models\Testdrive`.
@@ -43,15 +44,16 @@ class TestdriveSearch extends Testdrive
     {
 
         if($originalQuery){
-            $query = Testdrive::find();
+            $query = Testdrive::find()->orderBy(["id" => SORT_DESC]);
         }else{
-            $query = Testdrive::find()->where(['iduser' => \Yii::$app->user->id]);
+            $query = Testdrive::find()->where(['iduser' => \Yii::$app->user->id])->orderBy(["id" => SORT_DESC]);
         }
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => ['pageSize' => 5]
         ]);
 
         $this->load($params);

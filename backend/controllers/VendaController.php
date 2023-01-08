@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\Reserve;
 use common\models\User;
 use common\models\UserSearch;
 use common\models\Vehicle;
@@ -10,6 +11,7 @@ use common\models\Venda;
 use common\models\VendaSearch;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -63,9 +65,17 @@ class VendaController extends Controller
         $searchModel = new VendaSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+        $users = User::find()->where(['isEmployee' => 1])->all();
+        $vehicles = Vehicle::find()->where(['status' => 'Vendido'])->all();
+
+        $users = ArrayHelper::map($users, 'id', 'email');
+        $vehicles = ArrayHelper::map($vehicles, 'id', 'plate');
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'users' => $users,
+            'vehicles' => $vehicles,
         ]);
     }
 
@@ -79,10 +89,8 @@ class VendaController extends Controller
         $idUser = \Yii::$app->user->id;
         $model = $this->findModel($id);
 
-        if (User::isEmployee($idUser)) {
-            if ($model->idUser_seller != $idUser) {
-                return $this->redirect(Url::toRoute('venda/index'));
-            }
+        if (User::isEmployee($idUser) && $model->idUser_seller != $idUser) {
+            return $this->redirect(Url::toRoute('venda/index'));
         }
 
         return $this->render('view', [
@@ -123,9 +131,22 @@ class VendaController extends Controller
                     ]);
                 }
 
+                if ($vehicle->status == Vehicle::STATUS_RESERVED) {
+                    $reserve = Reserve::findOne(['idVehicle' => $vehicle->id]);
+                    $nif = $reserve->nif;
+
+                    if ($nif != $model->nif) {
+                        $message = 'O veículo já está reservado para outro cliente';
+                        return $this->render('create', [
+                            'model' => $model, 'searchVehicle' => $searchVehicle, 'dataVehicle' => $dataVehicle, 'searchUser' => $searchUser, 'dataUser' => $dataUser, 'message' => $message, 'users' => $users, 'vehicles' => $vehicles,
+                        ]);
+                    }
+                }
+
                 if ($model->save()) {
 
                     $vehicle->status = Vehicle::STATUS_SOLD;
+                    $vehicle->isActive = Vehicle::INACTIVE;
                     $vehicle->save();
 
                     return $this->redirect(['view', 'id' => $model->id]);
@@ -157,7 +178,7 @@ class VendaController extends Controller
     public function actionUpdate($id)
     {
         $users = User::find()->where(['isEmployee' => 0])->all(); //selectbox users
-        $vehicles = Vehicle::find()->all(); //selectbox veiculos
+        $vehicles = Vehicle::find()->where(['status' => Vehicle::STATUS_AVAILABLE])->orWhere(['status' => Vehicle::STATUS_RESERVED])->all(); //selectbox veiculos
         $message = '';
 
         $model = $this->findModel($id);
@@ -171,7 +192,7 @@ class VendaController extends Controller
                 $old_vehicle = Vehicle::findOne($old_idVehicle);
                 $new_vehicle = Vehicle::findOne($model->idVehicle);
 
-                if ($new_vehicle == null || $new_vehicle->status == Vehicle::STATUS_SOLD) { //se for vai verificar se é valido.
+                if ($new_vehicle == null || $new_vehicle->status == Vehicle::STATUS_SOLD) { //verificar se o veiculo é valido.
                     $message = 'O veículo indicado não existe ou já está vendido';
 
                     return $this->render('update', [
@@ -182,11 +203,15 @@ class VendaController extends Controller
                 if ($model->save()) {
                     //se for vai remover o antigo do estado vendido e atualizar o novo.
                     $new_vehicle->status = Vehicle::STATUS_SOLD;
+                    $new_vehicle->isActive = Vehicle::INACTIVE;
+
                     $old_vehicle->status = Vehicle::STATUS_AVAILABLE;
 
                     $new_vehicle->save();
                     $old_vehicle->save();
                 }
+            } else {
+                $model->save();
             }
 
             return $this->redirect(['view', 'id' => $model->id]);
@@ -214,7 +239,7 @@ class VendaController extends Controller
         if ($model->delete()) {
             $vehicle = Vehicle::findOne($model->idVehicle);
 
-            if ($model->idVehicle != null) {
+            if ($vehicle != null) {
                 $vehicle->status = Vehicle::STATUS_AVAILABLE;
                 $vehicle->save();
             }
@@ -225,8 +250,12 @@ class VendaController extends Controller
 
     public function actionViewdetail($id)
     {
-
+        $idUser = \Yii::$app->user->id;
         $venda = Venda::findOne($id);
+
+        if (User::isEmployee($idUser) && $venda->idUser_seller != $idUser) {
+            return $this->redirect(Url::toRoute('venda/index'));
+        }
 
         $vendedor = User::findOne($venda->idUser_seller);
         $cliente = User::findOne($venda->idUser_buyer);

@@ -1,5 +1,7 @@
 <?php
 
+use common\models\Brand;
+use common\models\Model;
 use common\models\User;
 use common\models\Vehicle;
 use common\models\Vendauser;
@@ -29,11 +31,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             [
                 'attribute' => 'brand',
-                'value' => function ($model) {return Vehicle::getBrandNameById($model->brand);}
+                'value' => function ($model) {return Brand::getNameById($model->brand);}
             ],
             [
                 'attribute' => 'model',
-                'value' => function ($model) {return Vehicle::getModelNameById($model->model);}
+                'value' => function ($model) {return Model::getNameById($model->model);}
             ],
             'year',
             'mileage',
