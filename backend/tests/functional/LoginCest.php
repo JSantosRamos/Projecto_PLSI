@@ -4,43 +4,60 @@ namespace backend\tests\functional;
 
 use backend\tests\FunctionalTester;
 use common\fixtures\UserFixture;
+use common\models\User;
 
 /**
  * Class LoginCest
  */
 class LoginCest
 {
-    /*
-     * Load fixtures before db transaction begin
+    /**
+     * Create user and give him RBAC Role before test
      * Called in _before()
      * @see \Codeception\Module\Yii2::_before()
-     * @see \Codeception\Module\Yii2::loadFixtures()
-     * @return array
-     */
-   /* public function _fixtures()
-    {
-        return [
-            'user' => [
-                'class' => UserFixture::class,
-                'dataFile' => codecept_data_dir() . 'login_data.php'
-            ]
-        ];
-    }
-    
-    /**
-     * @param FunctionalTester $I
-     */
+
+     /**
+      * @param FunctionalTester $I
+      */
 
     public function _before(FunctionalTester $I)
     {
+        //user admin
+        $userAdmin = new User();
+
+        $userAdmin->name = 'Jose';
+        $userAdmin->username = 'jose';
+        $userAdmin->email = 'josetesting@test.com';
+        $userAdmin->password_hash = \Yii::$app->security->generatePasswordHash('jose12345');
+        $userAdmin->isEmployee = 1;
+
+        $userAdmin->save();
+        $userAdmin = User::findByEmail('josetesting@test.com');
+        $idAdmin = $userAdmin->id;
+
+        $auth = \Yii::$app->authManager;
+        $authorRole = $auth->getRole('admin');
+        $auth->assign($authorRole, $idAdmin);
+
+        //user
+        $user = new User();
+
+        $user->name = 'Joao';
+        $user->username = 'joao';
+        $user->email = 'joaotesting@test.com';
+        $user->password_hash = \Yii::$app->security->generatePasswordHash('joao12345');
+        $user->isEmployee = 0;
+
+        $user->save();
+
         $I->amOnPage('site/login');
     }
 
     public function loginUser(FunctionalTester $I)
     {
-        $I->see('Please fill out the following fields to login:');
-        $I->fillField('LoginForm[email]', 'adminteste@gmail.com');
-        $I->fillField('LoginForm[password]', 'adminteste123');
+        $I->see('Preencha os seguintes campos:');
+        $I->fillField('LoginForm[email]', 'josetesting@test.com');
+        $I->fillField('LoginForm[password]', 'jose12345');
         $I->click('login-button');
 
         $I->see("STAND AUTO");
@@ -48,21 +65,31 @@ class LoginCest
 
     public function loginUserInvalidAccess(FunctionalTester $I)
     {
-        $I->fillField('LoginForm[email]', 'user@gmail.com');
-        $I->fillField('LoginForm[password]', 'user1234');
-        $I->see('Login');
+        $I->fillField('LoginForm[email]', 'joaotesting@test.com');
+        $I->fillField('LoginForm[password]', 'joao12345'); //usertesting
         $I->click('login-button');
 
         $I->see('Não tem permissões para aceder a esta área!');
     }
 
-    public function loginUserInvalid(FunctionalTester $I)
+    public function loginUserInvalidPassword(FunctionalTester $I)
     {
-        $I->fillField('LoginForm[email]', 'user@gmail.com');
-        $I->fillField('LoginForm[password]', 'user4321');
+        $I->fillField('LoginForm[email]', 'josetesting@test.com');
+        $I->fillField('LoginForm[password]', 'erro1234');
         $I->see('Login');
         $I->click('login-button');
 
-        $I->see('Incorrect username or password.');
+        $I->see('Inválido email ou password.');
+    }
+
+    public function loginUserInvalidEmpty(FunctionalTester $I)
+    {
+        $I->fillField('LoginForm[email]', '');
+        $I->fillField('LoginForm[password]', '');
+        $I->see('Login');
+        $I->click('login-button');
+
+        $I->see('Email cannot be blank.');
+        $I->see('Password cannot be blank.');
     }
 }

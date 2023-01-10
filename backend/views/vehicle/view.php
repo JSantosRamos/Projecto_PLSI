@@ -17,7 +17,7 @@ use yii\widgets\Pjax;
 YiiAsset::register($this);
 common\widgets\Alert::widget();
 
-$this->title = $model->id;
+$this->title = $model->plate;
 ?>
 <div class="vehicle-view">
 

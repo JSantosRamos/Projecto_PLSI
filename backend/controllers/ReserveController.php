@@ -169,6 +169,12 @@ class ReserveController extends Controller
     {
         $path = \Yii::getAlias('@backend/web/storage' . $file);
 
-        return \Yii::$app->response->sendFile($path);
+        try {
+            return \Yii::$app->response->sendFile($path);
+
+        }catch (\Exception $exception){ //A exceção ocorre apenas se o ficheiro for apagado da pasta web antes de apagar na bd.
+
+            return $this->redirect(['index']);
+        }
     }
 }

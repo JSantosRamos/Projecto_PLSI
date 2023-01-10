@@ -71,7 +71,7 @@ class Vendauser extends \yii\db\ActiveRecord
             'price' => 'Valor pretendido',
             'date' => 'Data',
             'plate' => 'Matricula',
-            'mileage' => 'Quilómetro',
+            'mileage' => 'Quilómetros',
             'fuel' => 'Combústivel',
             'year' => 'Ano',
             'brand' => 'Marca',

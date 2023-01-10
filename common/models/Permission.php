@@ -5,6 +5,7 @@ namespace common\models;
 class Permission
 {
     /**
+     * Check if id in param is equals to login id
      * @param $id
      * @return boolean
      */

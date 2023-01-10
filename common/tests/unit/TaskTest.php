@@ -19,23 +19,23 @@ class TaskTest extends \Codeception\Test\Unit
     {
         //user1
         $this->idCreated_by = $this->tester->haveRecord('common\models\User', [
-            'username' => 'username1',
-            'email' => 'user1@gmail.com',
+            'username' => 'jose',
+            'email' => 'jose@gmail.com',
             'password_hash' => \Yii::$app->security->generatePasswordHash('user123451'),
             'isEmployee' => 1,
             'status' => 10,
             'auth_key' => \Yii::$app->security->generateRandomString(),
-            'name' => 'user1',
+            'name' => 'Jose',
         ]);
 
         $this->idAssigned_by = $this->tester->haveRecord('common\models\User', [
-            'username' => 'username2',
-            'email' => 'user2@gmail.com',
+            'username' => 'joao',
+            'email' => 'joao@gmail.com',
             'password_hash' => \Yii::$app->security->generatePasswordHash('user123452'),
             'isEmployee' => 1,
             'status' => 10,
             'auth_key' => \Yii::$app->security->generateRandomString(),
-            'name' => 'user2',
+            'name' => 'Joao',
         ]);
 
     }

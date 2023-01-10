@@ -1,9 +1,16 @@
-<div class="card h-100">
-    <?php use common\models\Vehicle;
+<?php
 
+use common\models\Vehicle;
+use yii\helpers\Url;
+
+?>
+
+
+<div class="card h-100">
+    <?php
     if ($model->status == Vehicle::STATUS_RESERVED) {
         echo '<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Reservado</div>';
-        }
+    }
     ?>
     <!-- Vehicle image-->
     <img class="card-img-top" src="http://frontendstand.test/storage/<?= $model->image ?>"
@@ -20,8 +27,8 @@
         </div>
     </div>
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-        <div class="text-center"><a id="v_vermais" class="btn btn-outline-dark mt-auto"
-                                    href="<?= Yii::$app->urlManager->createUrl(['vehicle/view', 'id' => $model->id]) ?>">Ver</a>
+        <div class="text-center"><a class="btn btn-outline-dark mt-auto"
+                                    href="<?= Url::toRoute(['vehicle/view', 'id' => $model->id]) ?>">Ver</a>
         </div>
     </div>
 </div>

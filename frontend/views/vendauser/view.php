@@ -1,5 +1,7 @@
 <?php
 
+use common\models\Brand;
+use common\models\Model;
 use common\models\Testdrive;
 use common\models\Vehicle;
 use common\models\Vendauser;
@@ -12,8 +14,8 @@ use yii\widgets\DetailView;
 /** @var common\models\Vendauser $model */
 
 
-$brandName = Vehicle::getBrandNameById($model->brand);
-$modelName = Vehicle::getModelNameById($model->model);
+$brandName = Brand::getNameById($model->brand);
+$modelName = Model::getNameById($model->model);
 
 $this->title = 'Proposta de venda: ' . $brandName . '(' . $model->plate . ')';
 $this->params['breadcrumbs'][] = ['label' => 'Área Pessoal', 'url' => ['site/areapessoal']];

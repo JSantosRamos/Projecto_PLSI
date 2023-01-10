@@ -11,13 +11,12 @@ class VendaUserTest extends \Codeception\Test\Unit
     protected UnitTester $tester;
     public $idUser;
 
-
     protected function _before()
     {
         $this->idUser = $this->tester->haveRecord('common\models\User', [
-            'username' => 'user2',
-            'email' => 'user2@gmail.com',
-            'password_hash' => \Yii::$app->security->generatePasswordHash('user12345'),
+            'username' => 'jose',
+            'email' => 'jose@gmail.com',
+            'password_hash' => \Yii::$app->security->generatePasswordHash('jose12345'),
             'isEmployee' => 0,
             'status' => 10,
             'auth_key' => \Yii::$app->security->generateRandomString(),
@@ -30,8 +29,8 @@ class VendaUserTest extends \Codeception\Test\Unit
     {
         $vendauser = new Vendauser();
         $vendauser->setAttributes(array(
-                'date' => '24-01-2023',
-                'plate' => '00-AA-98',
+                'date' => '24-02-2023',
+                'plate' => '00-TT-98',
                 'mileage' => '100000',
                 'idUser' => $this->idUser,
                 'status' => 'Por ver',
@@ -45,14 +44,14 @@ class VendaUserTest extends \Codeception\Test\Unit
         );
 
         $this->assertTrue($vendauser->save());
-        $this->tester->seeRecord('common\models\Vendauser', ['plate' => '00-AA-98']);
+        $this->tester->seeRecord('common\models\Vendauser', ['plate' => '00-TT-98']);
     }
 
     public function testUpdateVendaUser()
     {
         $id = $this->tester->haveRecord('common\models\Vendauser', [
             'date' => '24-01-2023',
-            'plate' => '00-AA-98',
+            'plate' => '00-TT-98',
             'mileage' => '100000',
             'idUser' => $this->idUser,
             'status' => 'Por ver',

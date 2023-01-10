@@ -176,15 +176,15 @@ class VehicleController extends Controller
     {
         $model = $this->findModel($id);
 
-        $vehImagens = Image::find()->where(['idVehicle' => $id])->all(); //limpa todas as imagens do veiculo antes de apagar
-        foreach ($vehImagens as $image) {
-            $image->delete();
-        }
-
         try {
 
             if ($model->status == Vehicle::STATUS_RESERVED || $model->status == Vehicle::STATUS_SOLD) {
                 return $this->redirect(['view', 'id' => $model->id, 'erro_delete' => 'true']);
+            }
+
+            $vehImagens = Image::find()->where(['idVehicle' => $id])->all(); //limpa todas as imagens do veiculo antes de apagar
+            foreach ($vehImagens as $image) {
+                $image->delete();
             }
 
             $model->delete();

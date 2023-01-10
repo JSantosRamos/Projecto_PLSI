@@ -29,12 +29,7 @@ class TestdriveController extends Controller
                     'class' => AccessControl::class,
                     'rules' => [
                         [
-                            'actions' => ['index', 'view'],
-                            'allow' => true,
-                            'roles' => ['employee'],
-                        ],
-                        [
-                            'actions' => ['update', 'create', 'delete'],
+                            'actions' => ['index', 'view', 'update', 'create', 'delete'],
                             'allow' => true,
                             'roles' => ['manager'],
                         ],

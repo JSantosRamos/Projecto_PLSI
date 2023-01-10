@@ -57,6 +57,7 @@ $this->registerJs('$("document").ready(function(){
         <?php Pjax::begin(['id' => 'show_vehicles']) ?>
         <?= ListView::widget([
             'dataProvider' => $dataProvider,
+            'emptyText' => 'Não foram encontrados resultados',
             'layout' => '<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">{items}</div>',
             'itemView' => '_vehicle',
             'itemOptions' => ['class' => 'col mb-5']

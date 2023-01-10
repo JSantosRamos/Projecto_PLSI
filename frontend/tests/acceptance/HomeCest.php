@@ -15,11 +15,11 @@ class HomeCest
 
     public function checkHome(AcceptanceTester $I)
     {
-        $I->fillField('LoginForm[email]', 'testinguser@testes.com');
-        $I->fillField('LoginForm[password]', 'testinguser');
+        $I->fillField('LoginForm[email]', 'admin@gmail.com');
+        $I->fillField('LoginForm[password]', 'admin123');
         $I->see('Login');
         $I->click('login-button');
-        $I->wait(1);
+        $I->wait(3);
         $I->click('Veículos');
         $I->wait(1);
         $I->click('Ver');
@@ -33,6 +33,5 @@ class HomeCest
         $I->click('Enviar');
         $I->wait(5);
         $I->see('O seu Test-dive foi registado, pode acompanhar o processo do mesmo na sua Área Pessoal.');
-
     }
 }

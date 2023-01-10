@@ -39,7 +39,7 @@ YiiAsset::register($this);
             ],
             [
                 'attribute' => 'model',
-                'value' => function ($model) {return Model::getNameById($model->brand);}
+                'value' => function ($model) {return Model::getNameById($model->model);}
             ],
             [
                 'attribute' => 'serie',

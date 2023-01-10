@@ -1,5 +1,7 @@
 <?php
 
+use common\models\Brand;
+use common\models\Model;
 use common\models\Vehicle;
 use common\models\Vendauser;
 use yii\helpers\Html;
@@ -16,8 +18,8 @@ use yii\widgets\MaskedInput;
     <?php $form = ActiveForm::begin(); ?>
 
     <div class="row">
-        <div class="col-md-4"> <?= $form->field($model, 'brand')->textInput(['disabled' => true, 'value' => Vehicle::getBrandNameById($model->brand)]) ?></div>
-        <div class="col-md-4"> <?= $form->field($model, 'model')->textInput(['disabled' => true, 'value' => Vehicle::getModelNameById($model->model)]) ?></div>
+        <div class="col-md-4"> <?= $form->field($model, 'brand')->textInput(['disabled' => true, 'value' => Brand::getNameById($model->brand)]) ?></div>
+        <div class="col-md-4"> <?= $form->field($model, 'model')->textInput(['disabled' => true, 'value' => Model::getNameById($model->model)]) ?></div>
         <div class="col-md-4"> <?= $form->field($model, 'serie')->textInput(['disabled' => true]) ?></div>
     </div>
     <div class="row">

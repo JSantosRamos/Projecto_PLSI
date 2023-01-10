@@ -43,19 +43,8 @@ AppAsset::register($this);
         ];
 
         if (Yii::$app->user->isGuest) {
-            $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
+            $menuItems[] = ['label' => 'Registo', 'url' => ['/site/signup']];
         }
-
-        /* if (!Yii::$app->user->isGuest) {
-             $menuItems[] = [
-                 ['label' => 'Mais',
-                 'items' => [
-                     ['label' => 'Área Cliente', 'url' => ['/site/mensagem']],
-                     ['label' => 'Perfil', 'url' => ['/user/update', 'id' => Yii::$app->user->id]],
-                 ]
-
-             ];
-         }*/
 
         if (!Yii::$app->user->isGuest) {
             $menuItems[] = ['label' => 'Área Cliente', 'url' => ['/site/areapessoal']];

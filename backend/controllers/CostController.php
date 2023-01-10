@@ -4,8 +4,10 @@ namespace backend\controllers;
 
 use common\models\Cost;
 use app\models\CostSearch;
+use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
@@ -152,6 +154,12 @@ class CostController extends Controller
     {
         $path = \Yii::getAlias('@backend/web/storage' . $file);
 
-        return \Yii::$app->response->sendFile($path);
+        try {
+            return \Yii::$app->response->sendFile($path);
+
+        }catch (\Exception $exception){ //A exceção ocorre apenas se o ficheiro for apagado da pasta web antes de apagar na bd.
+
+            return $this->redirect(['index']);
+        }
     }
 }

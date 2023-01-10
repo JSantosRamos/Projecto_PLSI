@@ -10,10 +10,10 @@ class VehicleTest extends \Codeception\Test\Unit
 {
 
     protected UnitTester $tester;
+    protected $id;
 
     protected function _before()
     {
-
         //use in test duplicate plate
         $this->tester->haveRecord('common\models\Vehicle', [
             'brand' => 'audi',
@@ -30,10 +30,32 @@ class VehicleTest extends \Codeception\Test\Unit
             'transmission' => 'Manual',
             'price' => '40000',
             'isActive' => 0,
-            'plate' => '44-TT-55',
+            'plate' => 'TT-11-PD',
             'status' => 'Disponível',
             'title' => 'Novo audi a3',
             'cv' => 110,
+            'idBrand' => 4,
+            'idModel' => 5,
+        ]);
+
+        $this->id = $this->tester->haveRecord('common\models\Vehicle', [
+            'brand' => 'audi',
+            'model' => 'a5',
+            'serie' => 's line',
+            'type' => 'Desportivo',
+            'fuel' => 'Diesel',
+            'mileage' => '100000',
+            'engine' => 2000,
+            'color' => 'Preto',
+            'description' => 'Bom estado',
+            'year' => 2022,
+            'doorNumber' => 5,
+            'transmission' => 'Manual',
+            'price' => '50000',
+            'isActive' => 0,
+            'plate' => 'TT-47-TT',
+            'status' => 'Reservado',
+            'title' => 'Novo audi a3',
             'idBrand' => 4,
             'idModel' => 5,
         ]);
@@ -58,7 +80,7 @@ class VehicleTest extends \Codeception\Test\Unit
                 'transmission' => 'Manual',
                 'price' => '40000',
                 'isActive' => 0,
-                'plate' => '10-TT-20',
+                'plate' => 'TT-50-TA',
                 'status' => 'Disponível',
                 'title' => 'Novo audi a3',
                 'cv' => '106',
@@ -67,34 +89,12 @@ class VehicleTest extends \Codeception\Test\Unit
             )
         );
         $this->assertTrue($vehicle->save());
-        $this->tester->seeRecord('common\models\Vehicle', ['plate' => '10-TT-20']);
+        $this->tester->seeRecord('common\models\Vehicle', ['plate' => 'TT-50-TA']);
     }
 
     public function testUpdateVehicle()
     {
-        $id = $this->tester->haveRecord('common\models\Vehicle', [
-            'brand' => 'audi',
-            'model' => 'a3',
-            'serie' => 's line',
-            'type' => 'Desportivo',
-            'fuel' => 'Diesel',
-            'mileage' => '100000',
-            'engine' => 2000,
-            'color' => 'Preto',
-            'description' => 'Bom estado',
-            'year' => 2022,
-            'doorNumber' => 5,
-            'transmission' => 'Manual',
-            'price' => '40000',
-            'isActive' => 0,
-            'plate' => '10-TT-20',
-            'status' => 'Reservado',
-            'title' => 'Novo audi a3',
-            'idBrand' => 4,
-            'idModel' => 5,
-        ]);
-
-        $vehicle = Vehicle::findOne($id);
+        $vehicle = Vehicle::findOne($this->id);
         $vehicle->setAttribute('price', '38000');
         $vehicle->setAttribute('status', 'Vendido');
 
@@ -110,32 +110,10 @@ class VehicleTest extends \Codeception\Test\Unit
 
     public function testRemoveVehicle()
     {
-        $id = $this->tester->haveRecord('common\models\Vehicle', [
-            'brand' => 'audi',
-            'model' => 'a3',
-            'serie' => 's line',
-            'type' => 'Desportivo',
-            'fuel' => 'Diesel',
-            'mileage' => '100000',
-            'engine' => 2000,
-            'color' => 'Preto',
-            'description' => 'Bom estado',
-            'year' => 2022,
-            'doorNumber' => 5,
-            'transmission' => 'Manual',
-            'price' => '40000',
-            'isActive' => 0,
-            'plate' => '10-TT-20',
-            'status' => 'Disponível',
-            'title' => 'Novo audi a3',
-            'idBrand' => 4,
-            'idModel' => 5,
-        ]);
-
-        $vehicle = Vehicle::findOne($id);
+        $vehicle = Vehicle::findOne($this->id);
         $vehicle->delete();
 
-        $this->tester->dontSeeRecord('common\models\Vehicle', ['plate' => '10-TT-20']);
+        $this->tester->dontSeeRecord('common\models\Vehicle', ['plate' => 'TT-47-TT']);
     }
 
     public function testCanNotAddVehicleMissingPrice()
@@ -296,7 +274,7 @@ class VehicleTest extends \Codeception\Test\Unit
                 'transmission' => 'Manual',
                 'price' => '40000',
                 'isActive' => 0,
-                'plate' => '44-TT-55', //already register
+                'plate' => 'TT-11-PD', //already register
                 'status' => 'Disponível',
                 'title' => 'Novo audi a3',
                 'cv' => '106',

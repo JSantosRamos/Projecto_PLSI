@@ -37,7 +37,6 @@ class VendaController extends Controller
                             'allow' => true,
                             'roles' => ['employee'],
                         ],
-
                         [
                             'actions' => ['delete', 'update'],
                             'allow' => true,

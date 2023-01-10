@@ -2,6 +2,7 @@
 
 namespace frontend\tests\functional;
 
+use common\models\User;
 use frontend\tests\FunctionalTester;
 use common\fixtures\UserFixture;
 
@@ -26,7 +27,19 @@ class LoginCest
 
     public function _before(FunctionalTester $I)
     {
-        $I->amOnRoute('site/login');
+
+        //user
+        $user = new User();
+
+        $user->name = 'Jose';
+        $user->username = 'jose';
+        $user->email = 'josetesting@test.com';
+        $user->password_hash = \Yii::$app->security->generatePasswordHash('jose12345');
+        $user->isEmployee = 0;
+
+        $user->save();
+
+        $I->amOnPage('site/login');
     }
 
     protected function formParams($login, $password)
@@ -46,20 +59,20 @@ class LoginCest
 
     public function checkWrongPassword(FunctionalTester $I)
     {
-        $I->submitForm('#login-form', $this->formParams('admin', 'wrong'));
-        $I->seeValidationError('Incorrect email or password.');
+        $I->submitForm('#login-form', $this->formParams('josetesting@test.com', 'wrong'));
+        $I->seeValidationError('Inválido email ou password.');
     }
 
     public function checkInactiveAccount(FunctionalTester $I)
     {
         $I->submitForm('#login-form', $this->formParams('test.test', 'Test1234'));
-        $I->seeValidationError('Incorrect username or password');
+        $I->seeValidationError('Inválido email ou password.');
     }
 
     public function checkValidLogin(FunctionalTester $I)
     {
-        $I->submitForm('#login-form', $this->formParams('testing', 'password_0'));
-        $I->see('Logout (Testing User)', 'form button[type=submit]');
+        $I->submitForm('#login-form', $this->formParams('josetesting@test.com', 'jose12345'));
+        $I->see('Logout (Jose)', 'form button[type=submit]');
         $I->dontSeeLink('Login');
         $I->dontSeeLink('Signup');
     }

@@ -72,7 +72,7 @@ class SiteController extends Controller
 
         //Users
         $users = \common\models\User::getTotalUsers();
-        $usersAtivos = \common\models\User::getTotalUsers();
+        $usersAtivos = \common\models\User::getTotaLActiveUsers();
 
         //Veiculos
         $veiculos = Vehicle::getTotal();

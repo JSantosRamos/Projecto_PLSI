@@ -14,13 +14,13 @@ class TestDriveTest extends \Codeception\Test\Unit
     protected function _before()
     {
         $this->idUser = $this->tester->haveRecord('common\models\User', [
-            'username' => 'userteste',
-            'email' => 'userteste@gmail.com',
+            'username' => 'jose',
+            'email' => 'jose@gmail.com',
             'password_hash' => \Yii::$app->security->generatePasswordHash('user12345'),
             'isEmployee' => 0,
             'status' => 10,
             'auth_key' => \Yii::$app->security->generateRandomString(),
-            'name' => 'testename',
+            'name' => 'jose',
         ]);
 
         $this->idVehicle = $this->tester->haveRecord('common\models\Vehicle', [
@@ -52,7 +52,7 @@ class TestDriveTest extends \Codeception\Test\Unit
     {
         $testDrive = new Testdrive();
         $testDrive->setAttributes(array(
-                'date' => '01-Dec-2022',
+                'date' => '20-02-2023',
                 'time' => '12:00',
                 'description' => 'Procuro um carro novo',
                 'idUser' => $this->idUser,
@@ -69,7 +69,7 @@ class TestDriveTest extends \Codeception\Test\Unit
     {
         $id = $this->tester->haveRecord('common\models\Testdrive', [
             'date' => '20-02-2023',
-            'time' => '12:00',
+            'time' => '14:00',
             'description' => 'Procuro um carro novo',
             'idUser' => $this->idUser,
             'idVehicle' => $this->idVehicle,

@@ -40,11 +40,6 @@ class TaskController extends Controller
                             'allow' => true,
                             'roles' => ['manager'],
                         ],
-                        [
-                            'actions' => ['delete'],
-                            'allow' => true,
-                            'roles' => ['admin'],
-                        ],
                     ],
                 ],
                 'verbs' => [

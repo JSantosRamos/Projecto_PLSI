@@ -8,6 +8,7 @@ use common\models\Permission;
 use common\models\User;
 use common\models\Vendauser;
 use common\models\VendauserSearch;
+use yii\db\StaleObjectException;
 use yii\helpers\Url;
 use Yii;
 use yii\filters\AccessControl;
@@ -156,16 +157,26 @@ class VendauserController extends Controller
             $this->redirect('site/index');
         }
 
-        $model->delete();
+        try {
+            $model->delete();
+        } catch (\Throwable $e) {
+
+            return $this->redirect(['index']);
+        }
         return $this->redirect(['index']);
     }
 
     public function actionConfirm($id, $value)
     {
-        $model = $this->findModel($id);
+        try {
+            $model = $this->findModel($id);
+        } catch (NotFoundHttpException $e) {
+
+            throw new NotFoundHttpException('A página não existe');
+        }
 
         if (!Permission::allowedAction($model->idUser)) {
-            $this->redirect('site/index');
+            return $this->redirect('site/index');
         }
 
         if ($model->status != Vendauser::AGUARDANDO_RESPOSTA) {

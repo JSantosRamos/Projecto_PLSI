@@ -36,7 +36,7 @@ class Reserve extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idUser', 'idVehicle', 'number', 'nif', 'morada', 'cc'], 'required'],
+            [['idUser', 'idVehicle', 'number', 'nif', 'morada', 'cc', 'ccFile'], 'required'],
             [['idUser', 'idVehicle'], 'integer'],
             [['ccFile'], 'file'],
             [['cc'], 'string'],

@@ -4,13 +4,32 @@
 namespace backend\tests\Functional;
 
 use backend\tests\FunctionalTester;
+use common\models\User;
 
 class VehicleCest
 {
     public function _before(FunctionalTester $I)
     {
-        $I->amLoggedInAs(96);
-        $I->amOnPage('/');
+        //user admin
+        $user = new User();
+
+        $user->name = 'Jose';
+        $user->username = 'jose';
+        $user->email = 'josetesting2@test.com';
+        $user->password_hash = \Yii::$app->security->generatePasswordHash('jose12345');
+        $user->isEmployee = 1;
+
+        $user->save();
+        $user = User::findByEmail('josetesting2@test.com');
+        $id = $user->id;
+
+        $auth = \Yii::$app->authManager;
+        $authorRole = $auth->getRole('admin');
+        $auth->assign($authorRole, $id);
+
+        $I->amLoggedInAs($id);
+
+        $I->amOnPage('vehicle/create');
 
         $I->haveRecord('common\models\Vehicle', array(
             'id' => 99,
@@ -28,7 +47,7 @@ class VehicleCest
             'transmission' => 'Manual',
             'price' => '40000',
             'isActive' => 0,
-            'plate' => '10-TT-55',
+            'plate' => 'TT-02-TT',
             'status' => 'Vendido',
             'title' => 'Novo audi a3',
             'cv' => 110,
@@ -39,10 +58,8 @@ class VehicleCest
     // tests
     public function AddVehicle(FunctionalTester $I)
     {
-        $plate = '57-TT-40';
+        $plate = 'TT-01-TT';
 
-        $I->click('Veículos');
-        $I->click('Adicionar');
         $I->fillField('Vehicle[title]', 'Novo Audi A5');
         $I->fillField('Vehicle[description]', 'O novo audi A5 com equipamento s-line');
         $I->fillField('Vehicle[plate]', $plate);
@@ -62,17 +79,16 @@ class VehicleCest
         $I->checkOption('#vehicle-isactive');
 
         $I->click('Guardar');
-        $I->see('Editar Veículo: (' . $plate . ')', 'h1');
+        $I->see('Veículo:' . $plate, 'h1');
     }
 
     public function UpdateVehicle(FunctionalTester $I)
     {
-        $newPlate = '11-TT-55'; //record in _before()
+        $newPlate = 'TT-03-TT'; //record in _before()
 
-        $I->amOnPage('vehicle/view?id=99');
-        $I->click('Editar');
+        $I->amOnPage('/vehicle/update?id=99');
         $I->fillField('Vehicle[plate]', $newPlate);
         $I->click('Guardar');
-        $I->see('Editar Veículo: (' . $newPlate . ')', 'h1');
+        $I->see('Veículo:' . $newPlate, 'h1');
     }
 }

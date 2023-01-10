@@ -7,7 +7,7 @@ use yii\helpers\Url;
 <div class="card">
     <h5 id="cardstatus" class="card-header">Data: <?= $model->create_at ?></h5>
     <div class="card-body">
-        <h5 class="card-title">Veículo: <?= Vehicle::getBrandNameById($model->idVehicle)?></h5>
+        <h5 class="card-title">Veículo: <?= Vehicle::getBrandNameByVehicleId($model->idVehicle)?></h5>
         <p class="card-text"></p>
         <a href="<?= Url::toRoute(['reserve/view', 'id' => $model->id]) ?>" class="btn btn-outline-primary">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill"

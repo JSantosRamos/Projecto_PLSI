@@ -67,6 +67,7 @@ class Brand extends \yii\db\ActiveRecord
 
     public static function getNameById($id){
         $brand = Brand::findOne(['id' => $id]);
+
         return $brand == null ? '' : $brand->name;
     }
 }
