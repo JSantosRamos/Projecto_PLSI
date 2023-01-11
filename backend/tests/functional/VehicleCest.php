@@ -70,7 +70,7 @@ class VehicleCest
         $I->fillField('Vehicle[mileage]', '60000');
         $I->fillField('Vehicle[engine]', '2000');
         $I->selectOption('Vehicle[color]', 'Preto');
-        $I->fillField('Vehicle[year]', '2020');
+        $I->selectOption('Vehicle[year]', '2020');
         $I->fillField('Vehicle[doorNumber]', '5');
         $I->selectOption('Vehicle[transmission]', 'Manual');
         $I->fillField('Vehicle[price]', '34000');

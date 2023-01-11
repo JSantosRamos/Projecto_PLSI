@@ -15,6 +15,7 @@ use yii\widgets\MaskedInput;
 /** @var common\models\Vehicle $model */
 /** @var yii\widgets\ActiveForm $form */
 
+$range = range(2010, 2023);
 ?>
 
 <div class="vehicle-form">
@@ -30,7 +31,9 @@ use yii\widgets\MaskedInput;
     ]) ?>
 
     <div class="row">
-        <div class="col-md-4"><?= $form->field($model, 'plate')->textInput(['maxlength' => true]) ?></div>
+        <div class="col-md-4"><?= $form->field($model, 'plate')->widget(MaskedInput::class, [
+                'mask' => '[AA]-[99]-[AA]',
+            ]) ?></div>
         <div class="col-md-4"><?= $form->field($model, 'type')->dropDownList(['Cabrio' => 'Cabrio', 'Carrinha' => 'Carrinha', 'Desportivo' => 'Desportivo', 'SUV' => 'SUV', 'Utilitário' => 'Utilitário',], ['prompt' => '']) ?></div>
         <div class="col-md-4"><?= $form->field($model, 'fuel')->dropDownList(['Diesel' => 'Diesel', 'Gasolina' => 'Gasolina', 'Elétrico' => 'Elétrico', 'GPL' => 'GPL', 'Híbrido' => 'Híbrido',], ['prompt' => '']) ?></div>
     </div>
@@ -65,7 +68,7 @@ use yii\widgets\MaskedInput;
 
     <div class="row">
         <div class="col-md-4"><?= $form->field($model, 'color')->dropDownList(['Branco' => 'Branco', 'Preto' => 'Preto', 'Cinzento' => 'Cinzento', 'Vermelho' => 'Vermelho', 'Laranja' => 'Laranja', 'Amarelo' => 'Amarelo', 'Verde' => 'Verde', 'Azul' => 'Azul', 'Castanho' => 'Castanho',], ['prompt' => '']) ?></div>
-        <div class="col-md-4"><?= $form->field($model, 'year')->textInput() ?></div>
+        <div class="col-md-4"><?= $form->field($model, 'year')->dropDownList(array_combine($range, $range)) ?></div>
         <div class="col-md-4"><?= $form->field($model, 'transmission')->dropDownList(['Manual' => 'Manual', 'Automático' => 'Automático',], ['prompt' => '']) ?></div>
     </div>
 

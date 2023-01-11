@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 10-Jan-2023 às 15:27
+-- Tempo de geração: 11-Jan-2023 às 00:30
 -- Versão do servidor: 10.4.24-MariaDB
 -- versão do PHP: 8.1.6
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Banco de dados: `standauto`
+-- Banco de dados: `stand`
 --
 
 -- --------------------------------------------------------
@@ -167,8 +167,7 @@ CREATE TABLE `contactuser` (
 --
 
 INSERT INTO `contactuser` (`id`, `name`, `email`, `subject`, `body`) VALUES
-(9, 'Admin', 'admin@gmail.com', 'test drive cancelado', 'Gostaria de saber pqq o meu teste drive foi cancelado.'),
-(10, 'fafafafa', 'hdhd@gmail.com', 'olá', 'gostaria de vos contactar');
+(9, 'Admin', 'admin@gmail.com', 'test drive cancelado', 'Gostaria de saber pqq o meu teste drive foi cancelado.');
 
 -- --------------------------------------------------------
 
@@ -195,6 +194,15 @@ CREATE TABLE `image` (
   `path` text NOT NULL,
   `idVehicle` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `image`
+--
+
+INSERT INTO `image` (`id`, `path`, `idVehicle`) VALUES
+(6, '/vehicles/_327_hh4YvA-nKYbxb0WBYCRJij1Kul3/bmw_lado.JPG', 7),
+(7, '/vehicles/QoXorO4NTuWz_Fs-MCcgiF-MeOsO89fI/bmw_tras.JPG', 7),
+(8, '/vehicles/I8nTljSeMGPOJmDoL4k6o2DivDfyH2lm/bmw_dentro.JPG', 7);
 
 -- --------------------------------------------------------
 
@@ -389,6 +397,16 @@ CREATE TABLE `vehicle` (
   `idModel` int(11) NOT NULL,
   `status` enum('Vendido','Reservado','Disponível') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `vehicle`
+--
+
+INSERT INTO `vehicle` (`id`, `brand`, `model`, `serie`, `type`, `fuel`, `mileage`, `engine`, `color`, `description`, `year`, `doorNumber`, `transmission`, `price`, `image`, `isActive`, `title`, `plate`, `cv`, `idBrand`, `idModel`, `status`) VALUES
+(5, NULL, NULL, '', 'Cabrio', 'Diesel', '100000', 2000, 'Verde', '<p>Novo <strong>Audi A5 ao melhor pre&ccedil;o</strong></p>\r\n', 2022, 5, 'Automático', 55000, '/vehicles/CIdX6PCEjqYQkokMIOHVX_SVf0uHirlr/audi_5.JPG', 1, 'Novo Audi A5', 'AU-55-BO', 180, 4, 6, 'Disponível'),
+(6, NULL, NULL, '', 'Utilitário', 'Diesel', '60000', 2000, 'Preto', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas feugiat consequat diam. Maecenas metus. Vivamus diam purus, cursus a, commodo non, facilisis vitae, nulla. Aenean dictum lacinia tortor. Nunc iaculis, nibh non iaculis aliquam, orci felis euismod neque, sed ornare massa mauris sed velit. Nulla pretium mi et risus. Fusce mi pede, tempor id, cursus ac, ullamcorper nec, enim. Sed tortor. Curabitur molestie. Duis velit augue, condimentum at, ultrices a, luctus ut, orci. Donec pellentesque egestas eros. Integer cursus, augue in cursus faucibus, eros pede bibendum sem, in tempus tellus justo quis ligula. Etiam eget tortor. Vestibulum rutrum, est ut placerat elementum, lectus nisl aliquam velit, tempor aliquam eros nunc nonummy metus. In eros metus, gravida a, gravida sed, lobortis id, turpis. Ut ultrices, ipsum at venenatis fringilla, sem nulla lacinia tellus, eget aliquet turpis mauris non enim. Nam turpis. Suspendisse lacinia. Curabitur ac tortor ut ipsum egestas elementum. Nunc imperdiet gravida mauris.</p>\r\n', 2010, 5, 'Manual', 45000, '/vehicles/Rk9PrQHRSg77RYhamxsQSs-UB3bGD58E/mercedes.JPG', 1, 'Mercedes Classe A', 'ME-22-BO', 180, 16, 23, 'Disponível'),
+(7, NULL, NULL, '', 'Desportivo', 'Gasolina', '55000', 2000, 'Branco', '<p><strong>BMW</strong> S&eacute;rie 3BMW S&eacute;rie 3BMW S&eacute;rie 3BMW S&eacute;rie 3BMW S&eacute;rie 3BMW S&eacute;rie 3</p>\r\n', 2022, 4, 'Manual', 60000, '/vehicles/hvrKih-SfYrIlRnk8UgCxQAiVe4l4I8F/bmw.JPG', 1, 'BMW Série 3', 'BM-30-BO', 200, 7, 14, 'Disponível'),
+(8, NULL, NULL, '', 'Desportivo', 'Gasolina', '60000', 2000, 'Azul', '<p>Audi A3Audi A3Audi A3Audi A3Audi A3Audi A3Audi A3Audi A3</p>\r\n', 2018, 4, 'Manual', 35000, '/vehicles/vFfAIsYzWwHyA13HBK6xajnBywP0w5jG/audi_a3.JPG', 1, 'Audi A3', 'AD-33-BO', 170, 4, 5, 'Disponível');
 
 -- --------------------------------------------------------
 
@@ -591,7 +609,7 @@ ALTER TABLE `cost`
 -- AUTO_INCREMENT de tabela `image`
 --
 ALTER TABLE `image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de tabela `model`
@@ -603,7 +621,7 @@ ALTER TABLE `model`
 -- AUTO_INCREMENT de tabela `note`
 --
 ALTER TABLE `note`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `reserve`
@@ -615,7 +633,7 @@ ALTER TABLE `reserve`
 -- AUTO_INCREMENT de tabela `task`
 --
 ALTER TABLE `task`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `testdrive`
@@ -633,7 +651,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT de tabela `vehicle`
 --
 ALTER TABLE `vehicle`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de tabela `venda`

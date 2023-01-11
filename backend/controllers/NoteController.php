@@ -48,35 +48,6 @@ class NoteController extends Controller
     }
 
     /**
-     * Lists all Note models.
-     *
-     * @return string
-     */
-    /* public function actionIndex()
-     {
-         $searchModel = new NoteSearch();
-         $dataProvider = $searchModel->search($this->request->queryParams);
-
-         return $this->render('index', [
-             'searchModel' => $searchModel,
-             'dataProvider' => $dataProvider,
-         ]);
-     }*/
-
-    /**
-     * Displays a single Note model.
-     * @param int $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    /*public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }*/
-
-    /**
      * Creates a new Note model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|Response

@@ -60,7 +60,7 @@ $range = range(2010, 2023);
                                         'autoGroup' => true,
                                         'removeMaskOnSubmit' => true,
                                     ]]) ?></div>
-                            <div class="col-md-4"><?= $form->field($model, 'year')->dropDownList(array_combine($range, $range), ['onchange' => 'myFunction()']) ?></div>
+                            <div class="col-md-4"><?= $form->field($model, 'year')->dropDownList(array_combine($range, $range)) ?></div>
                             <div class="col-md-4"> <?= $form->field($model, 'fuel')->dropDownList(['Diesel' => 'Diesel', 'Gasolina' => 'Gasolina', 'Elétrico' => 'Elétrico', 'GPL' => 'GPL', 'Híbrido' => 'Híbrido',], ['prompt' => '']) ?></div>
                         </div>
 

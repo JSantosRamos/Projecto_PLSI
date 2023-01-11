@@ -68,10 +68,10 @@ class RbacController extends Controller
         //</editor-fold>
 
         //<editor-fold desc="Assign permission">
-        $authManager->assign($admin, 13);
-        $authManager->assign($manager, 17);
-        $authManager->assign($customer, 18);
-        $authManager->assign($employee, 19);
+        $authManager->assign($admin, 1);
+        $authManager->assign($manager, 2);
+        $authManager->assign($customer, 6);
+        $authManager->assign($employee, 4);
         //</editor-fold>
     }
 }

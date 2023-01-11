@@ -123,7 +123,7 @@ class TestdriveController extends Controller
     {
         $model = $this->findModel($id);
         $users = User::find()->where(['isEmployee' => 0])->all();
-        $vehicles = Vehicle::find()->where(['status' => Vehicle::STATUS_AVAILABLE])->all();
+        $vehicles = Vehicle::find()->all();
 
         $vehicle = Vehicle::findOne(['id' => $model->idVehicle]);
         if ($vehicle->status == Vehicle::STATUS_SOLD) { //Se o veiculo for vendido depois do teste ser marcado o teste já não tinha o id do veiculo no update e passava a não ser possivel marcar o estado do teste.
