@@ -2,12 +2,17 @@
 
 namespace backend\modules\api\controllers;
 
+use backend\modules\api\model\Imagem;
+use backend\modules\api\model\Veiculo;
 use common\models\Brand;
+use common\models\Image;
 use common\models\Model;
 use common\models\User;
 use common\models\Vehicle;
+use common\models\Venda;
 use yii\filters\auth\HttpBasicAuth;
 use yii\rest\ActiveController;
+use yii\web\ForbiddenHttpException;
 use yii\web\Response;
 use function PHPUnit\Framework\throwException;
 
@@ -40,46 +45,55 @@ class VehicleController extends ActiveController
 
     public function checkAccess($action, $model = null, $params = [])
     {
-        //validar se existe user
-        if ($this->user == null) {
-            throw new \yii\web\ForbiddenHttpException('Proibido');
-        }
-
-        //validar se user é admin
-        if (!User::isAdmin($this->user->id)) {
-            throw new \yii\web\ForbiddenHttpException('Proibido');
+        if ($action === 'update' or $action === 'create' or $action === 'delete') {
+            throw new ForbiddenHttpException('Proibido');
         }
     }
 
-    //Alterar as action criadas de origem
+    //Alterar a action index de origem
     public function actions()
     {
         $actions = parent::actions();
-        unset($actions['index'], $actions['delete']);
+        unset($actions['index']);
         return $actions;
     }
 
     public function actionIndex() //return todos os veiculos retorna os nomes para marca e modelo para quem consome a api não o ter de fazer 2 chamadas separadas a marcas e modelos.
     {
-        $vehicles = Vehicle::find()->where(['status' => 'Disponivel', 'isActive' => 1])->all();
+        $vehicles = Vehicle::find()->where(['status' => 'Disponivel', 'isActive' => 1])->all(); // isActive -> Com visíbilidade publica.
 
-        foreach ($vehicles as $veh) {
-            $brand = Brand::find()->select('name')->where(['id' => $veh->idBrand])->one();
-            $model_veh = Model::find()->select('name')->where(['id' => $veh->idModel])->one();
-
-            //obtem a imagem e convert para base64
-            $url = $veh->getImageUrl();
-            $data = file_get_contents($url);
-            $imageBase64 = base64_encode($data);
-
-            //Atribui ao veiculo os novos campos
-            $veh->brand = $brand["name"];
-            $veh->model = $model_veh["name"];
-            //$veh->image = $url;
-            $veh->image = $imageBase64;
+        if ($vehicles == null) {
+            return $vehicles;
         }
 
-        return $vehicles;
+        $veiculosDTO = [];
+        foreach ($vehicles as $veh) {
+            $vehImagens = [];
+
+            $brand = Brand::find()->where(['id' => $veh->idBrand])->one();
+            $model = Model::find()->where(['id' => $veh->idModel])->one();
+            $imagens = Image::find()->where(['idVehicle' => $veh->id])->all();
+
+            if ($imagens != null) {
+                foreach ($imagens as $i) {
+                    $newImage = $i->getImageUrl(); //imagens do veiculo
+                    $vehImagens[] = $newImage;
+                }
+            }
+
+            //Atribui ao veiculo os novos campos
+            $brand = $brand->name;
+            $model = $model->name;
+            $url = $veh->getImageUrl();
+
+
+            $newVeiculo = new Veiculo($veh->id, $brand, $model, $veh->serie, $veh->type, $veh->fuel, $veh->mileage, $veh->engine, $veh->color, $veh->description, $veh->year, $veh->doorNumber, $veh->transmission,
+                $veh->price, $url, $veh->title, $veh->plate, $veh->cv, $vehImagens);
+
+            $veiculosDTO[] = $newVeiculo;
+        }
+
+        return $veiculosDTO;
     }
 
 
@@ -97,14 +111,18 @@ class VehicleController extends ActiveController
     {
         $model = new $this->modelClass;
 
-        return $model::find()->where(['idBrand' => $id])->all();
+        $brand = Brand::findOne(['id' => $id]);
+        $vehicles = $model::find()->where(['idBrand' => $id])->all();
+
+        return ['marca' => $brand->name, 'veiculos' => $vehicles];
     }
 
     public function actionModel($id)
     {
-        $model = new $this->modelClass;
+        $modelo = Model::findOne(['id' => $id]);
+        $vehicles = new $this->modelClass;
 
-        return $model::find()->where(['idModel' => $id])->all();
+        return ['modelo' => $modelo->name, 'veiculos' => $vehicles];
     }
 
     public function actionStatus($id)
@@ -124,57 +142,25 @@ class VehicleController extends ActiveController
         return $vehicle;
     }
 
-    //endregion
-
-
-    public function actionPreco($id)
+    public function actionImagens($id)
     {
-        $vehicleModel = new $this->modelClass;
-        $rec = $vehicleModel::find()->select(['price'])
-            ->where(['id' => $id])->one(); //objeto json
-        return $rec;
-    }
-
-    public function actionPrecobrand($idBrand)
-    {
-        $vehicleModel = new $this->modelClass;
-        $recs = $vehicleModel::find()->select(['price'])
-            ->where(['idBrand' => $idBrand])->all(); //array
-        return $recs;
-    }
-
-    public function actionVehiclebybrand($brand)
-    {
-
         $model = new $this->modelClass();
 
-        return $model::find()->where(['brand' => $brand])->all();
+        $imagens = Image::find()->where(['idVehicle' => $id])->all();
+        if ($imagens != null) {
+
+            $imagens_veh = [];
+            foreach ($imagens as $image) {
+
+                $url = $image->getImageUrl();
+                $image_veh = new Imagem($image->id, $url, $id);
+
+                $imagens_veh[] = $image_veh;
+            }
+        }
+
+        return $imagens != null ? ['Images' => $imagens_veh] : $model;
     }
 
-    /* public function actionPutvehiclebyid($id)
-     {
-
-         $model = new $this->modelClass();
-
-         $vehicle = $model::findOne(['id' => $id]);
-
-
-         if ($vehicle) {
-
-             $obj = \Yii::$app->request->rawBody;
-
-             $array = json_decode($obj);
-             echo '<pre>';
-             var_dump($array->brand);
-             echo'</pre>';
-             exit;
-
-             return $object;
-         } else {
-             throw new \yii\web\NotFoundHttpException("Veículo não encontrado");
-
-         }
-     }
- */
-
+    //endregion
 }

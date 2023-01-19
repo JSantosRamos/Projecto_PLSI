@@ -75,7 +75,7 @@ class Image extends \yii\db\ActiveRecord
         $result = parent::save($runValidation, $attributeNames);
 
         if ($result && $this->imageFile) {
-            $pathImage = Yii::getAlias('@frontend/web/storage' . $this->path);
+            $pathImage = Yii::getAlias('@backend/web/storage' . $this->path);
             $dir = dirname($pathImage);
             if (!FileHelper::createDirectory($dir) | !$this->imageFile->saveAs($pathImage)) {
                 $transaction->rollBack();
@@ -91,6 +91,6 @@ class Image extends \yii\db\ActiveRecord
 
     public function getImageUrl()
     {
-        return Yii::$app->params['frontendUrl'] . '/storage' . $this->path;
+        return Yii::$app->params['backendUrl'] . '/storage' . $this->path;
     }
 }

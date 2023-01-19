@@ -177,10 +177,10 @@ class VendaController extends Controller
     public function actionUpdate($id)
     {
         $users = User::find()->where(['isEmployee' => 0])->all(); //selectbox users
-        $vehicles = Vehicle::find()->where(['status' => Vehicle::STATUS_AVAILABLE])->orWhere(['status' => Vehicle::STATUS_RESERVED])->all(); //selectbox veiculos
         $message = '';
 
         $model = $this->findModel($id);
+        $vehicles = Vehicle::find()->where(['id' => $model->idVehicle])->all(); //selectbox veiculos, só devolve um mas é feito com o metedo all para devolver um array
 
         $old_idVehicle = $model->idVehicle;
 

@@ -104,7 +104,7 @@ $this->title = 'Stand Auto';
                 }
                 ?>
                 <!-- Vehicle image-->
-                <img class="card-img-top" src="http://frontendstand.test/storage/<?= $vehicle->image ?>"
+                <img class="card-img-top" src="<?= $vehicle->getImageUrl()?>"
                      alt=""/>
                 <!-- Vehicle details-->
                 <div class="card-body p-4">

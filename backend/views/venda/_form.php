@@ -55,6 +55,10 @@ use yii\widgets\MaskedInput;
         </div>
         <div class="col-md-2"><?= $form->field($model, 'address')->textInput() ?>
         </div>
+        <div class="col-md-3"><?= $form->field($model, 'idUser_buyer')->widget(Select2::className(), [
+                'data' => ArrayHelper::map($users, 'id', 'email'),
+                'options' => ['placeholder' => 'Selecione uma conta (Opcional)'],
+            ]); ?></div>
     </div>
 
     <?php if (!empty($message)): ?>

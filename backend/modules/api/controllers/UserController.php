@@ -3,15 +3,19 @@
 namespace backend\modules\api\controllers;
 
 use APIResponse;
+use backend\modules\api\model\Vendedor;
 use common\models\LoginForm;
 use common\models\User;
+use Yii;
 use yii\filters\auth\HttpBasicAuth;
 use yii\rest\ActiveController;
+use yii\web\ForbiddenHttpException;
 use function PHPUnit\Framework\throwException;
 
 
 class UserController extends ActiveController
 {
+
     public ?User $user = null;
 
     public $modelClass = 'common\models\User';
@@ -21,7 +25,8 @@ class UserController extends ActiveController
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
             'class' => HttpBasicAuth::className(),
-            'auth' => [$this, 'auth']
+            'except' => ['create'],
+            'auth' => [$this, 'auth'],
         ];
         return $behaviors;
     }
@@ -35,23 +40,23 @@ class UserController extends ActiveController
             return $user;
         }
 
-        throw new \yii\web\ForbiddenHttpException('No authentication');
+        throw new ForbiddenHttpException('No authentication');
     }
 
     public function checkAccess($action, $model = null, $params = [])
     {
-        //validar se existe user
-        if ($this->user == null) {
-            throw new \yii\web\ForbiddenHttpException('Proibido');
+        if ($action === 'index' or $action === 'delete') {
+            throw new ForbiddenHttpException('Proibido');
         }
 
-        //validar se user é admin
-        if (!User::isAdmin($this->user->id)) {
-            throw new \yii\web\ForbiddenHttpException('Proibido');
+        $params = Yii::$app->request->queryParams;
+        $id = $params["id"];
+
+        if (($action === 'update' or $action === 'view') && ($this->user->id != $id)) {
+            throw new ForbiddenHttpException('Proibido');
         }
     }
 
-    //Override metodo create user, para guardar a password com formato hash e atribuir uma role
     public function actions()
     {
         $actions = parent::actions();
@@ -63,21 +68,27 @@ class UserController extends ActiveController
     {
         $userObj = json_decode(\Yii::$app->request->getRawBody());
 
+        if (User::findByEmail($userObj->email) != null) {
+
+            return ["sucesso" => false, "message" => 'Email já registado.']; //verifica se o email não existe
+        }
+
         $user = new User();
         $user->email = $userObj->email;
         $user->name = $userObj->name;
-        $user->number = $userObj->number;
         $user->setPassword($userObj->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
         $user->isEmployee = 0;
 
-        $save_result = $user->save();
+        $result = $user->save();
 
-        if ($save_result) {
+        if ($result) {
             $auth = \Yii::$app->authManager;
             $authorRole = $auth->getRole('customer');
             $auth->assign($authorRole, $user->getId());
+
+            return ["sucesso" => $result, "message" => ''];
         }
 
         return $user;
@@ -85,17 +96,32 @@ class UserController extends ActiveController
 
     public function actionLogin()
     {
-        $response = (['id' => 0, 'success' => false]);
-
-        if ($this->user != null) {
-
-            $response["id"] = $this->user->id;
-            $response["success"] = true;
-
-            return $response;
-        }
-
-        return $response;
+        return (['id' => $this->user->id, 'name' => $this->user->name, 'email' => $this->user->email, 'success' => true]);
     }
 
+    public function actionVendedores()
+    {
+        $user = new $this->modelClass;
+
+        $users = $user::find()->where(['isEmployee' => 1])->all();
+
+        if ($users != null) {
+
+            $vendedores = [];
+            foreach ($users as $user) {
+                $vendedor = new Vendedor($user->email, $user->name);
+                $vendedores[] = $vendedor;
+            }
+            return ['Vendedores' => $vendedores];
+        }
+
+        return $user;
+    }
+
+    public function actionTotal()
+    {
+        $user = new $this->modelClass;
+        $total = $user::find()->count();
+        return ['total' => $total];
+    }
 }

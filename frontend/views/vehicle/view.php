@@ -53,7 +53,7 @@ YiiAsset::register($this);
                 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <img src="http://frontendstand.test/storage/<?= $model->image ?>" class="d-block w-100"
+                            <img src="<?= $model->getImageUrl() ?>" class="d-block w-100"
                                  alt="...">
                         </div>
 
@@ -131,7 +131,7 @@ YiiAsset::register($this);
                         }
                         ?>
                         <!-- Vehicle image-->
-                        <img class="card-img-top" src="http://frontendstand.test/storage/<?= $item->image ?>"
+                        <img class="card-img-top" src="<?= $item->getImageUrl()?>"
                              alt=""/>
                         <!-- Vehicle details-->
                         <div class="card-body p-4">

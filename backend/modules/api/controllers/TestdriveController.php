@@ -47,40 +47,28 @@ class TestdriveController extends ActiveController
             throw new \yii\web\ForbiddenHttpException('Proibido');
         }
 
-        if (!User::isAdmin($this->user->id)) { //Verificar se é admin
+        if ($action === 'view' or $action === 'update' or $action === 'delete') {
+            $params = Yii::$app->request->queryParams;
+            $id = $params["id"];
+            $testdrive = Testdrive::findOne(['id' => $id]);
 
-            if ($action === 'index') {
-                throw new \yii\web\ForbiddenHttpException('Proibido'); //user normal não tem acesso
+            if ($testdrive == null) {
+                return new $this->modelClass;
             }
 
-            if ($action === 'update' || $action === 'delete' || $action === 'view') {
-                $params = Yii::$app->request->queryParams;
-                $id = $params["id"];
-
-                $model = Testdrive::findOne(['id' => $id]); //procurar o test solicitado no url
-
-                if ($this->user->id != $model->idUser) { //se for de outro utilizador não tem acesso
-                    throw new \yii\web\ForbiddenHttpException('Proibido');
-                }
-
-                if (($action === 'update' || $action === 'delete') && $model->status != Testdrive::POR_VER) { //se o teste já foi visto por parte do stand o utilizador apenas pode consultar
-                    throw new \yii\web\ForbiddenHttpException('Proibido, não é possível realizar alterações depois de alterado pelo Stand');
-                }
+            if ($testdrive->idUser != $this->user->id) {
+                throw new \yii\web\ForbiddenHttpException('Proibido');
             }
         }
+
+        return new $this->modelClass;
     }
 
     public function actions()
     {
         $actions = parent::actions();
-        unset($actions['create']);
+        unset($actions['index'], $actions['create']);
         return $actions;
-    }
-
-    //region Metodos personalizados
-    public function actionMytestdrives()
-    {
-        return Testdrive::find()->where(['idUser' => $this->user->id])->all();
     }
 
     public function actionCreate()
@@ -101,6 +89,32 @@ class TestdriveController extends ActiveController
 
         return $testdrive;
     }
+
+    public function actionIndex()
+    {
+        $testdrive = new $this->modelClass;
+        $results = $testdrive::find()->where(['idUser' => $this->user->id])->all();
+
+        if ($results != null) {
+            $testdrive = $results;
+        }
+
+        return $testdrive;
+    }
+
+
+    //region Metodos personalizados
+    public function actionVehicletestdrivesbyid($id): array
+    {
+        return Testdrive::find()->where(['idVehicle' => $id])->andWhere(['idUser' => $this->user->id])->all();
+    }
+
+    public function actionDate($dd, $mm, $yy): array
+    {
+        $date = $dd . '-' . $mm . '-' . $yy;
+        return Testdrive::find()->where(['date' => $date])->andWhere(['idUser' => $this->user->id])->all();
+    }
+
 
     //endregion
 }

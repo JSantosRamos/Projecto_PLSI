@@ -13,7 +13,7 @@ use yii\helpers\Url;
     }
     ?>
     <!-- Vehicle image-->
-    <img class="card-img-top" src="http://frontendstand.test/storage/<?= $model->image ?>"
+    <img class="card-img-top" src="<?= $model->getImageUrl() ?>"
          alt=""/>
     <!-- Vehicle details-->
     <div class="card-body p-4">

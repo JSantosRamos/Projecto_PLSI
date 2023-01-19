@@ -66,19 +66,26 @@ return [
                     'controller' => 'api/user',
                     'extraPatterns' => [
                         'GET login' => 'login',
+                        'GET vendedores' => 'vendedores',
+                        'GET total' => 'total',
                     ],
+                    'tokens' => [
+                        '{id}' => '<id:\\d+>',
+                    ]
                 ],
+
 
                 //veiculos
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/vehicle',
                     'extraPatterns' => [
-                        'GET total' =>'total', //total
-                        'GET {id}/price' => 'price', //preço do veiculo
+                        'GET total' => 'total', //total
+                        'GET {id}/price' => 'price', //preço do veículo
                         'GET brand/{id}' => 'brand', //por marca
                         'GET model/{id}' => 'model', //por modelo
-                        'GET {id}/status' => 'status',
+                        'GET {id}/status' => 'status', //o estado do veiculo
+                        'GET {id}/imagens' => 'imagens', // imagens para o id do veiculo
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\d+>',
@@ -90,7 +97,6 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/marcas',
                     'extraPatterns' => [],
-                    'tokens' => []
                 ],
 
                 //modelos
@@ -102,7 +108,7 @@ return [
                     ],
                     'tokens' => [
                         '{id}' => '<id:\\d+>',
-                        '{idBrand}' => '<idBrand:\\d+>'
+                        '{idBrand}' => '<idBrand:\\d+>',
                     ]
                 ],
 
@@ -111,25 +117,25 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/testdrive',
                     'extraPatterns' => [
-                        'GET user' => 'mytestdrives', //user pode ver os seus testdrives
+                        'GET vehicle/{id}' => 'vehicletestdrivesbyid',
+                        'GET date/{dd}/{mm}/{yy}' => 'date',
                     ],
+                    'tokens' => [
+                        '{id}' => '<id:\\d+>',
+                        '{dd}' => '<dd:\\d+>',
+                        '{mm}' => '<mm:\\d+>',
+                        '{yy}' => '<yy:\\d+>',
+                    ]
                 ],
 
-                //vendauser
+                //venda
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/vendauser',
-                ],
-
-                //login
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/login',
+                    'controller' => 'api/venda',
                     'extraPatterns' => [
-                        //'GET login' => 'behaviors',
-                        //'GET signup' => 'signup',
+                        'GET info' => 'info', //ver informaçoes com mais detalhe da venda
                     ],
-                ]
+                ],
             ],
         ]
     ],
