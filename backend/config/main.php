@@ -136,6 +136,12 @@ return [
                         'GET info' => 'info', //ver informaçoes com mais detalhe da venda
                     ],
                 ],
+
+                //reserva
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/reserve',
+                ],
             ],
         ]
     ],

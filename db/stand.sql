@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 11-Jan-2023 às 00:30
+-- Tempo de geração: 23-Jan-2023 às 23:42
 -- Versão do servidor: 10.4.24-MariaDB
 -- versão do PHP: 8.1.6
 
@@ -41,13 +41,20 @@ CREATE TABLE `auth_assignment` (
 
 INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`, `name`, `email`) VALUES
 ('admin', '1', 1673199644, NULL, NULL),
+('customer', '13', 1673520192, NULL, NULL),
+('customer', '14', 1673642420, NULL, NULL),
+('customer', '15', 1673642537, NULL, NULL),
+('customer', '16', 1673642565, NULL, NULL),
+('customer', '17', 1673882180, NULL, NULL),
+('customer', '18', 1673882330, NULL, NULL),
+('customer', '19', 1673884605, NULL, NULL),
+('customer', '20', 1673884891, NULL, NULL),
+('customer', '21', 1674221762, NULL, NULL),
+('customer', '23', 1674222306, NULL, NULL),
+('customer', '24', 1674222339, NULL, NULL),
 ('customer', '6', 1673200116, NULL, NULL),
-('customer', '7', 1673220188, NULL, NULL),
 ('employee', '4', 1673199874, NULL, NULL),
-('employee', '5', 1673199948, NULL, NULL),
-('employee', '8', 1673220381, NULL, NULL),
-('manager', '2', 1673199728, NULL, NULL),
-('manager', '3', 1673199816, NULL, NULL);
+('manager', '2', 1673199728, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -200,9 +207,9 @@ CREATE TABLE `image` (
 --
 
 INSERT INTO `image` (`id`, `path`, `idVehicle`) VALUES
-(6, '/vehicles/_327_hh4YvA-nKYbxb0WBYCRJij1Kul3/bmw_lado.JPG', 7),
-(7, '/vehicles/QoXorO4NTuWz_Fs-MCcgiF-MeOsO89fI/bmw_tras.JPG', 7),
-(8, '/vehicles/I8nTljSeMGPOJmDoL4k6o2DivDfyH2lm/bmw_dentro.JPG', 7);
+(19, '/vehicles/yDXL1Rt68yUd1uH71AFw7CXUDpW3mhjG/bmw_lado.JPG', 13),
+(20, '/vehicles/mpyXV73Xt7IMKYbEYtBNk3AOJxnl8mNJ/bmw_tras.JPG', 13),
+(21, '/vehicles/Wse0DmmqM67asIU84scNlqbl65VkFm_t/bmw_dentro.JPG', 13);
 
 -- --------------------------------------------------------
 
@@ -332,6 +339,14 @@ CREATE TABLE `testdrive` (
   `status` enum('Por ver','Aceite','Recusado','Aguardando Resposta') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Extraindo dados da tabela `testdrive`
+--
+
+INSERT INTO `testdrive` (`id`, `date`, `time`, `description`, `idUser`, `idVehicle`, `status`) VALUES
+(67, '23-01-2023', '15:00', 'Tenho interesse em comprar o veiculo.', 1, 5, 'Por ver'),
+(69, '23-01-2023', '12:00', 'Novo teste', 6, 5, 'Por ver');
+
 -- --------------------------------------------------------
 
 --
@@ -358,14 +373,10 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `auth_key`, `password_hash`, `password_reset_token`, `email`, `status`, `created_at`, `updated_at`, `verification_token`, `name`, `isEmployee`) VALUES
-(1, 'admin', 'rb-cvxfdpZajPt0ngy16Ld3mqTxDmOaP', '$2y$13$yl.EHTbbUmKd2oMxLdJBdepS7SBOp.nDJSso0DBE2Rhz.IrhFb6lm', NULL, 'admin@gmail.com', 10, 1673199644, 1673201921, 'fFPI_OsUTJO1a0eaPphlSdnfY7401JgY_1673199644', 'Admin', 0),
+(1, 'admin', 'rb-cvxfdpZajPt0ngy16Ld3mqTxDmOaP', '$2y$13$yl.EHTbbUmKd2oMxLdJBdepS7SBOp.nDJSso0DBE2Rhz.IrhFb6lm', NULL, 'admin@gmail.com', 10, 1673199644, 1673650089, 'fFPI_OsUTJO1a0eaPphlSdnfY7401JgY_1673199644', 'Admin', 0),
 (2, 'manager1', 'ceB2M3Asm6X9tQjNUSrV9oHuoIqj-b1z', '$2y$13$fM9GaCvBIBgBKRbwe1ieiurtyIa9JnEPDOCQtm1P..EZSCVyE1T8G', NULL, 'manager1@gmail.com', 10, 1673199728, 1673199768, 'EonKTWr4itqJINCeOuSzOSe_lzzkbwqW_1673199727', 'Manager1', 1),
-(3, 'manager2', 'vvLnvcsylJM9tO1i4yv28SA-yl9MZV7s', '$2y$13$SCZWWCyQKvktrNE/magWFeBxr045rT/9u18NcAOhvsnl4cB6Yokb6', NULL, 'manager2@gmail.com', 10, 1673199816, 1673199906, 'Ya8GvtW1DuNCkO1POZZDxszCw4RowU_H_1673199815', 'Manager2', 1),
 (4, 'funcionario1', 'PL7VDO6TkaFP2J0R39YoKk7ZMjHZv_Jn', '$2y$13$jttmmuuIchjkhP.Y6w7zteCK.HaBXOhUgSpwMP8sBm7OGcza6gLJ.', NULL, 'func1@gmail.com', 10, 1673199874, 1673360830, 'PfeAC7eST1a20q8m1m1uKXHeGNDsdkqO_1673199874', 'Funcionário1', 1),
-(5, 'funcionario2', 'KNCsyVA4TjLocPekTsPx47uBew5K9u9b', '$2y$13$O2yj5l2dtu3Gh2tR7Uu9j.nGi3So1wr2lqNHIKpTMM0qqmCKKTmHO', NULL, 'func2@gmail.com', 10, 1673199948, 1673346079, 'hdffpXas1JDz8eP1Chp6CedTvrwmRfl1_1673199947', 'Funcionário2', 1),
-(6, 'User1', '0zwEXTda5fuwc5ZEZo18E5K5eNgJuPZT', '$2y$13$U1yYqvXD8NlNOyWtcKVnuuzKXazNmZGImPZ9SQeWwSls86yukty26', NULL, 'user1@gmail.com', 10, 1673200116, 1673204596, 'p3kHyQMKfvSidVdHkEZLk3sR56FjiGg8_1673200116', 'User', 0),
-(7, 'usertesting', '39b4SS7E9WjxpZlfTKhhSCmwBKAH70bS', '$2y$13$Pt4iW2isinHn8/Hi5.ipUuUAWyNJb4dvpGc66eVT8StOoXqcyGfXS', NULL, 'usertesting@test.com', 10, 1673220188, 1673220207, 'Kq6ScwoB45XYyo5yRvvraE_JIJNeLjXR_1673220188', 'Usertesting', 0),
-(8, 'functesting', 'meOyswX77e7Ax5r8mWpRzFC5YEhtWZec', '$2y$13$RV9wzbqStZv8Y4jcJkQGmu436eeSXCzFiAap2yupjjQLfP2wBv1B6', NULL, 'functesting@test.com', 10, 1673220381, 1673220381, 'aihFRC-KM7CBcAY9g_Xfi7KlkiVsFdqZ_1673220381', 'FuncTesting', 1);
+(6, 'User1', '0zwEXTda5fuwc5ZEZo18E5K5eNgJuPZT', '$2y$13$U1yYqvXD8NlNOyWtcKVnuuzKXazNmZGImPZ9SQeWwSls86yukty26', NULL, 'user1@gmail.com', 10, 1673200116, 1673204596, 'p3kHyQMKfvSidVdHkEZLk3sR56FjiGg8_1673200116', 'User', 0);
 
 -- --------------------------------------------------------
 
@@ -403,10 +414,10 @@ CREATE TABLE `vehicle` (
 --
 
 INSERT INTO `vehicle` (`id`, `brand`, `model`, `serie`, `type`, `fuel`, `mileage`, `engine`, `color`, `description`, `year`, `doorNumber`, `transmission`, `price`, `image`, `isActive`, `title`, `plate`, `cv`, `idBrand`, `idModel`, `status`) VALUES
-(5, NULL, NULL, '', 'Cabrio', 'Diesel', '100000', 2000, 'Verde', '<p>Novo <strong>Audi A5 ao melhor pre&ccedil;o</strong></p>\r\n', 2022, 5, 'Automático', 55000, '/vehicles/CIdX6PCEjqYQkokMIOHVX_SVf0uHirlr/audi_5.JPG', 1, 'Novo Audi A5', 'AU-55-BO', 180, 4, 6, 'Disponível'),
-(6, NULL, NULL, '', 'Utilitário', 'Diesel', '60000', 2000, 'Preto', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas feugiat consequat diam. Maecenas metus. Vivamus diam purus, cursus a, commodo non, facilisis vitae, nulla. Aenean dictum lacinia tortor. Nunc iaculis, nibh non iaculis aliquam, orci felis euismod neque, sed ornare massa mauris sed velit. Nulla pretium mi et risus. Fusce mi pede, tempor id, cursus ac, ullamcorper nec, enim. Sed tortor. Curabitur molestie. Duis velit augue, condimentum at, ultrices a, luctus ut, orci. Donec pellentesque egestas eros. Integer cursus, augue in cursus faucibus, eros pede bibendum sem, in tempus tellus justo quis ligula. Etiam eget tortor. Vestibulum rutrum, est ut placerat elementum, lectus nisl aliquam velit, tempor aliquam eros nunc nonummy metus. In eros metus, gravida a, gravida sed, lobortis id, turpis. Ut ultrices, ipsum at venenatis fringilla, sem nulla lacinia tellus, eget aliquet turpis mauris non enim. Nam turpis. Suspendisse lacinia. Curabitur ac tortor ut ipsum egestas elementum. Nunc imperdiet gravida mauris.</p>\r\n', 2010, 5, 'Manual', 45000, '/vehicles/Rk9PrQHRSg77RYhamxsQSs-UB3bGD58E/mercedes.JPG', 1, 'Mercedes Classe A', 'ME-22-BO', 180, 16, 23, 'Disponível'),
-(7, NULL, NULL, '', 'Desportivo', 'Gasolina', '55000', 2000, 'Branco', '<p><strong>BMW</strong> S&eacute;rie 3BMW S&eacute;rie 3BMW S&eacute;rie 3BMW S&eacute;rie 3BMW S&eacute;rie 3BMW S&eacute;rie 3</p>\r\n', 2022, 4, 'Manual', 60000, '/vehicles/hvrKih-SfYrIlRnk8UgCxQAiVe4l4I8F/bmw.JPG', 1, 'BMW Série 3', 'BM-30-BO', 200, 7, 14, 'Disponível'),
-(8, NULL, NULL, '', 'Desportivo', 'Gasolina', '60000', 2000, 'Azul', '<p>Audi A3Audi A3Audi A3Audi A3Audi A3Audi A3Audi A3Audi A3</p>\r\n', 2018, 4, 'Manual', 35000, '/vehicles/vFfAIsYzWwHyA13HBK6xajnBywP0w5jG/audi_a3.JPG', 1, 'Audi A3', 'AD-33-BO', 170, 4, 5, 'Disponível');
+(5, NULL, NULL, '', 'Cabrio', 'Diesel', '100000', 2000, 'Verde', '<p>Novo <strong>Audi A5 ao melhor pre&ccedil;o</strong></p>\r\n', 2022, 5, 'Automático', 55000, '/vehicles/cMSg-1wevSc7qQ_f8tqSDfMoyFT0U_dp/audi_5.JPG', 1, 'Novo Audi A5', 'AU-55-BO', 180, 4, 6, 'Disponível'),
+(6, NULL, NULL, '', 'Utilitário', 'Diesel', '60000', 2000, 'Preto', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas feugiat consequat diam. Maecenas metus. Vivamus diam purus, cursus a, commodo non, facilisis vitae, nulla. Aenean dictum lacinia tortor. Nunc iaculis, nibh non iaculis aliquam, orci felis euismod neque, sed ornare massa mauris sed velit. Nulla pretium mi et risus. Fusce mi pede, tempor id, cursus ac, ullamcorper nec, enim. Sed tortor. Curabitur molestie. Duis velit augue, condimentum at, ultrices a, luctus ut, orci. Donec pellentesque egestas eros. Integer cursus, augue in cursus faucibus, eros pede bibendum sem, in tempus tellus justo quis ligula. Etiam eget tortor. Vestibulum rutrum, est ut placerat elementum, lectus nisl aliquam velit, tempor aliquam eros nunc nonummy metus. In eros metus, gravida a, gravida sed, lobortis id, turpis. Ut ultrices, ipsum at venenatis fringilla, sem nulla lacinia tellus, eget aliquet turpis mauris non enim. Nam turpis. Suspendisse lacinia. Curabitur ac tortor ut ipsum egestas elementum. Nunc imperdiet gravida mauris.</p>\r\n', 2010, 5, 'Manual', 45000, '/vehicles/g9y2rLnyeRID9wD0ZdAGYmclTzn-3j2I/mercedes.JPG', 0, 'Mercedes Classe A', 'ME-22-BO', 180, 16, 23, 'Vendido'),
+(8, NULL, NULL, '', 'Desportivo', 'Gasolina', '60000', 2000, 'Azul', '<p>Audi A3Audi A3Audi A3Audi A3Audi A3Audi A3Audi A3Audi A3</p>\r\n', 2018, 4, 'Manual', 35000, '/vehicles/I40vgVyfBeqoZWSinHZRZUE29XqKN7nN/audi_a3.JPG', 1, 'Audi A3', 'AD-33-BO', 170, 4, 5, 'Disponível'),
+(13, NULL, NULL, '', 'Desportivo', 'Gasolina', '5000', 2000, 'Branco', '<p>Novo bmw&nbsp;</p>\r\n', 2022, 4, 'Automático', 70000, '/vehicles/5lj1HKUh5xfqzDZHuce-7W94ZluKaxe4/bmw.JPG', 1, 'BMW Série 3', 'BM-22-AA', 180, 7, 14, 'Disponível');
 
 -- --------------------------------------------------------
 
@@ -426,6 +437,13 @@ CREATE TABLE `venda` (
   `address` varchar(30) NOT NULL,
   `name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `venda`
+--
+
+INSERT INTO `venda` (`id`, `idUser_seller`, `idUser_buyer`, `idVehicle`, `price`, `comment`, `number`, `nif`, `address`, `name`) VALUES
+(8, 1, 1, 6, '40000', '', '910000000', '999999999', 'Estrada de torres, nº20', 'José Ramos');
 
 -- --------------------------------------------------------
 
@@ -609,7 +627,7 @@ ALTER TABLE `cost`
 -- AUTO_INCREMENT de tabela `image`
 --
 ALTER TABLE `image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de tabela `model`
@@ -627,43 +645,43 @@ ALTER TABLE `note`
 -- AUTO_INCREMENT de tabela `reserve`
 --
 ALTER TABLE `reserve`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de tabela `task`
 --
 ALTER TABLE `task`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `testdrive`
 --
 ALTER TABLE `testdrive`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT de tabela `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de tabela `vehicle`
 --
 ALTER TABLE `vehicle`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de tabela `venda`
 --
 ALTER TABLE `venda`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de tabela `vendauser`
 --
 ALTER TABLE `vendauser`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Restrições para despejos de tabelas

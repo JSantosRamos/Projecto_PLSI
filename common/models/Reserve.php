@@ -5,7 +5,6 @@ namespace common\models;
 use backend\mosquitto\phpMQTT;
 use Yii;
 use yii\helpers\FileHelper;
-use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "reserve".
@@ -38,7 +37,7 @@ class Reserve extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idUser', 'idVehicle', 'number', 'nif', 'morada', 'cc', 'ccFile'], 'required'],
+            [['idUser', 'idVehicle', 'number', 'nif', 'morada', 'cc'], 'required'],
             [['idUser', 'idVehicle'], 'integer'],
             [['ccFile'], 'file'],
             [['cc'], 'string'],
@@ -80,6 +79,8 @@ class Reserve extends \yii\db\ActiveRecord
         if ($result && $this->ccFile) {
             $path = Yii::getAlias('@backend/web/storage' . $this->cc);
             $dir = dirname($path);
+
+
             if (!FileHelper::createDirectory($dir) | !$this->ccFile->saveAs($path)) {
                 $transaction->rollBack();
 

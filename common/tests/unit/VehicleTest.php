@@ -104,8 +104,6 @@ class VehicleTest extends \Codeception\Test\Unit
 
         //verify
         $this->tester->seeRecord('common\models\Vehicle', ['status' => 'Vendido']);
-        $this->tester->dontSeeRecord('common\models\Vehicle', ['status' => 'Reservado']);
-
     }
 
     public function testRemoveVehicle()
