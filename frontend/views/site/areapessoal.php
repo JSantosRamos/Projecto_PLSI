@@ -79,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ]) ?>
             <?php Pjax::end(); ?>
-        <?php else: echo 'Não tem Propostas.' ?>
+        <?php else: echo 'Não tem Reservas.' ?>
         <?php endif; ?>
     </div>
 </div>

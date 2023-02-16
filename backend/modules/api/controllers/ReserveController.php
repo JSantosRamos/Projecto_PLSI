@@ -43,7 +43,7 @@ class ReserveController extends ActiveController
 
     public function checkAccess($action, $model = null, $params = [])
     {
-        if ($action === 'update' or $action === 'delete') {
+        if ($action === 'update' or $action === 'delete' or $action === 'view' or $action === 'index' ) {
             throw new ForbiddenHttpException('Proibido');
         }
     }
@@ -51,7 +51,7 @@ class ReserveController extends ActiveController
     public function actions()
     {
         $actions = parent::actions();
-        unset($actions['create']);
+        unset($actions['create'], $actions['index']);
         return $actions;
     }
 
@@ -108,4 +108,6 @@ class ReserveController extends ActiveController
         fwrite($file, $decoded_string);
         fclose($file);
     }
+
+
 }

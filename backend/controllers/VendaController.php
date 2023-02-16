@@ -132,6 +132,14 @@ class VendaController extends Controller
 
                 if ($vehicle->status == Vehicle::STATUS_RESERVED) {
                     $reserve = Reserve::findOne(['idVehicle' => $vehicle->id]);
+
+                    if($reserve == null){
+                        $message = 'Verifique o estado do veículo';
+                        return $this->render('create', [
+                            'model' => $model, 'searchVehicle' => $searchVehicle, 'dataVehicle' => $dataVehicle, 'searchUser' => $searchUser, 'dataUser' => $dataUser, 'message' => $message, 'users' => $users, 'vehicles' => $vehicles,
+                        ]);
+                    }
+
                     $nif = $reserve->nif;
 
                     if ($nif != $model->nif) {

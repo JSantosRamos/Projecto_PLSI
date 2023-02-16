@@ -60,7 +60,7 @@ YiiAsset::register($this);
                         <?php if ($vehicle_imagens != null): ?>
                             <?php foreach ($vehicle_imagens as $image): ?>
                                 <div class="carousel-item">
-                                    <img src="http://frontendstand.test/storage/<?= $image->path ?>"
+                                    <img src="<?= Yii::$app->params['backendUrl'] . '/storage' . $image->path; ?>"
                                          class="d-block w-100" alt="...">
                                 </div>
                             <?php endforeach; ?>
